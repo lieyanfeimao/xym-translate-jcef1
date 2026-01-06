@@ -1,0 +1,1 @@
+[{"id":"t_8ed8622a7ce3480a9ec91ca2406bd3c2","oldText":"The EMR_POLYBEZIER16 record specifies one or more Bezier curves. The curves are drawn using the current pen.","tlText":"EMR_POYBEZIER16记录指定一条或多条贝塞尔曲线。使用当前笔绘制曲线。","version":0},{"id":"t_92dccc9886f34b59a4b9554dc74163ee","oldText":"getEmfRecordType in interface HemfRecord","tlText":"HemfRecord界面中的getEmfRecordType","version":0}]

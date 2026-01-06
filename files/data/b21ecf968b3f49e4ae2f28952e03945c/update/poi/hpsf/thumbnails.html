@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>HPSF THUMBNAIL HOW-TO</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>HPSF THUMBNAIL HOW-TO
+     <div name="tsUpdate" data-id="t_953eca5397d342f3a233ea14b145c177" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="The+VT_CF+Format"></a>
+    <h2 class="boxed">The VT_CF Format
+     <div name="tsUpdate" data-id="t_a3122d58dc8f465784e63eec1b31d589" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Thumbnail information is stored as a VT_CF, or Thumbnail Variant. The Thumbnail Variant is used to store various types of information in a clipboard. The VT_CF can store information in formats for the Macintosh or Windows clipboard.
+      <div name="tsUpdate" data-id="t_34c0f31b8843493f948c022d38f47244" data-tpl="0" data-txt-color="green"></div></p>
+     <p>There are many types of data that can be copied to the clipboard, but the only types of information needed for thumbnail manipulation are the image formats.
+      <div name="tsUpdate" data-id="t_7520e270d9144e379164d4af8449fa21" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <span class="codefrag">VT_CF</span> structure looks like this:
+      <div name="tsUpdate" data-id="t_acd24a68ad274b9db2b51a3d19e9968a" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Element:
+         <div name="tsUpdate" data-id="t_300520e2bc124fbe830ee312be35d8df" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Clipboard Size
+         <div name="tsUpdate" data-id="t_7f9dba5e894b44d2b2de73e60a069768" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Clipboard Format Tag
+         <div name="tsUpdate" data-id="t_b4b902312c704539a72230c3fc2f3f19" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Clipboard Data
+         <div name="tsUpdate" data-id="t_67cdb2bea5ed44639ab17d93f2bd717e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Size:
+         <div name="tsUpdate" data-id="t_3430faa1fcfd43018003a2e2b4687105" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">32 bit unsigned integer (DWord)
+         <div name="tsUpdate" data-id="t_aa1b0e02a2f640b2b136e5ce6b746b5a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">32 bit signed integer (DWord)
+         <div name="tsUpdate" data-id="t_613a9d03d25a47329b0b558936ef2f94" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">variable length (byte array)
+         <div name="tsUpdate" data-id="t_a2e28a8152cf4f68b117c9a03615f853" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>The Clipboard Size refers to the size (in bytes) of Clipboard Data (variable size) plus the Clipboard Format (four bytes).
+      <div name="tsUpdate" data-id="t_b66557f5b2264127850821df8917f2d2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Clipboard Format Tag has four possible values:
+      <div name="tsUpdate" data-id="t_1e4b3440f36846f1a20a823c939ef008" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Value
+         <div name="tsUpdate" data-id="t_2effaf3121254dcaa47c896ce6437ced" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Identifier
+         <div name="tsUpdate" data-id="t_71619c9262af4c308d20f2e1d55b5164" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_338a974ea5cc48069f0294bc7e90149a" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span class="codefrag">-1L</span>
+         <div name="tsUpdate" data-id="t_82b8dd33b81e497685f9ee7a4f06f2ad" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CFTAG_WINDOWS</span>
+         <div name="tsUpdate" data-id="t_156d76e0a5954a04a39ebc0807f3edcd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">a built-in Windows© clipboard format value
+         <div name="tsUpdate" data-id="t_4baf854c3ad647e4acf71355d5c6d717" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span class="codefrag">-2L</span>
+         <div name="tsUpdate" data-id="t_b135c6df78394000a13492b7c1b8fe5a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CFTAG_MACINTOSH</span>
+         <div name="tsUpdate" data-id="t_f594beff8c9e49c8aee6e74ecb2c5626" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">a Macintosh clipboard format value
+         <div name="tsUpdate" data-id="t_48626f6392b64cf8aa2e894e157fa215" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span class="codefrag">-3L</span>
+         <div name="tsUpdate" data-id="t_f235f1f2e8994e22bdc32cfca1f783e3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CFTAG_FMTID</span>
+         <div name="tsUpdate" data-id="t_25ecf69d2291440296b2833ae71a9a5a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">a format identifier (FMTID) This is rarely used.
+         <div name="tsUpdate" data-id="t_4465e02cce824162a58a976d62862fb7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span class="codefrag">0L</span>
+         <div name="tsUpdate" data-id="t_8356a6f77d3d495cbf73bd856beef450" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CFTAG_NODATA</span>
+         <div name="tsUpdate" data-id="t_bf3750ec11ee421a9865ec51fe909dc7" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">No data This is rarely used.
+         <div name="tsUpdate" data-id="t_536b755d36924be38f66a680af15f1a0" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Windows+Clipboard+Data"></a>
+    <h2 class="boxed">Windows Clipboard Data
+     <div name="tsUpdate" data-id="t_b725182e60c84c8583e291593d629947" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Windows clipboard data has four image formats for thumbnails:
+      <div name="tsUpdate" data-id="t_592c94c9b47b46d49220f3cce3fd7282" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Value
+         <div name="tsUpdate" data-id="t_9af7658069c54048960fdd550fc8501e" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Identifier
+         <div name="tsUpdate" data-id="t_3224d28605a84630a56407b01e3de4f4" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_d39a2cf5632740808411ce203e9c809e" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">3
+         <div name="tsUpdate" data-id="t_3b507f41242d43b788dd6944e7b9143f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CF_METAFILEPICT</span>
+         <div name="tsUpdate" data-id="t_fe5bb4cf221244419b4f851c4f9e0ca2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Windows metafile format - recommended
+         <div name="tsUpdate" data-id="t_075f71e1d2cc44cd9cad6ea465882abd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">8
+         <div name="tsUpdate" data-id="t_3585348a47b74100ab6f1e5a9d18e288" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CF_DIB</span>
+         <div name="tsUpdate" data-id="t_9cad1595d6424fdeab096b31c7c07cc4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Device Independent Bitmap
+         <div name="tsUpdate" data-id="t_3f33ce83780a4adb8fd72ae241fe39fc" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">14
+         <div name="tsUpdate" data-id="t_7e430454cbfc41cb8832fc193fc53d21" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CF_ENHMETAFILE</span>
+         <div name="tsUpdate" data-id="t_1be667069bc647acb9811671e615e773" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Enhanced Windows metafile format
+         <div name="tsUpdate" data-id="t_c5262187f0344ab39a200abc5011d06e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">2
+         <div name="tsUpdate" data-id="t_da1478dd28fd44a996b7b1ba24faa4f5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">CF_BITMAP</span>
+         <div name="tsUpdate" data-id="t_5b0f3771f8e3426ca7512c2a47e9298e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Bitmap - Obsolete - Use <span class="codefrag">CF_DIB</span> instead
+         <div name="tsUpdate" data-id="t_de916d4082394b68bd723ec8cd57068e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Windows+Metafile+Format"></a>
+    <h2 class="boxed">Windows Metafile Format
+     <div name="tsUpdate" data-id="t_ae507971ac0c435fad19b1dc1a07dffd" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>The most common format for thumbnails on the Windows platform is the Windows metafile format. The Clipboard places and extra header in front of a the standard Windows Metafile Format data.
+      <div name="tsUpdate" data-id="t_df67fd9df7794abbb3c44237c31ffd0a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The Clipboard Data byte array looks like this when an image is stored in Windows' Clipboard WMF format.
+      <div name="tsUpdate" data-id="t_3b986ab5dbd94a41ab0fa907b3517f00" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Identifier
+         <div name="tsUpdate" data-id="t_58c6ae6e73e144f0a7e9088a4925eea0" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">CF_METAFILEPICT
+         <div name="tsUpdate" data-id="t_222710b5fca149718a92d659c3b117c8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">mm
+         <div name="tsUpdate" data-id="t_1eb510c5be1e46f28f27c35296c3dddd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">width
+         <div name="tsUpdate" data-id="t_801b4a5125b44c2c99a44e42d9744bcf" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">height
+         <div name="tsUpdate" data-id="t_20a216a6b97a4ff19751becb5933e300" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">handle
+         <div name="tsUpdate" data-id="t_06578db4d9c84ae7a2df1317e1f0e7c0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">WMF data
+         <div name="tsUpdate" data-id="t_c788ec32374449a68497fee2d3ac3237" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Size
+         <div name="tsUpdate" data-id="t_c503e73a897b427985736fc25aceb1e1" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">32 bit unsigned int
+         <div name="tsUpdate" data-id="t_f2ec7a8dbeb242799033628e82c25203" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 bit unsigned(?) int
+         <div name="tsUpdate" data-id="t_e7b0c262c47144b396224a719207bcf1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 bit unsigned(?) int
+         <div name="tsUpdate" data-id="t_a20d6645c82b429f90e197c40c2b9e44" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 bit unsigned(?) int
+         <div name="tsUpdate" data-id="t_1631ea7813174877842362f309473093" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 bit unsigned(?) int
+         <div name="tsUpdate" data-id="t_07e445251e804d6a9d5a24ccf2fb5fd8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">byte array - variable length
+         <div name="tsUpdate" data-id="t_ba0b95a8ea36468899f3fefe9b222fa3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_3bc224b57b7144fc9cfac919411caa82" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Clipboard WMF
+         <div name="tsUpdate" data-id="t_3ced844c859c46679b2ba12ed4492b06" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Mapping Mode
+         <div name="tsUpdate" data-id="t_d8fde5b5410546b49d1f23c8e8ca9147" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Image Width
+         <div name="tsUpdate" data-id="t_b02718ed201a4cca871e2cc8b1e0b457" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Image Height
+         <div name="tsUpdate" data-id="t_940896567e344485b43569d2209df596" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">handle to the WMF data array in memory, or 0
+         <div name="tsUpdate" data-id="t_cfb80cef48b040a1b7f5ce6b8d5f20ac" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">standard WMF byte stream
+         <div name="tsUpdate" data-id="t_51546b42958a4322ab98905480d4501b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Device+Independent+Bitmap"></a>
+    <h2 class="boxed">Device Independent Bitmap
+     <div name="tsUpdate" data-id="t_f41de879f3bf4f0286aa4245052d3f2b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p><strong>FIXME:</strong> Describe the Device Independent Bitmap format!
+      <div name="tsUpdate" data-id="t_f269fbc48b6c4ee8b8d6c643aa0e39ef" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Macintosh+Clipboard+Data"></a>
+    <h2 class="boxed">Macintosh Clipboard Data
+     <div name="tsUpdate" data-id="t_996638ddb19b4771a994b822cf45a565" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p><strong>FIXME:</strong> Describe the Macintosh clipboard formats!
+      <div name="tsUpdate" data-id="t_5bdd277e9cbc45238a425b2b4e98688f" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Drew Varner</font>
+     <div name="tsUpdate" data-id="t_794a3d9f260540fea315cb275b14bf8b" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hpsf/thumbnails.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='e8eb5ddac0f64199a5b0e0a2bb0b319e';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

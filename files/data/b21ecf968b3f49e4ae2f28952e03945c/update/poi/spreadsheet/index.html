@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-HSSF and POI-XSSF/SXSSF - Java API To Access Microsoft Excel Format Files</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>POI-HSSF and POI-XSSF/SXSSF - Java API To Access Microsoft Excel Format Files
+     <div name="tsUpdate" data-id="t_572f05f46038487194427f4ba5629a06" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_80862e5793354feeac99dd395df4884d" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <a name="Overview"></a>
+    <h2 class="boxed">Overview
+     <div name="tsUpdate" data-id="t_60c58244a2fc49d5bdce38d520d92e7a" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>HSSF is the POI Project's pure Java implementation of the Excel '97(-2007) file format. XSSF is the POI Project's pure Java implementation of the Excel 2007 OOXML (.xlsx) file format.
+      <div name="tsUpdate" data-id="t_9c879e0b8f2e46989016d9c659eda9f3" data-tpl="0" data-txt-color="green"></div></p>
+     <p>HSSF and XSSF provides ways to read spreadsheets create, modify, read and write XLS spreadsheets. They provide:
+      <div name="tsUpdate" data-id="t_f30b49aae615435484ae61b4acc6f1e2" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>low level structures for those with special needs
+       <div name="tsUpdate" data-id="t_a51735a314634ce1b418ab7771859d6c" data-tpl="0" data-txt-color="green"></div></li>
+      <li>an eventmodel api for efficient read-only access
+       <div name="tsUpdate" data-id="t_3a08c489835c4da8aaa83466b9a62411" data-tpl="0" data-txt-color="green"></div></li>
+      <li>a full usermodel api for creating, reading and modifying XLS files
+       <div name="tsUpdate" data-id="t_68341f5fab1c4d8e87178798cbed0f98" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>For people converting from pure HSSF usermodel, who wish to use the joint SS Usermodel for HSSF and XSSF support, then see the <a href="converting.html">ss usermodel converting guide</a>.
+      <div name="tsUpdate" data-id="t_da7878f45d70472e955bbb5df2df11e2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>An alternate way of generating a spreadsheet is via the <a href="http://cocoon.apache.org">Cocoon</a> serializer (yet you'll still be using HSSF indirectly). With Cocoon you can serialize any XML datasource (which might be a ESQL page outputting in SQL for instance) by simply applying the stylesheet and designating the serializer.
+      <div name="tsUpdate" data-id="t_b883566111ee490f90a3300635efd536" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you're merely reading spreadsheet data, then use the eventmodel api in either the org.apache.poi.hssf.eventusermodel package, or the org.apache.poi.xssf.eventusermodel package, depending on your file format.
+      <div name="tsUpdate" data-id="t_b3c9767f0c9f4dfe8f83c4c26232eda1" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you're modifying spreadsheet data then use the usermodel api. You can also generate spreadsheets this way.
+      <div name="tsUpdate" data-id="t_e6e9d191cc1c4fd3bf00ad23878484cc" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Note that the usermodel system has a higher memory footprint than the low level eventusermodel, but has the major advantage of being much simpler to work with. Also please be aware that as the new XSSF supported Excel 2007 OOXML (.xlsx) files are XML based, the memory footprint for processing them is higher than for the older HSSF supported (.xls) binary files.
+      <div name="tsUpdate" data-id="t_fc9052b673054ed5851c7e5ed3e5d146" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="SXSSF+%28Since+POI+3.8+beta3%29"></a>
+    <h2 class="boxed">SXSSF (Since POI 3.8 beta3)
+     <div name="tsUpdate" data-id="t_b81b637916ac489697c4cadce1c8bd8e" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Since 3.8-beta3, POI provides a low-memory footprint SXSSF API built on top of XSSF.
+      <div name="tsUpdate" data-id="t_3a877d25ee824136838341f116ec0d18" data-tpl="0" data-txt-color="green"></div></p>
+     <p>SXSSF is an API-compatible streaming extension of XSSF to be used when very large spreadsheets have to be produced, and heap space is limited. SXSSF achieves its low memory footprint by limiting access to the rows that are within a sliding window, while XSSF gives access to all rows in the document. Older rows that are no longer in the window become inaccessible, as they are written to the disk.
+      <div name="tsUpdate" data-id="t_4b19e4d44db4409a9e71c9dfe6fc79f3" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In auto-flush mode the size of the access window can be specified, to hold a certain number of rows in memory. When that value is reached, the creation of an additional row causes the row with the lowest index to to be removed from the access window and written to disk. Or, the window size can be set to grow dynamically; it can be trimmed periodically by an explicit call to flushRows(int keepRows) as needed.
+      <div name="tsUpdate" data-id="t_bbfd84e190fb43e1afb99aeb719f1e6a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Due to the streaming nature of the implementation, there are the following limitations when compared to XSSF:
+      <div name="tsUpdate" data-id="t_653589d80a34427f8afc42275de6469f" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Only a limited number of rows are accessible at a point in time.
+       <div name="tsUpdate" data-id="t_3a6f69c902a54061b54c5eddb354bdd9" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Sheet.clone() is not supported.
+       <div name="tsUpdate" data-id="t_9ec2533975a84d2da4b3ccf404c45fa6" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Formula evaluation is not supported
+       <div name="tsUpdate" data-id="t_b1f582996cb4457ea0b4b4fed2793326" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>See more details at <a href="how-to.html#sxssf">SXSSF How-To</a>
+      <div name="tsUpdate" data-id="t_ac0990fbd87e4df8be35d339f5f61e3e" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The table below synopsizes the comparative features of POI's Spreadsheet API:
+      <div name="tsUpdate" data-id="t_54b03d7edbac48dabc42704aed589303" data-tpl="0" data-txt-color="green"></div></p>
+     <p><em>Spreadsheet API Feature Summary</em>
+      <div name="tsUpdate" data-id="t_1f981cc35daf441a8cf0d672e372c033" data-tpl="0" data-txt-color="green"></div></p>
+     <p><img alt="Spreadsheet API Feature Summary" src="images/ss-features.png"></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Andrew C. Oliver,&nbsp;Nicola Ken Barozzi</font>
+     <div name="tsUpdate" data-id="t_b2507dbcf8684883ad93a40d6fe35e75" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='742ad43e375047c8b1c40d577ee6d815';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

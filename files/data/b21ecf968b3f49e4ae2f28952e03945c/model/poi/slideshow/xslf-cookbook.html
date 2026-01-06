@@ -1,0 +1,755 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>XSLF Cookbook</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_5608702c25a14b938b22341ccdf850d8">XSLF Cookbook</span><span class="tscolor" lg_zh="t_5608702c25a14b938b22341ccdf850d8"><span lg_kh="1">(</span>${t_5608702c25a14b938b22341ccdf850d8}<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="XSLF+Cookbook"></a>
+    <h2 class="boxed"><span lg_en="t_b8dcee1e9fcb44d2b8061191f70f4f7b">XSLF Cookbook</span><span class="tscolor" lg_zh="t_b8dcee1e9fcb44d2b8061191f70f4f7b"><span lg_kh="1">(</span>${t_b8dcee1e9fcb44d2b8061191f70f4f7b}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_506035b81f5c4b8788854ee32c9aaa68">This page offers a short introduction into the XSLF API. More examples can be found in the <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xslf/"> XSLF Examples</a> in the POI SVN repository.</span><span class="tscolor" lg_zh="t_506035b81f5c4b8788854ee32c9aaa68"><span lg_kh="1">(</span>${t_506035b81f5c4b8788854ee32c9aaa68}<span lg_kh="1">)</span></span></p>
+     <div class="note">
+      <div class="label">
+       <span lg_en="t_93b48baa6eb341e7bb911aa213996559">Note</span><span class="tscolor" lg_zh="t_93b48baa6eb341e7bb911aa213996559"><span lg_kh="1">(</span>${t_93b48baa6eb341e7bb911aa213996559}<span lg_kh="1">)</span></span>
+      </div>
+      <div class="content">
+       <span lg_en="t_e16a6b4650b446aebd1e3e6ea2386bc9">Please note that XSLF is still in early development and is a subject to incompatible changes in a future release.</span><span class="tscolor" lg_zh="t_e16a6b4650b446aebd1e3e6ea2386bc9"><span lg_kh="1">(</span>${t_e16a6b4650b446aebd1e3e6ea2386bc9}<span lg_kh="1">)</span></span>
+      </div>
+     </div>
+     <a name="Index+of+Features"></a>
+     <h3 class="boxed"><span lg_en="t_517ecdcc50214d1d95034d9ff396034a">Index of Features</span><span class="tscolor" lg_zh="t_517ecdcc50214d1d95034d9ff396034a"><span lg_kh="1">(</span>${t_517ecdcc50214d1d95034d9ff396034a}<span lg_kh="1">)</span></span></h3>
+     <ul>
+      <li><span lg_en="t_1b334f960a474582ad2ebf45783d91db"><a href="#NewPresentation">Create a new presentation</a></span><span class="tscolor" lg_zh="t_1b334f960a474582ad2ebf45783d91db"><span lg_kh="1">(</span>${t_1b334f960a474582ad2ebf45783d91db}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_34cb4289ecc742c3b0b835fd4e55b3c0"><a href="#ReadPresentation">Read an existing presentation</a></span><span class="tscolor" lg_zh="t_34cb4289ecc742c3b0b835fd4e55b3c0"><span lg_kh="1">(</span>${t_34cb4289ecc742c3b0b835fd4e55b3c0}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_0f8d22e02c484d71b2a025d18de99db2"><a href="#SlideLayout">Create a slide with a predefined layout</a></span><span class="tscolor" lg_zh="t_0f8d22e02c484d71b2a025d18de99db2"><span lg_kh="1">(</span>${t_0f8d22e02c484d71b2a025d18de99db2}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_8e569bc5bb144727b2a26ae646774fb1"><a href="#DeleteSlide">Delete slide</a></span><span class="tscolor" lg_zh="t_8e569bc5bb144727b2a26ae646774fb1"><span lg_kh="1">(</span>${t_8e569bc5bb144727b2a26ae646774fb1}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_0463656e6c3840c0b228e8af266f9775"><a href="#MoveSlide">Re-order slides</a></span><span class="tscolor" lg_zh="t_0463656e6c3840c0b228e8af266f9775"><span lg_kh="1">(</span>${t_0463656e6c3840c0b228e8af266f9775}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_9cffd73a37274e15942b640e912214e7"><a href="#SlideSize">Change slide size</a></span><span class="tscolor" lg_zh="t_9cffd73a37274e15942b640e912214e7"><span lg_kh="1">(</span>${t_9cffd73a37274e15942b640e912214e7}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_a3383f291ab4429a8e489084e64b64fc"><a href="#GetShapes">Read shapes</a></span><span class="tscolor" lg_zh="t_a3383f291ab4429a8e489084e64b64fc"><span lg_kh="1">(</span>${t_a3383f291ab4429a8e489084e64b64fc}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_266eea8209304a20a85a7ada8435f764"><a href="#AddImage">Add image</a></span><span class="tscolor" lg_zh="t_266eea8209304a20a85a7ada8435f764"><span lg_kh="1">(</span>${t_266eea8209304a20a85a7ada8435f764}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_84ec866151a1451381b75a8d17a11915"><a href="#ReadImages">Read images contained in a presentation</a></span><span class="tscolor" lg_zh="t_84ec866151a1451381b75a8d17a11915"><span lg_kh="1">(</span>${t_84ec866151a1451381b75a8d17a11915}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_2ec1321ca91b444eae5a0673afb58882"><a href="#Text">Format text</a></span><span class="tscolor" lg_zh="t_2ec1321ca91b444eae5a0673afb58882"><span lg_kh="1">(</span>${t_2ec1321ca91b444eae5a0673afb58882}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_84b747f0c96a4d37bff07d98e4a704a2"><a href="#Hyperlinks">Hyperlinks</a></span><span class="tscolor" lg_zh="t_84b747f0c96a4d37bff07d98e4a704a2"><span lg_kh="1">(</span>${t_84b747f0c96a4d37bff07d98e4a704a2}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_75b2f6375a194446b89daa7185aced92"><a href="#PPTX2PNG">Convert .pptx slides into images</a></span><span class="tscolor" lg_zh="t_75b2f6375a194446b89daa7185aced92"><span lg_kh="1">(</span>${t_75b2f6375a194446b89daa7185aced92}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_1997c18610ed415cbeb22b01bb8f6172"><a href="#Merge">Merge multiple presentations together</a></span><span class="tscolor" lg_zh="t_1997c18610ed415cbeb22b01bb8f6172"><span lg_kh="1">(</span>${t_1997c18610ed415cbeb22b01bb8f6172}<span lg_kh="1">)</span></span></li>
+     </ul>
+     <a name="Cookbook"></a>
+     <h3 class="boxed"><span lg_en="t_4e68dc414d4d4fcc99ff6639f9842a3f">Cookbook</span><span class="tscolor" lg_zh="t_4e68dc414d4d4fcc99ff6639f9842a3f"><span lg_kh="1">(</span>${t_4e68dc414d4d4fcc99ff6639f9842a3f}<span lg_kh="1">)</span></span></h3>
+     <a name="NewPresentation" id="NewPresentation"></a><a name="New+Presentation"></a>
+     <h4><span lg_en="t_962413681622477fbfe2c4275495bd83">New Presentation</span><span class="tscolor" lg_zh="t_962413681622477fbfe2c4275495bd83"><span lg_kh="1">(</span>${t_962413681622477fbfe2c4275495bd83}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_1617007c455a4d43a778fca0fe5ffa4e">The following code creates a new .pptx slide show and adds a blank slide to it:</span><span class="tscolor" lg_zh="t_1617007c455a4d43a778fca0fe5ffa4e"><span lg_kh="1">(</span>${t_1617007c455a4d43a778fca0fe5ffa4e}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//create a new empty slide show</span>
+      </div>
+      <div class="codeline" lg_zh="t_84416ff2e83d41869df3bebd135c46a2">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_84416ff2e83d41869df3bebd135c46a2}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//add first slide</span>
+      </div>
+      <div class="codeline" lg_zh="t_1a4ef0ab89814a99a5090733b13e6852">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_1a4ef0ab89814a99a5090733b13e6852}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide blankSlide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="ReadPresentation" id="ReadPresentation"></a><a name="Read+an+existing+presentation+and+append+a+slide+to+it"></a>
+     <h4><span lg_en="t_58d4ffebc0824b288570d7bcac99ebc1">Read an existing presentation and append a slide to it</span><span class="tscolor" lg_zh="t_58d4ffebc0824b288570d7bcac99ebc1"><span lg_kh="1">(</span>${t_58d4ffebc0824b288570d7bcac99ebc1}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//append a new slide to the end</span>
+      </div>
+      <div class="codeline" lg_zh="t_67a1043258b146139ec138cd43554a72">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_67a1043258b146139ec138cd43554a72}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide blankSlide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="SlideLayout" id="SlideLayout"></a><a name="Create+a+new+slide+from+a+predefined+slide+layout"></a>
+     <h4><span lg_en="t_8f810cde93074276b6100d2aa8e79af3">Create a new slide from a predefined slide layout</span><span class="tscolor" lg_zh="t_8f810cde93074276b6100d2aa8e79af3"><span lg_kh="1">(</span>${t_8f810cde93074276b6100d2aa8e79af3}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// first see what slide layouts are available :</span>
+      </div>
+      <div class="codeline" lg_zh="t_8ff1ed056b904867b85113e8554657ad">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_8ff1ed056b904867b85113e8554657ad}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">System.out.println("Available slide layouts:");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(XSLFSlideMaster master : ppt.getSlideMasters()){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(XSLFSlideLayout layout : master.getSlideLayouts()){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(layout.getType());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// blank slide</span>
+      </div>
+      <div class="codeline" lg_zh="t_b239e6e13d7e40999e6576b96415475a">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_b239e6e13d7e40999e6576b96415475a}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide blankSlide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// there can be multiple masters each referencing a number of layouts</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// for demonstration purposes we use the first (default) slide master</span>
+      </div>
+      <div class="codeline" lg_zh="t_5005418fe20f4114a5083e7631848a19">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_5005418fe20f4114a5083e7631848a19}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlideMaster defaultMaster = ppt.getSlideMasters().get(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// title slide</span>
+      </div>
+      <div class="codeline" lg_zh="t_ae697e3ce9524a46a51ad469400aa79a">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_ae697e3ce9524a46a51ad469400aa79a}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlideLayout titleLayout = defaultMaster.getLayout(SlideLayout.TITLE);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// fill the placeholders</span>
+      </div>
+      <div class="codeline" lg_zh="t_481ead802d0445dd89891d5938aa823f">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_481ead802d0445dd89891d5938aa823f}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide slide1 = ppt.createSlide(titleLayout);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextShape title1 = slide1.getPlaceholder(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">title1.setText("First Title");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// title and content</span>
+      </div>
+      <div class="codeline" lg_zh="t_642794af486d4c4bab396da4ce5e2e10">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_642794af486d4c4bab396da4ce5e2e10}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlideLayout titleBodyLayout = defaultMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide slide2 = ppt.createSlide(titleBodyLayout);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextShape title2 = slide2.getPlaceholder(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">title2.setText("Second Title");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextShape body2 = slide2.getPlaceholder(1);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">body2.clearText(); //<span><span lg_en="t_faa97b70cf364322bbf04730d0bb7b3a">unset any existing text</span><span class="tscolor" lg_zh="t_faa97b70cf364322bbf04730d0bb7b3a"><span lg_kh="1">(</span>${t_faa97b70cf364322bbf04730d0bb7b3a}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">body2.addNewTextParagraph().addNewTextRun().setText("First paragraph");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">body2.addNewTextParagraph().addNewTextRun().setText("Second paragraph");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">body2.addNewTextParagraph().addNewTextRun().setText("Third paragraph");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="DeleteSlide" id="DeleteSlide"></a><a name="Delete+slide"></a>
+     <h4><span lg_en="t_c21118eab8254caf85ba57a4108fa7fa">Delete slide</span><span class="tscolor" lg_zh="t_c21118eab8254caf85ba57a4108fa7fa"><span lg_kh="1">(</span>${t_c21118eab8254caf85ba57a4108fa7fa}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ppt.removeSlide(0); //<span><span lg_en="t_22d33e5c68ff494eaec953473af14e18">0-based index of a slide to be removed</span><span class="tscolor" lg_zh="t_22d33e5c68ff494eaec953473af14e18"><span lg_kh="1">(</span>${t_22d33e5c68ff494eaec953473af14e18}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="MoveSlide" id="MoveSlide"></a><a name="Re-order+slides"></a>
+     <h4><span lg_en="t_9e5db5a870f8481ba8153a3198dd3f51">Re-order slides</span><span class="tscolor" lg_zh="t_9e5db5a870f8481ba8153a3198dd3f51"><span lg_kh="1">(</span>${t_9e5db5a870f8481ba8153a3198dd3f51}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">List&lt;XSLFSlide&gt; slides = ppt.getSlides();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide thirdSlide = slides.get(2);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ppt.setSlideOrder(thirdSlide, 0); //<span><span lg_en="t_e2e7e0f582734e33ac942b97d7733bc7">move the third slide to the beginning</span><span class="tscolor" lg_zh="t_e2e7e0f582734e33ac942b97d7733bc7"><span lg_kh="1">(</span>${t_e2e7e0f582734e33ac942b97d7733bc7}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="SlideSize" id="SlideSize"></a><a name="How+to+retrieve+or+change+slide+size"></a>
+     <h4><span lg_en="t_f64bc0cdc264407ca76e1e70a8953278">How to retrieve or change slide size</span><span class="tscolor" lg_zh="t_f64bc0cdc264407ca76e1e70a8953278"><span lg_kh="1">(</span>${t_f64bc0cdc264407ca76e1e70a8953278}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//retrieve page size. Coordinates are expressed in points (72 dpi)</span>
+      </div>
+      <div class="codeline" lg_zh="t_1c487f4c737a422cb68fca5275749932">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_1c487f4c737a422cb68fca5275749932}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">java.awt.Dimension pgsize = ppt.getPageSize();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int pgx = pgsize.width; //<span><span lg_en="t_e88a552f614d4a5a87dc8e1493995cc4">slide width in points</span><span class="tscolor" lg_zh="t_e88a552f614d4a5a87dc8e1493995cc4"><span lg_kh="1">(</span>${t_e88a552f614d4a5a87dc8e1493995cc4}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int pgy = pgsize.height; //<span><span lg_en="t_db46b709e08c433e9307d959b7ba2040">slide height in points</span><span class="tscolor" lg_zh="t_db46b709e08c433e9307d959b7ba2040"><span lg_kh="1">(</span>${t_db46b709e08c433e9307d959b7ba2040}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set new page size</span>
+      </div>
+      <div class="codeline" lg_zh="t_49e930d5b99d4913a734b1196489bbb7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_49e930d5b99d4913a734b1196489bbb7}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ppt.setPageSize(new java.awt.Dimension(1024, 768));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="GetShapes" id="GetShapes"></a><a name="How+to+read+shapes+contained+in+a+particular+slide"></a>
+     <h4><span lg_en="t_6e00efcd3cf6438db1957cb1a9becebd">How to read shapes contained in a particular slide</span><span class="tscolor" lg_zh="t_6e00efcd3cf6438db1957cb1a9becebd"><span lg_kh="1">(</span>${t_6e00efcd3cf6438db1957cb1a9becebd}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_a80ed8def79b4e89a02a501eebab6428">The following code demonstrates how to iterate over shapes for each slide.</span><span class="tscolor" lg_zh="t_a80ed8def79b4e89a02a501eebab6428"><span lg_kh="1">(</span>${t_a80ed8def79b4e89a02a501eebab6428}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// get slides</span>
+      </div>
+      <div class="codeline" lg_zh="t_ad7aec3ba25b4033a5c01b19bb2ae1e7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_ad7aec3ba25b4033a5c01b19bb2ae1e7}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (XSLFSlide slide : ppt.getSlides()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for (XSLFShape sh : slide.getShapes()) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // name of the shape</span>
+      </div>
+      <div class="codeline" lg_zh="t_eff7982c6806496ab32a5ea72e0319a6">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_eff7982c6806496ab32a5ea72e0319a6}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String name = sh.getShapeName();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // shapes's anchor which defines the position of this shape in the slide</span>
+      </div>
+      <div class="codeline" lg_zh="t_3eea50aaf85a4ad298372e56708262a6">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_3eea50aaf85a4ad298372e56708262a6}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (sh instanceof PlaceableShape) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> java.awt.geom.Rectangle2D anchor = ((PlaceableShape)sh).getAnchor();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (sh instanceof XSLFConnectorShape) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XSLFConnectorShape line = (XSLFConnectorShape) sh;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // work with Line</span>
+      </div>
+      <div class="codeline" lg_zh="t_47e1b33617cb4e76b8c0404ae665c731">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_47e1b33617cb4e76b8c0404ae665c731}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else if (sh instanceof XSLFTextShape) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XSLFTextShape shape = (XSLFTextShape) sh;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // work with a shape that can hold text</span>
+      </div>
+      <div class="codeline" lg_zh="t_433000195ee341d2a5ef0d0d5b290547">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_433000195ee341d2a5ef0d0d5b290547}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else if (sh instanceof XSLFPictureShape) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XSLFPictureShape shape = (XSLFPictureShape) sh;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // work with Picture</span>
+      </div>
+      <div class="codeline" lg_zh="t_49ae98c16d1447faa56f5a812e4160ca">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_49ae98c16d1447faa56f5a812e4160ca}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="AddImage" id="AddImage"></a><a name="Add+Image+to+Slide"></a>
+     <h4><span lg_en="t_c394769655194ff0992df3b147fd82aa">Add Image to Slide</span><span class="tscolor" lg_zh="t_c394769655194ff0992df3b147fd82aa"><span lg_kh="1">(</span>${t_c394769655194ff0992df3b147fd82aa}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide slide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">byte[] pictureData = IOUtils.toByteArray(new FileInputStream("image.png"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFPictureData pd = ppt.addPicture(pictureData, PictureData.PictureType.PNG);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFPictureShape pic = slide.createPicture(pd);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="ReadImages" id="ReadImages"></a><a name="Read+Images+contained+within+a+presentation"></a>
+     <h4><span lg_en="t_401e300255c24fe3bd387ed05a9a6b60">Read Images contained within a presentation</span><span class="tscolor" lg_zh="t_401e300255c24fe3bd387ed05a9a6b60"><span lg_kh="1">(</span>${t_401e300255c24fe3bd387ed05a9a6b60}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow(new FileInputStream("slideshow.pptx"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(XSLFPictureData data : ppt.getAllPictures()){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> byte[] bytes = data.getData();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String fileName = data.getFileName();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="Text" id="Text"></a><a name="Basic+text+formatting"></a>
+     <h4><span lg_en="t_c78c874c99b54b7d82b95f53e9d47155">Basic text formatting</span><span class="tscolor" lg_zh="t_c78c874c99b54b7d82b95f53e9d47155"><span lg_kh="1">(</span>${t_c78c874c99b54b7d82b95f53e9d47155}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide slide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextBox shape = slide.createTextBox();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextParagraph p = shape.addNewTextParagraph();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextRun r1 = p.addNewTextRun();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r1.setText("The");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r1.setFontColor(Color.blue);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r1.setFontSize(24.);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextRun r2 = p.addNewTextRun();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r2.setText(" quick");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r2.setFontColor(Color.red);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r2.setBold(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextRun r3 = p.addNewTextRun();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r3.setText(" brown");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r3.setFontSize(12.);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r3.setItalic(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r3.setStrikethrough(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextRun r4 = p.addNewTextRun();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r4.setText(" fox");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r4.setUnderline(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="Hyperlinks" id="Hyperlinks"></a><a name="How+to+create+a+hyperlink"></a>
+     <h4><span lg_en="t_96b0f5fa98ff4797b5ff9851cadc35c3">How to create a hyperlink</span><span class="tscolor" lg_zh="t_96b0f5fa98ff4797b5ff9851cadc35c3"><span lg_kh="1">(</span>${t_96b0f5fa98ff4797b5ff9851cadc35c3}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFSlide slide = ppt.createSlide();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// assign a hyperlink to a text run</span>
+      </div>
+      <div class="codeline" lg_zh="t_f20bf4557f6648cc88b2f5afd9987e68">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_f20bf4557f6648cc88b2f5afd9987e68}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextBox shape = slide.createTextBox();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFTextRun r = shape.addNewTextParagraph().addNewTextRun();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r.setText("Apache POI");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XSLFHyperlink link = r.createHyperlink();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">link.setAddress("https://<span><span lg_en="t_c924be73a8fd4a12b4cfa8589c3464a7">poi.apache.org");</span><span class="tscolor" lg_zh="t_c924be73a8fd4a12b4cfa8589c3464a7"><span lg_kh="1">(</span>${t_c924be73a8fd4a12b4cfa8589c3464a7}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="PPTX2PNG" id="PPTX2PNG"></a><a name="PPTX2PNG+is+an+application+that+converts+each+slide+of+a+.pptx+slideshow+into+a+PNG+image"></a>
+     <h4><span lg_en="t_738c1498383a46af823777526da42606">PPTX2PNG is an application that converts each slide of a .pptx slideshow into a PNG image</span><span class="tscolor" lg_zh="t_738c1498383a46af823777526da42606"><span lg_kh="1">(</span>${t_738c1498383a46af823777526da42606}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Usage: PPTX2PNG [options] &lt;pptx file&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Options:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> -scale &lt;float&gt; scale factor (default is 1.0)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> -slide &lt;integer&gt; 1-based index of a slide to render. Default is to render all slides.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_3db3bf84dbf74ef5a46a54d8718d3068">How it works:</span><span class="tscolor" lg_zh="t_3db3bf84dbf74ef5a46a54d8718d3068"><span lg_kh="1">(</span>${t_3db3bf84dbf74ef5a46a54d8718d3068}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_01320c74fe184285aad8ae5ea9a8379c">The XSLFSlide object implements a draw(Graphics2D graphics) method that recursively paints all shapes in the slide into the supplied graphics canvas:</span><span class="tscolor" lg_zh="t_01320c74fe184285aad8ae5ea9a8379c"><span lg_kh="1">(</span>${t_01320c74fe184285aad8ae5ea9a8379c}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">slide.draw(graphics);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_d59faf42f98442b1a363de7b3733d215">where graphics is a class implementing java.awt.Graphics2D. In PPTX2PNG the graphic canvas is derived from java.awt.image.BufferedImage, i.e. the destination is an image in memory, but in general case you can pass any compliant implementation of java.awt.Graphics2D. The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xslf/PPTX2SVG.txt">PPTX2SVG</a> example demonstrates how to use Apache Batik to convert .pptx slides into SVG format.</span><span class="tscolor" lg_zh="t_d59faf42f98442b1a363de7b3733d215"><span lg_kh="1">(</span>${t_d59faf42f98442b1a363de7b3733d215}<span lg_kh="1">)</span></span></p>
+     <a name="Merge" id="Merge"></a><a name="Merge+multiple+presentations+together"></a>
+     <h4><span lg_en="t_9abb870869fe4a2ca2cbc5d16439ba4c">Merge multiple presentations together</span><span class="tscolor" lg_zh="t_9abb870869fe4a2ca2cbc5d16439ba4c"><span lg_kh="1">(</span>${t_9abb870869fe4a2ca2cbc5d16439ba4c}<span lg_kh="1">)</span></span></h4>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">XMLSlideShow ppt = new XMLSlideShow();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">String[] inputs = {"presentations1.pptx", "presentation2.pptx"};</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(String arg : inputs){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileInputStream is = new FileInputStream(arg);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XMLSlideShow src = new XMLSlideShow(is);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> is.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(XSLFSlide srcSlide : src.getSlides()){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ppt.createSlide().importContent(srcSlide);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileOutputStream out = new FileOutputStream("merged.pptx");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ppt.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <p align="right"><span lg_en="t_0653efe98de944329fb99d9b53c95a0d"><font size="-2">by&nbsp;Yegor Kozlov</font></span><span class="tscolor" lg_zh="t_0653efe98de944329fb99d9b53c95a0d"><span lg_kh="1">(</span>${t_0653efe98de944329fb99d9b53c95a0d}<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/slideshow/xslf-cookbook.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

@@ -1,0 +1,1 @@
+[{"id":"t_810fae8234544d5d8c802d3d3d6df6eb","oldText":"Global exception throws when a critical error occurs. (this exception is not set as Runtime in order to force user to manage the exception in a try/catch).","tlText":"发生严重错误时引发全局异常。(this异常未设置为“异常”，以强制用户在try/catch中管理异常）。","version":0}]

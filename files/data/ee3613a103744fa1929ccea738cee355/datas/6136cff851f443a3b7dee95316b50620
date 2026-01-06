@@ -1,0 +1,1 @@
+[{"id":"t_5f58ec6793cd4429a9498849c1370033","oldText":"The EMR_POLYPOLYLINE16 record specifies multiple series of connected line segments.","tlText":"EMR_POLY POLY 16记录指定多个连接的直线段系列。","version":0},{"id":"t_ab42c5a37c16444187b47d3e799d3da5","oldText":"getEmfRecordType in interface HemfRecord","tlText":"HemfRecord界面中的getEmfRecordType","version":0}]

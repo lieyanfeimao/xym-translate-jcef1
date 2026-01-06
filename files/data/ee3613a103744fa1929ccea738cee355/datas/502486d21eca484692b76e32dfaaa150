@@ -1,0 +1,1 @@
+[{"id":"t_14c67ec872a44c5c881d464fcdb0633f","oldText":"This class holds all of the paragraph formatting properties from Old (Word 6 / Word 95) documents. Unlike with Word 97+, it all gets held in the same stream. In common with the rest of the old support, it is read only","tlText":"此类包含旧（Word 6 / Word 95）文档中的所有段落格式属性。与Word 97+不同的是，这一切都保存在同一个流中。与旧支持的其余部分一样，它是只读的","version":0}]

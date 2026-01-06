@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-XWPF - A Quick Guide</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>POI-XWPF - A Quick Guide
+     <div name="tsUpdate" data-id="t_d9004f7a56bf40baab8c489827828946" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_14d11dd828134ec2b1f1c00821cb9d04" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <p>XWPF has a fairly stable core API, providing read and write access to the main parts of a Word .docx file, but it isn't complete. For some things, it may be necessary to dive down into the low level XMLBeans objects to manipulate the ooxml structure. If you find yourself having to do this, please consider sending in a patch to enhance that, see the <a href="../../devel/guidelines.html">"Contribution to POI" page</a>.
+     <div name="tsUpdate" data-id="t_7f1a43a5c5424100bb5cb50b6093522e" data-tpl="0" data-txt-color="green"></div></p>
+    <a name="Basic+Text+Extraction"></a>
+    <h2 class="boxed">Basic Text Extraction
+     <div name="tsUpdate" data-id="t_f98d025b31154576a8664b6947e069fb" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>For basic text extraction, make use of <span class="codefrag">org.apache.poi.xwpf.extractor.XWPFWordExtractor</span>. It accepts an input stream or a <span class="codefrag">XWPFDocument</span>. The <span class="codefrag">getText()</span> method can be used to get the text from all the paragraphs, along with tables, headers etc.
+      <div name="tsUpdate" data-id="t_68f4057736bb46b5850ccdf7a5777b44" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Specific+Text+Extraction"></a>
+    <h2 class="boxed">Specific Text Extraction
+     <div name="tsUpdate" data-id="t_36716d1ec42c4a8585e268052d3284fd" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>To get specific bits of text, first create a <span class="codefrag">org.apache.poi.xwpf.XWPFDocument</span>. Select the <span class="codefrag">IBodyElement</span> of interest (Table, Paragraph etc), and from there get a <span class="codefrag">XWPFRun</span>. Finally fetch the text and properties from that.
+      <div name="tsUpdate" data-id="t_611f60a54c88477eb4db375ea44621df" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Headers+and+Footers"></a>
+    <h2 class="boxed">Headers and Footers
+     <div name="tsUpdate" data-id="t_665d4d6b968d498caf1082c830b5a634" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>To get at the headers and footers of a word document, first create a <span class="codefrag">org.apache.poi.xwpf.XWPFDocument</span>. Next, you need to create a <span class="codefrag">org.apache.poi.xwpf.usermodel.XWPFHeaderFooter</span>, passing it your XWPFDocument. Finally, the XWPFHeaderFooter gives you access to the headers and footers, including first / even / odd page ones if defined in your document.
+      <div name="tsUpdate" data-id="t_0f876e4dfe9b41f5894f55dfe24b3bf0" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Changing+Text"></a>
+    <h2 class="boxed">Changing Text
+     <div name="tsUpdate" data-id="t_c73b649bfa7a47dc9225338517038d09" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>From a <span class="codefrag">XWPFParagraph</span>, it is possible to fetch the existing <span class="codefrag">XWPFRun</span> elements that make up the text. To add new text, the <span class="codefrag">createRun()</span> method will add a new <span class="codefrag">XWPFRun</span> to the end of the list. <span class="codefrag">insertNewRun(int)</span> can instead be used to add a new <span class="codefrag">XWPFRun</span> at a specific point in the paragraph.
+      <div name="tsUpdate" data-id="t_2603a561a95f408887606262b9030371" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Once you have a <span class="codefrag">XWPFRun</span>, you can use the <span class="codefrag">setText(String)</span> method to make changes to the text. To add whitespace elements such as tabs and line breaks, it is necessary to use methods like <span class="codefrag">addTab()</span> and <span class="codefrag">addCarriageReturn()</span>.
+      <div name="tsUpdate" data-id="t_23c5aecb43444eb9bb79889cce5734e3" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Further+Examples"></a>
+    <h2 class="boxed">Further Examples
+     <div name="tsUpdate" data-id="t_41caa8ec6b6d4416ab553da758567145" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>For now, there are a limited number of XWPF examples in the <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xwpf">Examples Package</a>. Beyond those, the best source of additional examples is in the unit tests. <a href="http://svn.apache.org/viewvc/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf/"> Browse the XWPF unit tests.</a>
+      <div name="tsUpdate" data-id="t_927048263e624d31994ba86e5ded824b" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Nick Burch</font>
+     <div name="tsUpdate" data-id="t_843805ca581d47aca99cadca46ac1c23" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/document/quick-guide-xwpf.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='42a0987086ab45ac99a7db846a02cd80';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

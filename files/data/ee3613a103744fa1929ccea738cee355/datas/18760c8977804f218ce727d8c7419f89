@@ -1,0 +1,1 @@
+[{"id":"t_6a94475aa58e45c38ef123fb9f4870e7","oldText":"The EmfPlusFillPath record specifies filling the interior of a graphics path.","tlText":"EmfPlusFillPath记录指定填充图形路径的内部。","version":0},{"id":"t_06fe529068d44b6e970ae0d4b7779150","oldText":"getEmfPlusRecordType in interface HemfPlusRecord","tlText":"HemfPlusRecord界面中的getEmfPlusRecordType","version":0}]

@@ -1,0 +1,1 @@
+[{"id":"t_08074a6772584a6c88ea57da9c340775","oldText":"Common interface for things that can occur where a run (text with common stylings) can, eg XWPFRun or XWPFSDT. TODO More methods to follow shortly! TODO Make this based on CharacterRun","tlText":"通用接口，用于运行（具有通用样式的文本）可以发生的事情，例如XWPFRun或XWPFSDT。TODO更多的方法来遵循不久！TODO基于QuarterRun进行此操作","version":0}]

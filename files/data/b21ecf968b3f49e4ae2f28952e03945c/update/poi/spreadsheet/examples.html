@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>HSSF and XSSF Examples</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>HSSF and XSSF Examples
+     <div name="tsUpdate" data-id="t_457ba5b3b41a4b27b381df895f5b0d7c" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="HSSF+and+XSSF+common+examples"></a>
+    <h2 class="boxed">HSSF and XSSF common examples
+     <div name="tsUpdate" data-id="t_f6975ec4aa364500ac0357b6b45a04ee" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Apache POI comes with a number of examples that demonstrate how you can use the POI API to create documents from "real life". The examples below based on common XSSF-HSSF interfaces so that you can generate either *.xls or *.xlsx output just by setting a command-line argument:
+      <div name="tsUpdate" data-id="t_c0e33b0ffc6943568f3314bdbe5508f9" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BusinessPlan -xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> or</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BusinessPlan -xlsx</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>All sample source is available in <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/">SVN</a>
+      <div name="tsUpdate" data-id="t_bf7d674c709e43e1ab2f71fdc8b4534f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In addition, there are a handful of <a href="#hssf-only">HSSF only</a> and <a href="#xssf-only">XSSF only</a> examples as well.
+      <div name="tsUpdate" data-id="t_a10c61f59e2748338b7db7840e20678c" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Available+Examples"></a>
+     <h3 class="boxed">Available Examples
+      <div name="tsUpdate" data-id="t_db738f6086c2459da0dedaf5c8591e5b" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The following examples are available:
+      <div name="tsUpdate" data-id="t_0a61f7e8172144f1a4102ffc7e7e9f9a" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><a href="#ss-common">Common HSSF and XSSF</a>
+       <ul>
+        <li><a href="#business-plan">Business Plan</a>
+         <div name="tsUpdate" data-id="t_f87dd9ee082e4ddf988aff42b6cea7e6" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#calendar">Calendar</a>
+         <div name="tsUpdate" data-id="t_0a270eaa20a744d4a5b5a7654a222fa4" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#loan-calculator">Loan Calculator</a>
+         <div name="tsUpdate" data-id="t_f8624896c60948508021aba1afd448dc" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#timesheet">Timesheet</a>
+         <div name="tsUpdate" data-id="t_6154383c31f244aab6b395878a77abeb" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#conditional-formats">Conditional Formats</a>
+         <div name="tsUpdate" data-id="t_90d146aa13a241a9bd7538f4b09198e9" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#common-formulas">Formula Examples</a>
+         <div name="tsUpdate" data-id="t_9678e764d05c4505a1f5ddc4b66a4860" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#add-dimensioned-image">Add Dimensioned Image</a>
+         <div name="tsUpdate" data-id="t_bb6ef3e42cc3445eaf4473083c0733db" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#aligned-cells">Aligned Cells</a>
+         <div name="tsUpdate" data-id="t_6bdb32db0d604b059ae16faa2c68b6b2" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#cell-style-details">Cell Style Details</a>
+         <div name="tsUpdate" data-id="t_5edb58c3cdd5410693e45c0d31fe1cdf" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#linked-dropdown">Linked Dropdown Lists</a>
+         <div name="tsUpdate" data-id="t_49297dde423e41f1982ccb2deafb397a" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#performance-test">Common SS Performance Test</a>
+         <div name="tsUpdate" data-id="t_da24fbe5281741e7879303ea8bce74b0" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#to-html">To HTML</a>
+         <div name="tsUpdate" data-id="t_fa952058520d4d37931249fa449dfd00" data-tpl="0" data-txt-color="green"></div></li>
+        <li><a href="#to-csv">To CSV</a>
+         <div name="tsUpdate" data-id="t_13cf8cabbf1f47e398277ebe6c7f3a1e" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+       <div name="tsUpdate" data-id="t_bc77c9e26cd940a09d6f7d83c846d33c" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#hssf-only">HSSF-Only</a>
+       <div name="tsUpdate" data-id="t_ed45063327314c9fac1261c675b2e3f5" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#xssf-only">XSSF-Only</a>
+       <div name="tsUpdate" data-id="t_be6f679fc60c4f6c9c34a2a1a9512b7e" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="ss-common" id="ss-common"></a><a name="business-plan" id="business-plan"></a><a name="Business+Plan"></a>
+     <h3 class="boxed">Business Plan
+      <div name="tsUpdate" data-id="t_7325cf904eab4b1d8705156936a9ea38" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/BusinessPlan.java">BusinessPlan</a> application creates a sample business plan with three phases, weekly iterations and time highlighting. Demonstrates advanced cell formatting (number and date formats, alignments, fills, borders) and various settings for organizing data in a sheet (freezed panes, grouped rows).
+      <div name="tsUpdate" data-id="t_86686f9707494c8ea6cbed65a094f12f" data-tpl="0" data-txt-color="green"></div></p>
+     <p><img alt="business plan demo" src="images/businessplan.jpg"></p>
+     <a name="calendar" id="calendar"></a><a name="Calendar"></a>
+     <h3 class="boxed">Calendar
+      <div name="tsUpdate" data-id="t_84155b4cbaa441459321be390584a65c" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/CalendarDemo.java">Calendar</a> demo creates a multi sheet calendar. Each month is on a separate sheet.
+      <div name="tsUpdate" data-id="t_865a7f8d52be41d7ae15fbfff4c9ec1f" data-tpl="0" data-txt-color="green"></div></p>
+     <p><img alt="calendar demo" src="images/calendar.jpg"></p>
+     <a name="loan-calculator" id="loan-calculator"></a><a name="Loan+Calculator"></a>
+     <h3 class="boxed">Loan Calculator
+      <div name="tsUpdate" data-id="t_6b38b14407b64f73ae6a21355e376a01" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/LoanCalculator.java">LoanCalculator</a> demo creates a simple loan calculator. Demonstrates advance usage of cell formulas and named ranges.
+      <div name="tsUpdate" data-id="t_8cbef729f5204862b29a478546285d39" data-tpl="0" data-txt-color="green"></div></p>
+     <p><img alt="loan calculator demo" src="images/loancalc.jpg"></p>
+     <a name="timesheet" id="timesheet"></a><a name="Timesheet"></a>
+     <h3 class="boxed">Timesheet
+      <div name="tsUpdate" data-id="t_554c94b9d12d473bb5db4ffea5c13d34" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/TimesheetDemo.java">Timesheet</a> demo creates a weekly timesheet with automatic calculation of total hours. Demonstrates advance usage of cell formulas.
+      <div name="tsUpdate" data-id="t_50056cb616d348f0a8b54c72efbb87dd" data-tpl="0" data-txt-color="green"></div></p>
+     <p><img alt="timesheet demo" src="images/timesheet.jpg"></p>
+     <a name="conditional-formats" id="conditional-formats"></a><a name="Conditional+Formats"></a>
+     <h3 class="boxed">Conditional Formats
+      <div name="tsUpdate" data-id="t_367df5eb87d1462b9753a017738e7d27" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/ConditionalFormats.java">ConditionalFormats</a> demo is a collection of short examples showing what you can do with Excel conditional formatting in POI:
+      <div name="tsUpdate" data-id="t_8d5f2c11aa3f4953aa5338c65713ad50" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Highlight cells based on their values
+       <div name="tsUpdate" data-id="t_fbb10c6a6de7456883148c3ebf1be1a2" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Highlight a range of cells based on a formula
+       <div name="tsUpdate" data-id="t_274e5fac1e27478e970e91347f04cdce" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Hide errors
+       <div name="tsUpdate" data-id="t_74aef618ba1f42f9bdd7f11f3e2b5786" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Hide the duplicate values
+       <div name="tsUpdate" data-id="t_1bf921eaa87b42399291e33bb45f46c9" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Highlight duplicate entries in a column
+       <div name="tsUpdate" data-id="t_de8e94187d914f1a9b3bf6e9aa7691ab" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Highlight items that are in a list on the worksheet
+       <div name="tsUpdate" data-id="t_3bf9cf38755b4d428c13767948d96375" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Highlight payments that are due in the next thirty days
+       <div name="tsUpdate" data-id="t_6eee8b23bf5446cf81b386f9cc4dc691" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Shade alternating rows on the worksheet
+       <div name="tsUpdate" data-id="t_e466a49aad8d4d25b9c5662e5c71022d" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Shade bands of rows on the worksheet
+       <div name="tsUpdate" data-id="t_e777af3b447b42649f97a15538b06f0b" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="common-formulas" id="common-formulas"></a><a name="Formula+Examples"></a>
+     <h3 class="boxed">Formula Examples
+      <div name="tsUpdate" data-id="t_e64688a0bd2b447b985388a02da93005" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/formula/CalculateMortgage.java">CalculateMortgage</a> example demonstrates a simple user-defined function to calculate principal and interest.
+      <div name="tsUpdate" data-id="t_803639e7604041a48c2b5e19da503849" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/formula/CheckFunctionsSupported.java">CheckFunctionsSupported</a> example shows how to test what functions and formulas aren't supported from a given file.
+      <div name="tsUpdate" data-id="t_faa90935bdb8409dac1e8ad017c924b1" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/formula/SettingExternalFunction.java">SettingExternalFunction</a> example demonstrates how to use externally provided (third-party) formula add-ins.
+      <div name="tsUpdate" data-id="t_099e87002a214ba3a2eaa33ff9c98c6a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/formula/UserDefinedFunctionExample.java">UserDefinedFunctionExample</a> example demonstrates how to invoke a User Defined Function for a given Workbook instance using POI's UDFFinder implementation.
+      <div name="tsUpdate" data-id="t_e74dc8df77a544f995dac2ebf0ad4f24" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="add-dimensioned-image" id="add-dimensioned-image"></a><a name="Add+Dimensioned+Image"></a>
+     <h3 class="boxed">Add Dimensioned Image
+      <div name="tsUpdate" data-id="t_7ed6b975919d4df382b106ddf6bc7d2f" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/AddDimensionedImage.java">AddDimensionedImage</a> example demonstrates how to add an image to a worksheet and set that images size to a specific number of millimetres irrespective of the width of the columns or height of the rows.
+      <div name="tsUpdate" data-id="t_075bccdd8b9340b4a44ea8a2f23fc478" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="aligned-cells" id="aligned-cells"></a><a name="Aligned+Cells"></a>
+     <h3 class="boxed">Aligned Cells
+      <div name="tsUpdate" data-id="t_6cac0cbb87ce4b8c80e9874b76da90f0" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/AligningCells.java">AligningCells</a> example demonstrates how various alignment options work.
+      <div name="tsUpdate" data-id="t_8c9258b0ac5a43d4a7b2eed4f7c96787" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="cell-style-details" id="cell-style-details"></a><a name="Cell+Style+Details"></a>
+     <h3 class="boxed">Cell Style Details
+      <div name="tsUpdate" data-id="t_33767e862ded4184b5fdee3c3c265887" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/CellStyleDetails.java">CellStyleDetails</a> example demonstrates how to read excel styles for cells.
+      <div name="tsUpdate" data-id="t_717f12c90ed447c38a0cb5aa16a327c3" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="linked-dropdown" id="linked-dropdown"></a><a name="Linked+Dropdown+Lists"></a>
+     <h3 class="boxed">Linked Dropdown Lists
+      <div name="tsUpdate" data-id="t_5127d78b1ab04e79a6f46a1844acd636" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/LinkedDropDownLists.java">LinkedDropDownLists</a> example demonstrates one technique that may be used to create linked or dependent drop down lists.
+      <div name="tsUpdate" data-id="t_209a661b29b24ac0ae6f13488eb64346" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="performance-test" id="performance-test"></a><a name="Common+SS+Performance+Test"></a>
+     <h3 class="boxed">Common SS Performance Test
+      <div name="tsUpdate" data-id="t_5311f0a57e3443a79a073fe34d4f0327" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/SSPerformanceTest.java">SSPerformanceTest</a> example provides a way to create simple example files of varying sizes, and to calculate how long they take. Useful for benchmarking your system, and to also test if slow performance is due to Apache POI itself or to your own code.
+      <div name="tsUpdate" data-id="t_7108d5aa95b74256925a3db50b1f0e2b" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="to-html" id="to-html"></a><a name="ToHtml"></a>
+     <h3 class="boxed">ToHtml
+      <div name="tsUpdate" data-id="t_eeda3ff5b2294829b8ede314bcc6cf01" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/html/ToHtml.java">ToHtml</a> example shows how to display a spreadsheet in HTML using the classes for spreadsheet display.
+      <div name="tsUpdate" data-id="t_54757f6a1e21409a9bf84fe84dd19081" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="to-csv" id="to-csv"></a><a name="ToCSV"></a>
+     <h3 class="boxed">ToCSV
+      <div name="tsUpdate" data-id="t_f95f6b1390a54a54a23cc62cbb44f1d9" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/ToCSV.java">ToCSV</a> example demonstrates <em>one</em> way to convert an Excel spreadsheet into a CSV file.
+      <div name="tsUpdate" data-id="t_7e353c4777634b019b605e651a0fc872" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="hssf-only" id="hssf-only"></a> <a name="HSSF-only+Examples"></a>
+    <h2 class="boxed">HSSF-only Examples
+     <div name="tsUpdate" data-id="t_f24baae50b6b4a67923f0172c55e0589" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>All the HSSF-only examples can be found in <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/">SVN</a>
+      <div name="tsUpdate" data-id="t_23bd27d6c3124e7c836a37fd54f12e88" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/CellComments.java">CellComments</a>
+       <div name="tsUpdate" data-id="t_757d6d44931c4479831986a860a19ed5" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/HyperlinkFormula.java">HyperlinkFormula</a>
+       <div name="tsUpdate" data-id="t_ded34374430544e9b9e6dc2ec2706ddb" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/EventExample.java">EventExample</a>
+       <div name="tsUpdate" data-id="t_de658e95b5f04a74ae6a407fafc1a7f2" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/OfficeDrawingWithGraphics.java">OfficeDrawingWithGraphics</a>
+       <div name="tsUpdate" data-id="t_3c760b8a9e174ed29eabf8f64a7642a7" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/CreateDateCells.java">CreateDateCells</a>
+       <div name="tsUpdate" data-id="t_f452753bb50141148d58b78cb7dc0a35" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/NewWorkbook.java">NewWorkbook</a>
+       <div name="tsUpdate" data-id="t_9189712150924a34a61d1b83c2ee3d49" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/EmeddedObjects.java">EmeddedObjects</a>
+       <div name="tsUpdate" data-id="t_a421ee3d51b647c997dfff5aaab643ac" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/Hyperlinks.java">Hyperlinks</a>
+       <div name="tsUpdate" data-id="t_f1ad3d27708e4adea6e3021e7e8d23d7" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/OfficeDrawing.java">OfficeDrawing</a>
+       <div name="tsUpdate" data-id="t_b6fa5c5520884220ba59ed733ca4e2eb" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/HSSFReadWrite.java">HSSFReadWrite</a>
+       <div name="tsUpdate" data-id="t_37c4d05cfd5a4af2818812d0460f2b5e" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/NewSheet.java">NewSheet</a>
+       <div name="tsUpdate" data-id="t_416728ad42be4b26a231a823063bec07" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/SplitAndFreezePanes.java">SplitAndFreezePanes</a>
+       <div name="tsUpdate" data-id="t_d44b858d8d8c492982c50d467016ca00" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/InCellLists.java">InCellLists</a>
+       <div name="tsUpdate" data-id="t_bfceb01034694ec5877837427dde3dd9" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/RepeatingRowsAndColumns.java">RepeatingRowsAndColumns</a>
+       <div name="tsUpdate" data-id="t_61db8e8ee1bf4c118eca5b2b38ea20d9" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/MergedCells.java">MergedCells</a>
+       <div name="tsUpdate" data-id="t_7f2dfda6df204727b993894aa61d88f3" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/CellTypes.java">CellTypes</a>
+       <div name="tsUpdate" data-id="t_e1004c73ce404b0e981cde37cfb92837" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/ZoomSheet.java">ZoomSheet</a>
+       <div name="tsUpdate" data-id="t_473621c3de0146f58a3134f7eabd14b9" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/ReadWriteWorkbook.java">ReadWriteWorkbook</a>
+       <div name="tsUpdate" data-id="t_77cb7d4c0f564b17ba6c2755b2b0a5e4" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/CreateCells.java">CreateCells</a>
+       <div name="tsUpdate" data-id="t_9e4dc3347d424d69976bfdeab629562f" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/Alignment.java">Alignment</a>
+       <div name="tsUpdate" data-id="t_37f7201a988c41f6a55da04f8400d65d" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/FrillsAndFills.java">FrillsAndFills</a>
+       <div name="tsUpdate" data-id="t_c7cebc7b625d4e668309a46f8d65905b" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/AddDimensionedImage.java">AddDimensionedImage</a>
+       <div name="tsUpdate" data-id="t_746789ca2fd34122ac9ef407703f43fd" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/Borders.java">Borders</a>
+       <div name="tsUpdate" data-id="t_0b69676544e0407a92e35c082a8c8656" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/NewLinesInCells.java">NewLinesInCells</a>
+       <div name="tsUpdate" data-id="t_271f6710046f4ead8a70d50963922dcc" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/WorkingWithFonts.java">WorkingWithFonts</a>
+       <div name="tsUpdate" data-id="t_66a9e851e70f496289d5d9176a36561f" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/BigExample.java">BigExample</a>
+       <div name="tsUpdate" data-id="t_10d6aa9b904b459fb6c2c55b2c12fe40" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/Outlines.java">Outlines</a>
+       <div name="tsUpdate" data-id="t_728e50f5fb3742fb81a1713abe1d5400" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/eventusermodel/XLS2CSVmra.java">XLS2CSVmra</a>
+       <div name="tsUpdate" data-id="t_3e4303e562b44ab2ac97711970d0289f" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <a name="xssf-only" id="xssf-only"></a> <a name="XSSF-only+Examples"></a>
+    <h2 class="boxed">XSSF-only Examples
+     <div name="tsUpdate" data-id="t_302bf27afd7040a49c8467607fad7ae6" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>All the XSSF-only examples can be found in <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/examples/">SVN</a>
+      <div name="tsUpdate" data-id="t_14e101dd976b4388b4108fd0ce0b7d79" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/ScatterChart.java">ScatterChart</a>
+       <div name="tsUpdate" data-id="t_5e39e39f75d94f0da73efd9189cae770" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CellComments.java">CellComments</a>
+       <div name="tsUpdate" data-id="t_65474481f50a4e4da2f6a5b6b43c80f4" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/HeadersAndFooters.java">HeadersAndFooters</a>
+       <div name="tsUpdate" data-id="t_c516fc884fed4bf788cb4d75e02f0bcb" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CreateUserDefinedDataFormats.java">CreateUserDefinedDataFormats</a>
+       <div name="tsUpdate" data-id="t_d259a97a90144c5985c6d01ba5668894" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CreatePivotTable.java">CreatePivotTable</a>
+       <div name="tsUpdate" data-id="t_a981b685153c4fefb11f7015152a5747" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/FillsAndColors.java">FillsAndColors</a>
+       <div name="tsUpdate" data-id="t_d05779ec31994f8ab2977a896ac970a3" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkingWithBorders.java">WorkingWithBorders</a>
+       <div name="tsUpdate" data-id="t_fbdac9de8fa54fd6bedf047570bdd25d" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/BigGridDemo.java">BigGridDemo</a>
+       <div name="tsUpdate" data-id="t_dd856e82e5044368bce19f90ecc64be4" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CreateTable.java">CreateTable</a>
+       <div name="tsUpdate" data-id="t_98369d4400484c489c9209c4bddf35e8" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CalendarDemo.java">CalendarDemo</a>
+       <div name="tsUpdate" data-id="t_c5beee05968a4a5c9e7dbb191869477e" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/AligningCells.java">AligningCells</a>
+       <div name="tsUpdate" data-id="t_e8ebae9e6c544686a0777c99fe087875" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/SplitAndFreezePanes.java">SplitAndFreezePanes</a>
+       <div name="tsUpdate" data-id="t_4f3b34f6cf364556b82f5da06e440384" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkingWithPageSetup.java">WorkingWithPageSetup</a>
+       <div name="tsUpdate" data-id="t_b72cc4d898c742b7a4adb2b9f5da3f44" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkingWithPictures.java">WorkingWithPictures</a>
+       <div name="tsUpdate" data-id="t_a1507819c9214e71a91451520347174b" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/MergingCells.java">MergingCells</a>
+       <div name="tsUpdate" data-id="t_6096d01a17f94763bfcb76eb94bc2750" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CustomXMLMapping.java">CustomXMLMapping</a>
+       <div name="tsUpdate" data-id="t_babfdee1bcae4e799970420acd5c3e0f" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/SelectedSheet.java">SelectedSheet</a>
+       <div name="tsUpdate" data-id="t_85ed7058b84b4c6f87982a84cd6cde32" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/EmbeddedObjects.java">EmbeddedObjects</a>
+       <div name="tsUpdate" data-id="t_fdb166c58d7f45fcba2e512a8b179c0f" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkbookProperties.java">WorkbookProperties</a>
+       <div name="tsUpdate" data-id="t_f5506fa12a9441629c915be178ad06eb" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/NewLinesInCells.java">NewLinesInCells</a>
+       <div name="tsUpdate" data-id="t_1cd46506ceec417cb24e083f7c4358ac" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/Outlining.java">Outlining</a>
+       <div name="tsUpdate" data-id="t_5f5ecc3283e8482691f94b1e2e1daf83" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/CreateCell.java">CreateCell</a>
+       <div name="tsUpdate" data-id="t_29adc1308d3a4ff59a4028a1f0761d1d" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/IterateCells.java">IterateCells</a>
+       <div name="tsUpdate" data-id="t_a8d0cb8f1714414aafce43ddeaeb4782" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/LineChart.java">LineChart</a>
+       <div name="tsUpdate" data-id="t_aaa6679ef1c64854b4e8277ebc9c04cb" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkingWithFonts.java">WorkingWithFonts</a>
+       <div name="tsUpdate" data-id="t_a0de417d931c4036b733b621f9a13fd2" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/HyperlinkExample.java">HyperlinkExample</a>
+       <div name="tsUpdate" data-id="t_6a24f09a2c914da2b6f35f1d37a1dbbd" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/ShiftRows.java">ShiftRows</a>
+       <div name="tsUpdate" data-id="t_04e21a718a41431a91d777521db18294" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/WorkingWithRichText.java">WorkingWithRichText</a>
+       <div name="tsUpdate" data-id="t_d9fe3a0aeb824d2cb3bb70e2dbf5a5b5" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/usermodel/FitSheetToOnePage.java">FitSheetToOnePage</a>
+       <div name="tsUpdate" data-id="t_a5b15748da534acc9ef393cb3990627a" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/streaming/examples/Outlining.java">Outlining</a>
+       <div name="tsUpdate" data-id="t_10edfe4509b843aeba006f0e72144ab3" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/XLSX2CSV.java">XLSX2CSV</a>
+       <div name="tsUpdate" data-id="t_ecc89c8ad1c7442aaa25ca4897c8cd8d" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/FromHowTo.java">FromHowTo</a>
+       <div name="tsUpdate" data-id="t_2732f3d54d4b43bdade650b6b424f667" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Yegor Kozlov</font>
+     <div name="tsUpdate" data-id="t_73216a4825af4c58a28bd64a59edefb2" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/examples.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='9fdde3b0c1c649d6b6765dd757175370';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

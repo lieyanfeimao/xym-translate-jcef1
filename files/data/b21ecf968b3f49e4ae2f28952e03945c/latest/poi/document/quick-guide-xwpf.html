@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-XWPF - A Quick Guide</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_d9004f7a56bf40baab8c489827828946">POI-XWPF - A Quick Guide</span><span class="tscolor" lg_zh="t_d9004f7a56bf40baab8c489827828946"><span lg_kh="1">(</span>POI-XWPF - 快速指南<span lg_kh="1">)</span></span></h1>
+    <h3><span lg_en="t_14d11dd828134ec2b1f1c00821cb9d04">Overview</span><span class="tscolor" lg_zh="t_14d11dd828134ec2b1f1c00821cb9d04"><span lg_kh="1">(</span><span style="color:black;">概述</span><span lg_kh="1">)</span></span></h3>
+    <div id="front-matter"></div>
+    <p><span lg_en="t_7f1a43a5c5424100bb5cb50b6093522e">XWPF has a fairly stable core API, providing read and write access to the main parts of a Word .docx file, but it isn't complete. For some things, it may be necessary to dive down into the low level XMLBeans objects to manipulate the ooxml structure. If you find yourself having to do this, please consider sending in a patch to enhance that, see the <a href="../../devel/guidelines.html">"Contribution to POI" page</a>.</span><span class="tscolor" lg_zh="t_7f1a43a5c5424100bb5cb50b6093522e"><span lg_kh="1">(</span>XWPF 有一个相当稳定的核心 API，提供对 Word .docx 文件主要部分的读写访问，但它并不完整。对于某些事情，可能需要深入研究低级别的 XMLBeans 对象来操作 ooxml 结构。如果您发现自己必须这样做，请考虑发送一个补丁来增强它，请参阅“对 POI 的贡献”页面。<span lg_kh="1">)</span></span></p>
+    <a name="Basic+Text+Extraction"></a>
+    <h2 class="boxed"><span lg_en="t_f98d025b31154576a8664b6947e069fb">Basic Text Extraction</span><span class="tscolor" lg_zh="t_f98d025b31154576a8664b6947e069fb"><span lg_kh="1">(</span>基本文本提取<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_68f4057736bb46b5850ccdf7a5777b44">For basic text extraction, make use of <span class="codefrag">org.apache.poi.xwpf.extractor.XWPFWordExtractor</span>. It accepts an input stream or a <span class="codefrag">XWPFDocument</span>. The <span class="codefrag">getText()</span> method can be used to get the text from all the paragraphs, along with tables, headers etc.</span><span class="tscolor" lg_zh="t_68f4057736bb46b5850ccdf7a5777b44"><span lg_kh="1">(</span>对于基本的文本提取，请使用 org.apache.poi.xwpf.extractor.XWPFWordExtractor。它接受输入流或 XWPFDocument。 getText() 方法可用于从所有段落中获取文本，以及表格、标题等。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Specific+Text+Extraction"></a>
+    <h2 class="boxed"><span lg_en="t_36716d1ec42c4a8585e268052d3284fd">Specific Text Extraction</span><span class="tscolor" lg_zh="t_36716d1ec42c4a8585e268052d3284fd"><span lg_kh="1">(</span>特定文本提取<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_611f60a54c88477eb4db375ea44621df">To get specific bits of text, first create a <span class="codefrag">org.apache.poi.xwpf.XWPFDocument</span>. Select the <span class="codefrag">IBodyElement</span> of interest (Table, Paragraph etc), and from there get a <span class="codefrag">XWPFRun</span>. Finally fetch the text and properties from that.</span><span class="tscolor" lg_zh="t_611f60a54c88477eb4db375ea44621df"><span lg_kh="1">(</span>要获取特定的文本位，首先创建一个 org.apache.poi.xwpf.XWPFDocument。选择感兴趣的 IBodyElement（表格、段落等），然后从那里获得 XWPFRun。最后从中获取文本和属性。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Headers+and+Footers"></a>
+    <h2 class="boxed"><span lg_en="t_665d4d6b968d498caf1082c830b5a634">Headers and Footers</span><span class="tscolor" lg_zh="t_665d4d6b968d498caf1082c830b5a634"><span lg_kh="1">(</span><a href="#HeaderFooter" style="color:blue;">页眉和页脚</a><span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_0f876e4dfe9b41f5894f55dfe24b3bf0">To get at the headers and footers of a word document, first create a <span class="codefrag">org.apache.poi.xwpf.XWPFDocument</span>. Next, you need to create a <span class="codefrag">org.apache.poi.xwpf.usermodel.XWPFHeaderFooter</span>, passing it your XWPFDocument. Finally, the XWPFHeaderFooter gives you access to the headers and footers, including first / even / odd page ones if defined in your document.</span><span class="tscolor" lg_zh="t_0f876e4dfe9b41f5894f55dfe24b3bf0"><span lg_kh="1">(</span>要获取 word 文档的页眉和页脚，首先创建一个 org.apache.poi.xwpf.XWPFDocument。接下来，您需要创建一个 org.apache.poi.xwpf.usermodel.XWPFHeaderFooter，将您的 XWPFDocument 传递给它。最后，XWPFHeaderFooter 让您可以访问页眉和页脚，包括第一页/偶数/奇数页（如果在文档中定义）。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Changing+Text"></a>
+    <h2 class="boxed"><span lg_en="t_c73b649bfa7a47dc9225338517038d09">Changing Text</span><span class="tscolor" lg_zh="t_c73b649bfa7a47dc9225338517038d09"><span lg_kh="1">(</span>更改文本<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_2603a561a95f408887606262b9030371">From a <span class="codefrag">XWPFParagraph</span>, it is possible to fetch the existing <span class="codefrag">XWPFRun</span> elements that make up the text. To add new text, the <span class="codefrag">createRun()</span> method will add a new <span class="codefrag">XWPFRun</span> to the end of the list. <span class="codefrag">insertNewRun(int)</span> can instead be used to add a new <span class="codefrag">XWPFRun</span> at a specific point in the paragraph.</span><span class="tscolor" lg_zh="t_2603a561a95f408887606262b9030371"><span lg_kh="1">(</span>从 XWPFParagraph 中，可以获取构成文本的现有 XWPFRun 元素。要添加新文本，createRun() 方法将在列表末尾添加一个新的 XWPFRun。 insertNewRun(int) 可用于在段落中的特定点添加新的 XWPFRun。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_23c5aecb43444eb9bb79889cce5734e3">Once you have a <span class="codefrag">XWPFRun</span>, you can use the <span class="codefrag">setText(String)</span> method to make changes to the text. To add whitespace elements such as tabs and line breaks, it is necessary to use methods like <span class="codefrag">addTab()</span> and <span class="codefrag">addCarriageReturn()</span>.</span><span class="tscolor" lg_zh="t_23c5aecb43444eb9bb79889cce5734e3"><span lg_kh="1">(</span>一旦有了 XWPFRun，就可以使用 setText(String) 方法来更改文本。要添加制表符和换行符等空白元素，需要使用 addTab() 和 addCarriageReturn() 等方法。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Further+Examples"></a>
+    <h2 class="boxed"><span lg_en="t_41caa8ec6b6d4416ab553da758567145">Further Examples</span><span class="tscolor" lg_zh="t_41caa8ec6b6d4416ab553da758567145"><span lg_kh="1">(</span>更多例子<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_927048263e624d31994ba86e5ded824b">For now, there are a limited number of XWPF examples in the <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xwpf">Examples Package</a>. Beyond those, the best source of additional examples is in the unit tests. <a href="http://svn.apache.org/viewvc/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf/"> Browse the XWPF unit tests.</a></span><span class="tscolor" lg_zh="t_927048263e624d31994ba86e5ded824b"><span lg_kh="1">(</span>目前，示例包中的 XWPF 示例数量有限。除此之外，其他示例的最佳来源是单元测试。浏览 XWPF 单元测试。<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_843805ca581d47aca99cadca46ac1c23"><font size="-2">by&nbsp;Nick Burch</font></span><span class="tscolor" lg_zh="t_843805ca581d47aca99cadca46ac1c23"><span lg_kh="1">(</span>作者：尼克伯奇<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/document/quick-guide-xwpf.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

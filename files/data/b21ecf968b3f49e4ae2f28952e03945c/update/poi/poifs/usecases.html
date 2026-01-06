@@ -1,0 +1,762 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POIFS Use Cases</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>POIFS Use Cases
+     <div name="tsUpdate" data-id="t_a30e905f7c4c4f99800ba34e69296ae0" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="POIFS+Use+Cases"></a>
+    <h2 class="boxed">POIFS Use Cases
+     <div name="tsUpdate" data-id="t_57f42acf929242e8a8a84ac8efc0108b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="Use+Case+1%3A+Read+existing+file+system"></a>
+     <h3 class="boxed">Use Case 1: Read existing file system
+      <div name="tsUpdate" data-id="t_764243dad3f347b5aac875b30e8d954d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_f3c1d72f2355441f9235454ad109661e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_38297af6f8314874a16cb4b25134c48c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_61a30460e5144255a301f37db035dec4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_780fd3c3ee6543e88ccf32c5aee73c54" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_c6b922a8bad448108f98eb7f91b69c95" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_ec16a3bb0d3a4029900ad8a196b3ed9f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_88b2614ab1974ea9913fd20d0325bd04" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client- wants to read content of file system
+         <br>
+         POIFS - understands POIFS file system
+         <div name="tsUpdate" data-id="t_21d93c1b46944d64848decd0d7bd5518" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_5e6eb23d532043989d13d5f525e3e8b5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_dba3654f354a40549144a77379325875" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_b324be27b1064ae7986f7f9ea084d89f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_6343ca09e28e47aeb86f8ded713a5814" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_2e246a9eba0e45b29eef09bf3263e046" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS client requests POIFS to read a POIFS file system, providing an <span class="codefrag">InputStream</span> containing POIFS file system in question.
+         <br>
+         2. POIFS reads from the <span class="codefrag">InputStream</span> in 512 byte blocks.
+         <br>
+         3. POIFS verifies that the first block begins with the well known signature ( <span class="codefrag">0xE11AB1A1E011CFD0</span>)
+         <br>
+         4. POIFS reads the Block Allocation Table from the first block and, if necessary, from the XBAT blocks.
+         <br>
+         5. POIFS obtains the start block of the Property Table and reads the Property Table (use case 9, read file)
+         <br>
+         6. POIFS reads the individual entries in the Property Table
+         <br>
+         7. POIFS obtains the start block of the Small Block Allocation Table and reads the Small Block Allocation Table (use case 9, read file)
+         <br>
+         8. POIFS obtains the start block of the Small Block store from the first entry in the Property Table and reads the Small Block Array (use case 9, read file)
+         <br>
+         <div name="tsUpdate" data-id="t_b5c55d0c2b7147b0a9110c717ffe0697" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_4e2aadabb6cf4db39ad3a86381e2b0bf" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">2a. If the last block read is not a 512 byte block, the <span class="codefrag">InputStream</span> is not that of a POIFS file system, and POIFS throws an appropriate exception.
+         <br>
+         3a. If the signature is incorrect, the <span class="codefrag">InputStream</span> is not that of a POIFS file system, and POIFS throws an appropriate exception.
+         <br>
+         <div name="tsUpdate" data-id="t_d0846ea6d7ab47d58c97bd83e7ad86fd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+2%3A+Write+file+system"></a>
+     <h3 class="boxed">Use Case 2: Write file system
+      <div name="tsUpdate" data-id="t_571bd0b26e724d7492c7d62106656293" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Primary Actor:
+         <div name="tsUpdate" data-id="t_d1a781ddb73141de94d39e977b384262" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_dce5136aa8cf462d9fc498acd38a2a68" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Scope:
+         <div name="tsUpdate" data-id="t_0cdf4d89eb58454c95542ea59e0f6638" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_ade51f9230a74c12bf6cfe048fe65787" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Level:
+         <div name="tsUpdate" data-id="t_deaede6022114e05b565d9592e948cd4" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_4f32a6e546b8465084e36ca7953b3292" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Stakeholders and Interests:
+         <div name="tsUpdate" data-id="t_5f9ba51f10df4330a49a6f745e312f0f" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS client- wants to write file system out.
+         <br>
+         POIFS - knows how to write file system out.
+         <div name="tsUpdate" data-id="t_55aec5d6fc2541a7b074d44bf9ee6b79" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Precondition:
+         <div name="tsUpdate" data-id="t_4a0dc90e50f74f50b797ddd4833e4609" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">File system has been read (use case 1, read existing file system) and subsequently modified (use case 4, replace file in file system; use case 5, delete file from file system; or use case 6, write new file to file system; in any combination)
+         <br>
+         or
+         <br>
+         File system has been created (use case 3, create new file system)
+         <div name="tsUpdate" data-id="t_70c9c17a89ab4082bf348ac9e0eeba30" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Minimal Guarantee:
+         <div name="tsUpdate" data-id="t_f84f652111434ff095385c227275e472" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_996b1c921c95405c9f25121876128088" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Main Success Guarantee:
+         <div name="tsUpdate" data-id="t_f45205b1808b436284f278000cb52e6d" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">1. POIFS client provides an <span class="codefrag">OutputStream</span> to write the file system to.
+         <br>
+         2. POIFS gets the sizes of the Property Table and each file in the file system.
+         <br>
+         3. If any files in the file system requires storage in a Small Block Array, POIFS creates a Small Block Array of sufficient size to hold all of the small files.
+         <br>
+         4. POIFS calculates the number of big blocks needed to hold all of the large files, the Property Table, and, if necessary, the Small Block Array and the Small Block Allocation Table.
+         <br>
+         5. POIFS creates a set of big blocks sufficient to store the Block Allocation Table
+         <br>
+         6. POIFS creates and writes the header block
+         <br>
+         7. POIFS writes out the XBAT blocks, if needed.
+         <br>
+         8. POIFS writes out the Small Block Array, if needed
+         <br>
+         9. POIFS writes out the Small Block Allocation Table, if needed
+         <br>
+         10. POIFS writes out the Property Table
+         <br>
+         11. POIFS writes out the large files, if needed
+         <br>
+         12. POIFS closes the <span class="codefrag">OutputStream</span>.
+         <div name="tsUpdate" data-id="t_9f97e5add5204cb198d67b4f2ba05f53" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Extensions:
+         <div name="tsUpdate" data-id="t_e13162379ec244bc870700f2c7df9026" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">6a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         7a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         8a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         9a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         10a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         11a. Exceptions writing to the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         12a. Exceptions closing the <span class="codefrag">OutputStream</span> will be propagated back to the POIFS client.
+         <br>
+         <div name="tsUpdate" data-id="t_9d314523ff6a43e5aea0ac175449268e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+3%3A+Create+new+file+system"></a>
+     <h3 class="boxed">Use Case 3: Create new file system
+      <div name="tsUpdate" data-id="t_5c64da9acbb04f31bd8c935cf18524d5" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Primary Actor:
+         <div name="tsUpdate" data-id="t_c6137d477f104581884826da62169e26" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_72104d313c3c47b8ab77c2cd2394ad05" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Scope:
+         <div name="tsUpdate" data-id="t_a598e107910c41b6a3057e748eeaec72" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_645e84865da542e09cd3cabeb299b6ba" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Level:
+         <div name="tsUpdate" data-id="t_d694b248af5d447abe4dd41334ebf86c" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_f082b46376374b208c5b086a75d371c6" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Stakeholders and Interests:
+         <div name="tsUpdate" data-id="t_d7d062a140524325b51dca9b6c708214" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS client- wants to create a new file system
+         <br>
+         POIFS - knows how to create a new file system
+         <div name="tsUpdate" data-id="t_1fa02ab41c084cebb967a207c9542a6a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Precondition:
+         <div name="tsUpdate" data-id="t_97ec01a290f64b38b0c8d7dc0f735f7d" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_8a2eafd066e144868eab40ff8bd58b96" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Minimal Guarantee:
+         <div name="tsUpdate" data-id="t_d9929fe92b39439bad621c137f519657" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_840cad9adff648468b8e53ef8b1d283c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Main Success Guarantee:
+         <div name="tsUpdate" data-id="t_b68092e3efc14300b242f6201ffd2654" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">POIFS creates an empty Property Table.
+         <div name="tsUpdate" data-id="t_b04793981187488ba8bf48a9ac0c0899" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1">Extensions:
+         <div name="tsUpdate" data-id="t_f4f861a71f164a64b71c318638f617e7" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_2506770ae8c74a6aaff008c80690aeaf" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+4%3A+Replace+file+in+file+system"></a>
+     <h3 class="boxed">Use Case 4: Replace file in file system
+      <div name="tsUpdate" data-id="t_585d73ade4ac4129b38e1b7eda557897" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_39df53602ddb4e3b96d9498811e71e08" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_569d9c75d56148f680577f5704a72810" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_9a1a0420c0984ea2802349240d14ed55" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_17b1544a4cd7414cb52528821aa78820" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_5736a2afe2874467985f5ae517b7c664" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_5e9c9862485442049a9023677370b779" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_9801cd53a641467598570f5dfffa0c57" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS client- wants to replace an existing file in the file system
+         <br>
+         2. POIFS - knows how to manage the file system
+         <div name="tsUpdate" data-id="t_511dd3eb8a9e48d8b68d09dc553cfbe3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_5993627fb5364216b8ad57a9dfc050da" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Either
+         <br>
+         <br>
+         The file system has been read (use case 1, read existing file system) and a file has been extracted from the file system (use case 7, read existing file from file system)
+         <br>
+         <br>
+         or
+         <br>
+         <br>
+         The file system has been created (use case 3, create new file system) and a file has been written to the file system (use case 6, write new file to file system)
+         <div name="tsUpdate" data-id="t_a4884cb83d6c462aac2b4d3c97dda843" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_9f558f296d9b4692b2ac18001ea1e225" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_26aa742c8bbe4f328afa421a6d05ab10" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_907c0d9c72674562afb6563352fba668" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS discards storage of the existing file.
+         <br>
+         2. POIFS updates the existing file's entry in the Property Table
+         <br>
+         3. POIFS stores the new file's data
+         <div name="tsUpdate" data-id="t_2d65d3d406d94463b0a4e3ab814bcbd3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_4e87ceaf99e545e98419059bfdf9330f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1a. POIFS throws an exception if the file does not exist.
+         <div name="tsUpdate" data-id="t_7b53d8b5fe5541478ff61d168b404183" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+5%3A+Delete+file+from+file+system"></a>
+     <h3 class="boxed">Use Case 5: Delete file from file system
+      <div name="tsUpdate" data-id="t_a41dd5e21e1a412c9144531596651950" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_774fc141c49d4589b8a1d42c98e478cf" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_068eac1e301b46a085d193dd89903ffe" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_db6a9672856248149657c2f0cb444051" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_8857befdd35e4c959b81574edddf20d7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_b952d8a3bc6640a9802965d275f1c469" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_21226e992ae14c068750718cc50cc24f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_9513c4c03c7040d68bd7cfab729be0a0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* POIFS client- wants to remove a file from a file system
+         <br>
+         * POIFS - knows how to manage the file system
+         <div name="tsUpdate" data-id="t_4826329b46204790a8d518f046ed9c5c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_850b493484d04f38bb1a3c3c3765bebe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Either
+         <br>
+         <br>
+         The file system has been read (use case 1, read existing file system) and a file has been extracted from the file system (use case 7, read existing file from file system)
+         <br>
+         <br>
+         or
+         <br>
+         <br>
+         The file system has been created (use case 3, create new file system) and a file has been written to the file system (use case 6, write new file to file system)
+         <div name="tsUpdate" data-id="t_3980aeb7bfd64470bb8031a9aa9b2a6c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_1e4ccb95d80844fa8b059f1f4c171674" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_acb0b54a34eb49a8ae28a18e621ab294" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_1e4b5784b9f547e4859fe0fd658ebb89" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS discards the specified file's storage.
+         <br>
+         2. POIFS discards the file's Property Table entry.
+         <div name="tsUpdate" data-id="t_7cbc2614d2b84ddcb352dd396d91c86f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_bcbcc591c7cb4387bc984c81424232e8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1a. POIFS throws an exception if the file does not exist.
+         <div name="tsUpdate" data-id="t_a9eef58de47f48b38dfc165d4f539066" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+6%3A+Write+new+file+to+file+system"></a>
+     <h3 class="boxed">Use Case 6: Write new file to file system
+      <div name="tsUpdate" data-id="t_23b33304405443149d46f1a07dee940e" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_cad9183d00294e7e99e2833dd72028e5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_26243c9dd6ae4b089aaebb508a44262f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_0a5eaef1117a4aafb23301041cb5b206" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_af5b215ce3454113b67d22ac2f5f6918" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_47315db44b99419e95a61cc1fd0f34ed" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_f61c7a97870f4184aa5658922d7496d6" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_b3b065ab06974ffcb2c695d5e47a3352" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* POIFS client- wants to add a new file to the file system
+         <br>
+         * POIFS - knows how to manage the file system
+         <div name="tsUpdate" data-id="t_96512d29766f4fdd94861e8cf35f12f3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_96748084a0124757b2727dbe57e9fcf2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The specified file does not yet exist in the file system
+         <div name="tsUpdate" data-id="t_808b261efd134048ba877338a3faeb79" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_9982d9ba3c56499780387ec3201eb0f8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_dd6fc44c33ee4357b7112c41da421916" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_64345c86d18347dcaf7d221e4312f9e6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. The POIFS client provides a file name
+         <br>
+         2. POIFS creates a new Property Table entry for the new file
+         <br>
+         3. POIFS provides the POIFS client with an <span class="codefrag">OutputStream</span> to write to.
+         <br>
+         4. The POIFS client writes data to the provided <span class="codefrag">OutputStream</span>.
+         <br>
+         5. The POIFS client closes the provided <span class="codefrag">OutputStream</span>
+         <br>
+         6. POIFS updates the Property Table entry with the new file's size
+         <div name="tsUpdate" data-id="t_18e6304257724ed3b4e670b692575de1" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_84a8b98b26ee4628abb6e60f49279f9a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1a. POIFS throws an exception if a file with the specified name already exists in the file system.
+         <br>
+         1b. POIFS throws an exception if the file name is too long. The limit on file name length is 31 characters.
+         <div name="tsUpdate" data-id="t_c4e7e5ef7be244b885513f17d81f8d62" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+7%3A+Read+existing+file+from+file+system"></a>
+     <h3 class="boxed">Use Case 7: Read existing file from file system
+      <div name="tsUpdate" data-id="t_9cece4535214463a894c64cb32f4f8bc" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_047ed13259544794b1a8eee15db24f48" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_cf28aeff20004259b395f2570bed9f93" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_2a4d2101ce5b413ebd3555e2676e6489" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_e293caff77c64492b05235d1c354dffa" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_af607446c0cb40dfb9f1724a9aeef299" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_35584e61af5a4badaafd21b8e6ee6f9d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_4b0ece68b8574df9af006c7115efcdb5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* POIFS client- wants to read a file from the file system
+         <br>
+         * POIFS - knows how to manage the file system
+         <div name="tsUpdate" data-id="t_09e4e58db31f45aa9e7de702ea06c919" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_22be9fe5b6c6465dbf61c29a08ac7801" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* The file system has been read (use case 1, read existing file system) or has been created and written to (use case 3, create new file system; use case 6, write new file to file system).
+         <br>
+         * The specified file exists in the file system.
+         <div name="tsUpdate" data-id="t_24805dc93fa24a609b1e32d2d5b61666" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_f65bd577429e4757a067b0e535826902" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_918dece22e364742b2cfacd6f5a1d9f1" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_6f8aba5ba3b94a41a25e63564fdcfc09" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* The POIFS client provides the name of a file to be read
+         <br>
+         * POIFS provides an <span class="codefrag">InputStream</span> to read from.
+         <br>
+         * The POIFS client reads from the <span class="codefrag">InputStream</span>.
+         <br>
+         * The POIFS client closes the <span class="codefrag">InputStream</span>.
+         <div name="tsUpdate" data-id="t_8f49388d5e4b463388f78de800b9177f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_abc881137b9e446da83ea7029394c63c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1a. POIFS throws an exception if no file with the specified name exists.
+         <div name="tsUpdate" data-id="t_9934809fd70e4471addd862cd00a2f9e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+8%3A+Read+file+system+directory"></a>
+     <h3 class="boxed">Use Case 8: Read file system directory
+      <div name="tsUpdate" data-id="t_76f4cc782c254da88330c6ed13081f91" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_d6a0c6514441462b9c2676c286c84c6e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_0e26a2ab1dd1478b8e7966b26f7ad358" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_be243ad1dcc54148aca1668259f482f4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_95df30339c9146aabb87214fba0f6139" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_b78c0e3edf974168951572dcaee7e7d4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_55a330b8cb2b46fc97063dadefda7527" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_e152de5f4738484d815929a0ec1697b3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* POIFS client- wants to know what files exist in the file system
+         <br>
+         * POIFS - knows how to manage the file system
+         <div name="tsUpdate" data-id="t_a961d93754f84ded84aec8a912ce2719" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_8c416b4d49794fa68b0c88880269d513" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The file system has been read (use case 1, read existing file system) or created (use case 3, create new file system)
+         <div name="tsUpdate" data-id="t_9827da49dc1a4483b39266f7fe683eb2" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_8a60d655c88c418db9e668b5ef2271b6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_9e792bef0f8a45ef8bd6932aaac32799" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_c09d22bba5874805bfd8cc2a97991f82" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. The POIFS client requests the file system directory. 2. POIFS returns an <span class="codefrag">Iterator</span>. The <span class="codefrag">Iterator</span> will not include the root entry in the Property Table, and may be an <span class="codefrag">Iterator</span> over an empty <span class="codefrag">Collection</span>.
+         <div name="tsUpdate" data-id="t_1920bdeebb314a12ab765287203d7b1a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_6b7cb75cdbda420a8e32be950fa2773e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_8f44415615924c219f9bedb3e4617150" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+9%3A+Read+file"></a>
+     <h3 class="boxed">Use Case 9: Read file
+      <div name="tsUpdate" data-id="t_1bce3f7e41a74ff49f1dd6c76b0f02f0" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_afa487da3d8d4dd2b466ba8c5065a24e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_7d149ef445d04faf89329c9ce7ff12cf" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_7d5675847027459ab774470b6a7dd4b2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_00df112e69f64ce5925c9e0d3cf6af5e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_dd9a52452b0b4898b5d229b3941851cc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_f8f87086dd5542d68d695f4fba798956" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_4386f60ba84240948c37870aad9e6173" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS - POIFS needs to read a file, or something resembling a file (i.e., the Property Table, the Small Block Array, or the Small Block Allocation Table)
+         <div name="tsUpdate" data-id="t_7645b89a6cbd4aa6aca77de6cf401fae" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_21f9b934b0134342aeca3db66a4da78c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_023104b13c804efbba5f8578c3972e41" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_033390753a7349a7a1ce8b3df3b5ef8c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_b7af739e14e3475c869bca83d6c71fcb" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_dd3b416fbdea4133b2bc44f6302d5e9a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS begins with a start block, a file size, and a flag indicating whether to use the Big Block Allocation Table or the Small Block Allocation Table
+         <br>
+         2. POIFS returns an <span class="codefrag">InputStream</span>.
+         <br>
+         3. Reads from the <span class="codefrag">InputStream</span> are performed by walking the specified Block Allocation Table and reading the blocks indicated.
+         <br>
+         4. POIFS closes the <span class="codefrag">InputStream</span> when finished reading the file, or its client wants to close the <span class="codefrag">InputStream</span>.
+         <div name="tsUpdate" data-id="t_7e80445bafcc494c9718ce9ecfa75231" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_3df358aee1764af5b495ef1857d4366a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">3a. An exception will be thrown if the specified Block Allocation Table is corrupt, as evidenced by an index pointing to a non-existent block, or by a chain extending past the known size of the file.
+         <div name="tsUpdate" data-id="t_0a462627d8514a9c943d30e039b14abf" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Use+Case+10%3A+Rename+existing+file+in+the+file+system"></a>
+     <h3 class="boxed">Use Case 10: Rename existing file in the file system
+      <div name="tsUpdate" data-id="t_fe20a64dadca480abebba8f2269c4172" data-tpl="0" data-txt-color="orange"></div></h3>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Primary Actor:</em>
+         <div name="tsUpdate" data-id="t_1fdc3d8d0f4248d4a75aa5d1357efc34" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS client
+         <div name="tsUpdate" data-id="t_a2920715988a4d94882cba3b6a337773" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Scope:</em>
+         <div name="tsUpdate" data-id="t_ea5cc28813934c14983eac8cd7ff43a1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">POIFS
+         <div name="tsUpdate" data-id="t_6a205b7d944a44c496645c18ec64e4fd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Level:</em>
+         <div name="tsUpdate" data-id="t_8f8539a5db4440988f3ef1eb73afd66e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Summary
+         <div name="tsUpdate" data-id="t_491a132b8e64488c970b71ae654c05a1" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Stakeholders and Interests:</em>
+         <div name="tsUpdate" data-id="t_81cb76d4422c49b6a2d8015bfc9a54e0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* POIFS client- wants to rename an existing file in the file system.
+         <br>
+         * POIFS - knows how to manage the file system.
+         <div name="tsUpdate" data-id="t_3068a3fd5a3742a4b2532e8772ccf39b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Precondition:</em>
+         <div name="tsUpdate" data-id="t_4a083aec7f824c2581f8c582dfbdbb77" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* The file system is has been read (use case 1, read existing file system) or has been created and written to (use case 3, create new file system; use case 6, write new file to file system.
+         <br>
+         * The specified file exists in the file system.
+         <br>
+         * The new name for the file does not duplicate another file in the file system.
+         <div name="tsUpdate" data-id="t_06d4ea7a61d447bcacc9aaf4564f30b2" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Minimal Guarantee:</em>
+         <div name="tsUpdate" data-id="t_2ca216f151d2470ba97aba71157392fc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">None
+         <div name="tsUpdate" data-id="t_2464335c8fca46bd8f5b6c53001ddf4c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Main Success Guarantee:</em>
+         <div name="tsUpdate" data-id="t_e3b423d98e3c49df9192be9435286cff" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1. POIFS updates the Property Table entry for the specified file with its new name.
+         <div name="tsUpdate" data-id="t_20ad2a4aaa4b45d9b2ef348b55df3748" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Extensions:</em>
+         <div name="tsUpdate" data-id="t_3ddc416a66e74c159ae15d2d1728bc22" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">* 1a. If the old file name is not in the file system, POIFS throws an exception.
+         <br>
+         * 1b. If the new file name already exists in the file system, POIFS throws an exception.
+         <br>
+         * 1c. If the new file name is too long (the limit is 31 characters), POIFS throws an exception.
+         <div name="tsUpdate" data-id="t_244f798fd80d4513a74410ebeab2b580" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Marc Johnson</font>
+     <div name="tsUpdate" data-id="t_bfae95a914f94171be6ae84896e153ff" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/poifs/usecases.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='42dd3530670a42d0a0e80d2f65ce14ed';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

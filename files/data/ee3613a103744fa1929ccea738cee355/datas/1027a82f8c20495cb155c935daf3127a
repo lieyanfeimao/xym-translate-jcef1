@@ -1,0 +1,1 @@
+[{"id":"t_148c3bf03ff0417b873208619b928b32","oldText":"A command in the visio file. In order to make things fun, all the chunk actually stores is the value of the command. You have to have your own lookup table to figure out what the commands are based on the chunk type.","tlText":"Delivero文件中的命令。为了让事情变得有趣，所有块实际存储的都是命令的价值。您必须拥有自己的查找表才能根据块类型找出哪些命令。","version":0}]

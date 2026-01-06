@@ -1,0 +1,1 @@
+[{"id":"t_ac8603025d12425dbfc51526ea1c4b37","oldText":"Represents a constant error code value as encoded in a constant values array. This class is a type-safe wrapper for a 16-bit int value performing a similar job to ErrorEval.","tlText":"表示在常数值数组中编码的常数值错误代码值。这个类是16位int值的类型安全包装器，执行与WREval类似的任务。","version":0}]

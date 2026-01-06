@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - HWPF and XWPF - Java API to Handle Microsoft Word Files</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>Apache POI - HWPF and XWPF - Java API to Handle Microsoft Word Files
+     <div name="tsUpdate" data-id="t_c3c7e3d1a0e442dbbef6080b2863e1ce" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_417dbe10821f4be2a3070ef1d28ccb0b" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <a name="Overview"></a>
+    <h2 class="boxed">Overview
+     <div name="tsUpdate" data-id="t_6e0553ca2c0b4dceb2abebe008866562" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>HWPF is the name of our port of the Microsoft Word 97(-2007) file format to pure Java. It also provides limited read only support for the older Word 6 and Word 95 file formats.
+      <div name="tsUpdate" data-id="t_6ab56961e5844bfe861329cbbc0b7b84" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The partner to HWPF for the new Word 2007 .docx format is <em>XWPF</em>. Whilst HWPF and XWPF provide similar features, there is not a common interface across the two of them at this time.
+      <div name="tsUpdate" data-id="t_79abed137eec4c9d8766d59263055d86" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Both HWPF and XWPF could be described as "moderately functional". For some use cases, especially around text extraction, support is very strong. For others, support may be limited or incomplete, and it may be necessary to dig down into low-level code. Error checking may be missing in places, so it may be possible to accidentally generate invalid files. Enhancements to fix such things are generally very well received!
+      <div name="tsUpdate" data-id="t_b97105935b8741a78ad72928abe92878" data-tpl="0" data-txt-color="green"></div></p>
+     <p>As detailed in the <a href="../../components/">Components Page</a>, HWPF is contained within the poi-scratchpad-XXX.jar, while XWPF is in the poi-ooxml-XXX.jar. You will need to ensure you include the appropriate jars (and their dependencies!) in your classpath to use HWPF or XWPF.
+      <div name="tsUpdate" data-id="t_4967e7dd28844853b4be02523dc47a01" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Please note that in version 3.12, due to a bug, you might need to include poi-scratchpad-XXX.jar when using XWPF. This has been fixed again for the next release as there should not be such a dependency.
+      <div name="tsUpdate" data-id="t_e0eaef0904004848a6403a57500ade17" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="An+overview+of+the+code"></a>
+    <h2 class="boxed">An overview of the code
+     <div name="tsUpdate" data-id="t_a59a6637cd1542ef8b5c0a17667ad9d0" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Source in the <em>org.apache.poi.hwpf.model</em> tree is the Java representation of internal Word format structure. This code is "internal", it shall not be used by your code. Code from <em>org.apache.poi.hwpf.usermodel</em> package is actual public and user-friendly (as much as possible) API to access document parts. Source code in the <em>org.apache.poi.hwpf.extractor</em> tree is a wrapper of this to facilitate easy extraction of interesting things (eg the Text), and <em>org.apache.poi.hwpf.converter</em> package contains Word-to-HTML and Word-to-FO converters (latest can be used to generate PDF from Word files when using with <a href="http://xmlgraphics.apache.org/fop/">Apache FOP</a> ). Also there is a small file-structure-dumping utility in <em>org.apache.poi.hwpf.dev</em> package, primally for developing purposes.
+      <div name="tsUpdate" data-id="t_615d96915f1f44dc86bee20113e3f87f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The main entry point to HWPF is HWPFDocument. Currently it has a lot of references both to internal interfaces ( <em>org.apache.poi.hwpf.model</em> package) and public API ( <em>org.apache.poi.hwpf.usermodel</em> ) package. It is possible that it will be split into two different interfaces (like WordFile and WordDocument) in later versions.
+      <div name="tsUpdate" data-id="t_5b87b054a9a1415b9b4401b7ba6186eb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The main entry point to XWPF is XWPFDocument. From there, you can get the paragraphs, pictures, tables, sections, headers etc.
+      <div name="tsUpdate" data-id="t_a2e5a1d3aa054312ba96d702dc55396a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Currently, there are only a handful of example programs using HWPF and XWPF available. They can be found in svn in the examples section, under <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hwpf">HWPF</a> and <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xwpf">XWPF</a>. Both HWPF and XWPF have fairly high levels of unit test coverage, which provides examples of using the various areas of functionality of both modules. These can be found in svn, under <a href="http://svn.apache.org/repos/asf/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf">HWPF</a> and <a href="http://svn.apache.org/repos/asf/poi/trunk/src/ooxml/testcases/org/apache/poi/xwpf">XWPF</a>. Contributions of more examples, whether inspired by the unit tests or not, would be most welcomed!
+      <div name="tsUpdate" data-id="t_a800630c3f61477eb681ee4688fcf584" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="HWPF+Notes"></a>
+    <h2 class="boxed">HWPF Notes
+     <div name="tsUpdate" data-id="t_ea3a329a471349269407d6d4dfc22389" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>A .doc Word document, as handled by HWPF, can be considered as very long single text buffer. The HWPF API provides "pointers" to document parts, like sections, paragraphs and character runs. Usually user will iterates over main document part sections, paragraphs from sections and character runs from paragraph. Each such interface is a pointer to document text subrange along with additional properties (and they all extends same Range parent class). There is additional Range implementations like Table, TableRow, TableCell, etc. Some structures like Bookmark or Field can also provide subranges pointers.
+      <div name="tsUpdate" data-id="t_e78a98e781ee45c38be84758be3b2482" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Changing file content usually requires a lot of synchronized changes in those structures like updating property boundaries, position handlers, etc. Because of that HWPF API shall be considered as not thread safe. In addition, there is a "one pointer" rule for changing content. It means you should not use two different Range instances at one time. More precisely, if you are changing file content using some range pointer, all other range pointers except parents' ones become invalid. For example if you obtain overall range (1), paragraph range (2) from overall range and character run range (3) from paragraph range and change text of paragraph, character run range is now invalid and should not be used, but overall range pointer still valid. Each time you obtaining range (pointer) new instance is created. It means if you obtained two range pointers and changed document text using first range pointer, second one became invalid.
+      <div name="tsUpdate" data-id="t_4a72af164e2c4fa39b4ff07515b7b8bb" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="XWPF+Patches+Required%21"></a>
+    <h2 class="boxed">XWPF Patches Required!
+     <div name="tsUpdate" data-id="t_4f83d696a56d452f8b4622d274b209ed" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>At the moment, XWPF covers many common use cases for reading and writing .docx files. Whilst this is a great thing, it does mean that XWPF does everything that the current POI committers need it to do, and so none of the committers are actively adding new features.
+      <div name="tsUpdate" data-id="t_b2042eac9e8544f9875a4d3254cbfbbb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you come across a feature in XWPF that you need, and isn't currently there, please do send in a patch to add the extra functionality! More details on contributing patches are available on the <a href="../../devel/guidelines.html">"Contribution to POI" page</a>.
+      <div name="tsUpdate" data-id="t_192ffca728654a4db80b3f7d09a4da12" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="HWPF+Patches+Required%21"></a>
+    <h2 class="boxed">HWPF Patches Required!
+     <div name="tsUpdate" data-id="t_263f50dcde8c4340a6a4401949175e9a" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>At the moment we unfortunately do not have someone taking care for HWPF and fostering its development. What we need is someone to stand up, take this thing under his hood as his baby and push it forward. Ryan Ackley, who put a lot of effort into HWPF, is no longer on board, so HWPF is an orphan child waiting to be adopted.
+      <div name="tsUpdate" data-id="t_85bdd1f1fd3a4477937ece6356ab16ab" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If <strong>you</strong> are interested in becoming the new HWPF pointman, you should look into the Microsoft Word internals. A good starting point seems to be Ryan Ackley's <a href="../../components/document/docoverview.html">overview</a>. An introduction to the binary file formats is <a href="https://msdn.microsoft.com/en-us/library/cc998577%28v=office.12%29.aspx">available from Microsoft</a>, which has some good references and links. After that, the full details on the word format are available from <a href="https://msdn.microsoft.com/en-us/library/cc313153%28v=office.12%29.aspx">Microsoft</a>, but the documentation can be a little hard to get into at first... Try reading the <a href="../../components/document/docoverview.html">overview</a> first, and looking at the existing code, then finally look up the documentation for specific missing features.
+      <div name="tsUpdate" data-id="t_ed4401f0c35d405893de70e83dc0a7ef" data-tpl="0" data-txt-color="green"></div></p>
+     <p>As a first step you should familiarize yourself with the source code, examples, test cases, and the HWPF patches available at <a href="http://issues.apache.org/">Bugzilla</a> (if any). Then you should compile an overview of
+      <div name="tsUpdate" data-id="t_18a9b938642040ada037e3069ddf8019" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>the current HWPF status,
+       <div name="tsUpdate" data-id="t_cf3a761535124719b04f703eba4f0b18" data-tpl="0" data-txt-color="green"></div></li>
+      <li>the patches in <a href="http://issues.apache.org/bugzilla/">Bugzilla</a> to be checked in (and those that should better be ditched),
+       <div name="tsUpdate" data-id="t_9c702b852ded47b394a62f2a5c6b75c2" data-tpl="0" data-txt-color="green"></div></li>
+      <li>the available test cases and the test cases still to be written,
+       <div name="tsUpdate" data-id="t_d062358eebd14f16845e4eafe87ff4f8" data-tpl="0" data-txt-color="green"></div></li>
+      <li>the available documentation and the docs to be written,
+       <div name="tsUpdate" data-id="t_b26c9b321a164cabb3df52869e50fa8c" data-tpl="0" data-txt-color="green"></div></li>
+      <li>anything else that seems reasonable
+       <div name="tsUpdate" data-id="t_5428881bf1224ae2be43fb2b88fc8c78" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>When you start coding, you will not yet have write access to the SVN repository. Please submit your patches to <a href="http://issues.apache.org/">Bugzilla</a> and nag <a href="mailto:dev.at.poi.apache.org">the dev list</a> until someone commits them. Besides the actual checking in of HWPF patches, current POI committers will also do some minor reviews now and then of your source code patches, test cases and documentation to help ensure software quality. But most of the time you will be on your own. However, anyone offering useful contributions over a period of time will be offered committership!
+      <div name="tsUpdate" data-id="t_9a8de661e3c747bbb0e8afc19120ea94" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Please do not forget to write <a href="http://www.junit.org/">JUnit</a> test cases and documentation! We won't accept code that doesn't come with test cases. And please consider that other contributors should be able to understand your source code easily. If you need any help getting started with JUnit test cases for HWPF, please ask on the developers' mailing list! If you show that you are prepared to stick at it you will most likely be given SVN commit access. See <a href="../../devel/guidelines.html">"Contribution to POI" page</a> for more details and help getting started.
+      <div name="tsUpdate" data-id="t_1151c5667c964ad2b02122697080b031" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Of course we will help you as best as we can. However, presently there is no committer who is really familiar with the Word format, so you'll be mostly on your own. We are looking forward for you and your contributions! Honor and glory of becoming a POI committer are waiting!
+      <div name="tsUpdate" data-id="t_0a9051e37ed7418588a09a78b94e9828" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Nicola Ken Barozzi,&nbsp;Andrew C. Oliver,&nbsp;Ryan Ackley,&nbsp;Rainer Klute</font>
+     <div name="tsUpdate" data-id="t_a8b0d70605b246fbb6c77c1bc42f427a" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/document/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='ceb8eeaabc4e4b79b18bae31e55b243b';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

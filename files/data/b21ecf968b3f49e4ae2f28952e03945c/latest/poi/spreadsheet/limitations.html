@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - HSSF and XSSF Limitations</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_6f34a06f16054f778b945c217627f701">Apache POI - HSSF and XSSF Limitations</span><span class="tscolor" lg_zh="t_6f34a06f16054f778b945c217627f701"><span lg_kh="1">(</span>Apache POI - HSSF 和 XSSF 局限性<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="Current+HSSF+%2F+XSSF+main+limitations"></a>
+    <h2 class="boxed"><span lg_en="t_ae3a2b1c8fde4e3e9bb2d4d074061cbe">Current HSSF / XSSF main limitations</span><span class="tscolor" lg_zh="t_ae3a2b1c8fde4e3e9bb2d4d074061cbe"><span lg_kh="1">(</span>当前 HSSF / XSSF 主要的局限性<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_e6ddeab0d1904895a7c752f37cfc3693">The intent of this document is to outline some of the known limitations of the POI HSSF and XSSF APIs. It is not intended to be complete list of every bug or missing feature of HSSF or XSSF, rather it's purpose is to provide a broad feel for some of the functionality that is missing or broken.</span><span class="tscolor" lg_zh="t_e6ddeab0d1904895a7c752f37cfc3693"><span lg_kh="1">(</span>本文档的目的是概述 POI HSSF 和 XSSF API 的一些已知局限性。它并非旨在完整列出 HSSF 或 XSSF 的每个错误或缺失功能，而是为缺失或损坏的某些功能提供广泛的感觉。<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_eb1aaee4bf2942d08110906330c9c0c8">File sizes/Memory usage 
+        <br> 
+        <br> 
+        <ul>
+         <li>There are some inherent limits in the Excel file formats. These are defined in class <a href="../../apidocs/dev/org/apache/poi/ss/SpreadsheetVersion.html">SpreadsheetVersion</a>. As long as you have enough main-memory, you should be able to handle files up to these limits. For huge files using the default POI classes you will likely need a very large amount of memory.
+          <br>
+          <br>
+          There are ways to overcome the main-memory limitations if needed:
+          <br>
+          <ul>
+           <li>For writing very huge files, there is <a href="../../components/spreadsheet/">SXSSFWorkbook</a> which allows to do a streaming write of data out to files (with certain limitations on what you can do as only parts of the file are held in memory).</li>
+           <li>For reading very huge files, take a look at the sample <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/XLSX2CSV.java">XLSX2CSV</a> which shows how you can read a file in streaming fashion (again with some limitations on what information you can read out of the file, but there are ways to get at most of it if necessary).</li>
+          </ul></li>
+        </ul></span><span class="tscolor" lg_zh="t_eb1aaee4bf2942d08110906330c9c0c8"><span lg_kh="1">(</span>文件大小/内存使用 Excel 文件格式存在一些固有的局限性。这些在类 SpreadsheetVersion 中定义。只要您有足够的主内存，您就应该能够处理这些有局限性的文件。对于使用默认 POI 类的大文件，您可能需要大量内存。如果需要，有一些方法可以克服主内存的局限：对于写入非常大的文件，有 SXSSFWorkbook 允许将数据流式写入文件（对您可以执行的操作有一定的限制，因为只有部分文件是保存在内存中）。要读取非常大的文件，请查看示例 XLSX2CSV，它显示了如何以流式方式读取文件（同样对您可以从文件中读取的信息有一些局限，但如有必要的话，还是有一些方法可以获取大部分信息的）。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_8613f2a77eb547d4849dc68ec0b25d3e">Charts 
+        <br> 
+        <br> 
+        <ul>
+         <li>HSSF has some limited support for creating a handful of very simple Chart types, but largely this isn't supported. HSSF (largely) doesn't support changing Charts. You can however create a chart in Excel using Named ranges, modify the chart data values using HSSF and write a new spreadsheet out. This is possible because POI attempts to keep existing records intact as far as possible.
+          <br></li>
+         <li>XSSF has only limited chart support including making some simple changes and adding at least some line and scatter charts, see the examples <em>LineChart</em> and <em>ScatterChart</em>.
+          <br>
+          <br></li>
+        </ul></span><span class="tscolor" lg_zh="t_8613f2a77eb547d4849dc68ec0b25d3e"><span lg_kh="1">(</span>图表 HSSF 对创建一些非常简单的图表类型有一些有限的支持，但大多是不支持的。 HSSF（很大程度上）不支持更改图表。但是，您可以使用命名范围在 Excel 中创建图表，使用 HSSF 修改图表数据值并写出新的电子表格。这是可能的，因为 POI 会尽可能地保持现有记录的完整性。 XSSF 只有有限的图表支持，包括进行一些简单的更改和添加至少一些折线图和散点图，请参见示例 LineChart 和 ScatterChart。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_c086cb5acfd649318d9e65f6698882e5">Macros 
+        <br> 
+        <br> Macros can not be created. The are currently no plans to support macros. However, reading and re-writing files containing macros will safely preserve the macros. Recent versions of Apache POI support extracting the macro data via <a href="../../apidocs/dev/org/apache/poi/poifs/macros/VBAMacroExtractor.html">VBAMacroExtractor</a> and <a href="../../apidocs/dev/org/apache/poi/poifs/macros/VBAMacroReader.html">VBAMacroReader</a> 
+        <br> 
+        <br></span><span class="tscolor" lg_zh="t_c086cb5acfd649318d9e65f6698882e5"><span lg_kh="1">(</span>宏 无法创建宏。目前没有支持宏的计划。但是，读取和重写包含宏的文件将安全地保留宏。最新版本的 Apache POI 支持通过 VBAMacroExtractor 和 VBAMacroReader 提取宏数据<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_228f244ffa5c47d8b2e4fc46ba6ab106">Pivot Tables 
+        <br> 
+        <br> HSSF doesn't have support for reading or creating Pivot tables. XSSF has limited support for creating Pivot Tables, and very limited read/change support.</span><span class="tscolor" lg_zh="t_228f244ffa5c47d8b2e4fc46ba6ab106"><span lg_kh="1">(</span>数据透视表 HSSF 不支持读取或创建数据透视表。 XSSF 对创建数据透视表的支持有限，并且对读取/更改的支持也是非常有限的。<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <p align="right"><span lg_en="t_6e66dd7e322f4517a6559e8cfe0ca05d"><font size="-2">by&nbsp;Glen Stampoultzis</font></span><span class="tscolor" lg_zh="t_6e66dd7e322f4517a6559e8cfe0ca05d"><span lg_kh="1">(</span>格伦·斯坦普尔齐斯（Glen Stampoultzis）<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/limitations.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

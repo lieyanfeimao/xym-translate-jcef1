@@ -1,0 +1,1809 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>HPSF HOW-TO</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>HPSF HOW-TO
+     <div name="tsUpdate" data-id="t_d2215d0660784ab591d26acb7592566a" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="How+To+Use+the+HPSF+API"></a>
+    <h2 class="boxed">How To Use the HPSF API
+     <div name="tsUpdate" data-id="t_0b5fd8fa78ee410b9bb724853843281b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>This HOW-TO is organized in four sections. You should read them sequentially because the later sections build upon the earlier ones.
+      <div name="tsUpdate" data-id="t_52a8d9494e8e45c3b5434567f6d3d93d" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>The <a href="#sec1">first section</a> explains how to <strong>read the most important standard properties</strong> of a Microsoft Office document. Standard properties are things like title, author, creation date etc. It is quite likely that you will find here what you need and don't have to read the other sections.
+       <div name="tsUpdate" data-id="t_2d96a7c08e834a59b6ae66d3324b46c5" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <a href="#sec2">second section</a> goes a small step further and focuses on <strong>reading additional standard properties</strong>. It also talks about <strong>exceptions</strong> that may be thrown when dealing with HPSF and shows how you can <strong>read properties of embedded objects</strong>.
+       <div name="tsUpdate" data-id="t_4d66f41350614bbda6ae27dad6915342" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <a href="#sec3">third section</a> explains how to <strong>write standard properties</strong>. HPSF provides some high-level classes and methods which make writing of standard properties easy. They are based on the low-level writing functions explained in the <a href="#sec3">fifth section</a>.
+       <div name="tsUpdate" data-id="t_befb476089b44689a7adee813b50297f" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <a href="#sec4">fourth section</a> tells how to <strong>read non-standard properties</strong>. Non-standard properties are application-specific triples consisting of an ID, a type, and a value.
+       <div name="tsUpdate" data-id="t_ea61c5d263d04a78ab733827e46967f0" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <a href="#sec5">fifth section</a> tells you how to <strong>write property set streams</strong> using HPSF's low-level methods. You have to understand the <a href="#sec3">fourth section</a> before you should think about low-level writing properties. Check the Javadoc API documentation to find out about the details!
+       <div name="tsUpdate" data-id="t_5a9732c40b854dcf977845a4207774f0" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_7f3b26dd3142417da4f4484b4b9bd0d7" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       <strong>Please note:</strong> HPSF's writing functionality is <strong>not</strong> present in POI releases up to and including 2.5. In order to write properties you have to download a 3.0.x POI release, or retrieve the POI development version from the <a href="../../devel/subversion.html">Subversion repository</a>.
+       <div name="tsUpdate" data-id="t_47ac10c869db479b9b73e797de79ee06" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <a name="sec1" id="sec1"></a><a name="Reading+Standard+Properties"></a>
+     <h3 class="boxed">Reading Standard Properties
+      <div name="tsUpdate" data-id="t_9f808c1318b54c3f9cc010f2b3a0438c" data-tpl="0" data-txt-color="orange"></div></h3>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_3d91d567966a4bbc8fee9bc398bcccc9" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This section explains how to read the most important standard properties of a Microsoft Office document. Standard properties are things like title, author, creation date etc. This section introduces the <strong>summary information stream</strong> which is used to keep these properties. Chances are that you will find here what you need and don't have to read the other sections.
+       <div name="tsUpdate" data-id="t_a6921956083a4b689ff518a9a3a31caa" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>If all you are interested in is getting the textual content of all the document properties, such as for full text indexing, then take a look at <span class="codefrag">org.apache.poi.hpsf.extractor.HPSFPropertiesExtractor</span>. However, if you want full access to the properties, please read on!
+      <div name="tsUpdate" data-id="t_f8e53500131347f994dc522a6e3eba8b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The first thing you should understand is that a Microsoft Office file is not one large bunch of bytes but has an internal filesystem structure with files and directories. You can access these files and directories using the <a href="../poifs/index.html">POI filesystem (POIFS)</a> provides. A file or document in a POI filesystem is also called a <strong>stream</strong> - The properties of, say, an Excel document are stored apart of the actual spreadsheet data in separate streams. The good new is that this separation makes the properties independent of the concrete Microsoft Office file. In the following text we will always say "POI filesystem" instead of "Microsoft Office file" because a POI filesystem is not necessarily created by or for a Microsoft Office application, because it is shorter, and because we want to avoid the name of That Redmond Company.
+      <div name="tsUpdate" data-id="t_b77b41f0f63d41a19d575947e0b8792b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The following example shows how to read the "title" property. Reading other properties is similar. Consider the API documentation of the class <span class="codefrag">org.apache.poi.hpsf.SummaryInformation</span> to learn which methods are available.
+      <div name="tsUpdate" data-id="t_f862a28a7a604280bf0f3aabd50afdaa" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The standard properties this section focuses on can be found in a document called <em>\005SummaryInformation</em> located in the root of the POI filesystem. The notation <em>\005</em> in the document's name means the character with a decimal value of 5. In order to read the "title" property, an application has to perform the following steps:
+      <div name="tsUpdate" data-id="t_6f24d21f72744502b83cefd66ca2e838" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>Open the document <em>\005SummaryInformation</em> located in the root of the POI filesystem.
+       <div name="tsUpdate" data-id="t_c356fd8a685b4acc98fa3d1fb1230c86" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Create an instance of the class <span class="codefrag">SummaryInformation</span> from that document.
+       <div name="tsUpdate" data-id="t_321460ee44af43df8330706b5e342985" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Call the <span class="codefrag">SummaryInformation</span> instance's <span class="codefrag">getTitle()</span> method.
+       <div name="tsUpdate" data-id="t_cc8263955be94a3caa24b9395def9264" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <p>Sounds easy, doesn't it? Here are the steps in detail.
+      <div name="tsUpdate" data-id="t_baa3fcd1fb4c4e2ba35b12cd043856ea" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Open+the+document+%5C005SummaryInformation+in+the+root+of+the%0A+++++++POI+filesystem"></a>
+     <h4>Open the document \005SummaryInformation in the root of the POI filesystem
+      <div name="tsUpdate" data-id="t_bc141d8c62bc45ad929cfc973ba28937" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>An application that wants to open a document in a POI filesystem (POIFS) proceeds as shown by the following code fragment. The full source code of the sample application is available in the <em>examples</em> section of the POI source tree as <em>ReadTitle.java</em>.
+      <div name="tsUpdate" data-id="t_1279c594fc174a94a97a424ee16f380c" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.poifs.eventfilesystem.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// ...</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_c4787dfdab4f4539ad7103afb9992c89" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public static void main(String[] args)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throws IOException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final String filename = args[0];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> POIFSReader r = new POIFSReader();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.registerListener(new MyPOIFSReaderListener(),</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "\005SummaryInformation");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.read(new FileInputStream(filename));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>The first interesting statement is
+      <div name="tsUpdate" data-id="t_3b1090559af04d3c844f243756ff5cbc" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSReader r = new POIFSReader();</span>
+      </div>
+     </div>
+     <p>It creates a <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReader</span> instance which we shall need to read the POI filesystem. Before the application actually opens the POI filesystem we have to tell the <span class="codefrag">POIFSReader</span> which documents we are interested in. In this case the application should do something with the document <em>\005SummaryInformation</em>.
+      <div name="tsUpdate" data-id="t_b2b5ca1890af453c963ae6cbe49ec5d7" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r.registerListener(new MyPOIFSReaderListener(),</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "\005SummaryInformation");</span>
+      </div>
+     </div>
+     <p>This method call registers a <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderListener</span> with the <span class="codefrag">POIFSReader</span>. The <span class="codefrag">POIFSReaderListener</span> interface specifies the method <span class="codefrag">processPOIFSReaderEvent()</span> which processes a document. The class <span class="codefrag">MyPOIFSReaderListener</span> implements the <span class="codefrag">POIFSReaderListener</span> and thus the <span class="codefrag">processPOIFSReaderEvent()</span> method. The eventing POI filesystem calls this method when it finds the <em>\005SummaryInformation</em> document. In the sample application <span class="codefrag">MyPOIFSReaderListener</span> is a static class in the <em>ReadTitle.java</em> source file.
+      <div name="tsUpdate" data-id="t_868a1a1b85e44a6f91ee5da2493e9569" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Now everything is prepared and reading the POI filesystem can start:
+      <div name="tsUpdate" data-id="t_8f72a11c4c15440eb4e1f43d0cb84274" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r.read(new FileInputStream(filename));</span>
+      </div>
+     </div>
+     <p>The following source code fragment shows the <span class="codefrag">MyPOIFSReaderListener</span> class and how it retrieves the title.
+      <div name="tsUpdate" data-id="t_981237305d464a0fadf231c054541476" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">static class MyPOIFSReaderListener implements POIFSReaderListener</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void processPOIFSReaderEvent(POIFSReaderEvent event)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> SummaryInformation si = null;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> si = (SummaryInformation)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> PropertySetFactory.create(event.getStream());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> catch (Exception ex)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throw new RuntimeException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ("Property set stream \"" +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> event.getPath() + event.getName() + "\": " + ex);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final String title = si.getTitle();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (title != null)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Title: \"" + title + "\"");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> else</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Document has no title.");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>The line
+      <div name="tsUpdate" data-id="t_ee7d8755b32f4e09bc87f80e59ead111" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SummaryInformation si = null;</span>
+      </div>
+     </div>
+     <p>declares a <span class="codefrag">SummaryInformation</span> variable and initializes it with <span class="codefrag">null</span>. We need an instance of this class to access the title. The instance is created in a <span class="codefrag">try</span> block:
+      <div name="tsUpdate" data-id="t_ad91e43207ac412ea39588f56f332964" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">si = (SummaryInformation)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> PropertySetFactory.create(event.getStream());</span>
+      </div>
+     </div>
+     <p>The expression <span class="codefrag">event.getStream()</span> returns the input stream containing the bytes of the property set stream named <em>\005SummaryInformation</em>. This stream is passed into the <span class="codefrag">create</span> method of the factory class <span class="codefrag">org.apache.poi.hpsf.PropertySetFactory</span> which returns a <span class="codefrag">org.apache.poi.hpsf.PropertySet</span> instance. It is more or less safe to cast this result to <span class="codefrag">SummaryInformation</span>, a convenience class with methods like <span class="codefrag">getTitle()</span>, <span class="codefrag">getAuthor()</span> etc.
+      <div name="tsUpdate" data-id="t_76d23b47247f461f9da63246e0139a0a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <span class="codefrag">PropertySetFactory.create()</span> method may throw all sorts of exceptions. We'll deal with them in the next sections. For now we just catch all exceptions and throw a <span class="codefrag">RuntimeException</span> containing the message text of the origin exception.
+      <div name="tsUpdate" data-id="t_9f3cc1b37bd2461e82cae3acd544ae7f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If all goes well, the sample application retrieves the title and prints it to the standard output. As you can see you must be prepared for the case that the POI filesystem does not have a title.
+      <div name="tsUpdate" data-id="t_550f4aaa1e3d401582beec5203368685" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final String title = si.getTitle();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (title != null)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Title: \"" + title + "\"");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">else</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Document has no title.");</span>
+      </div>
+     </div>
+     <p>Please note that a POI filesystem does not necessarily contain the <em>\005SummaryInformation</em> stream. The documents created by the Microsoft Office suite have one, as far as I know. However, an Excel spreadsheet exported from StarOffice 5.2 won't have a <em>\005SummaryInformation</em> stream. In this case the applications won't throw an exception but simply does not call the <span class="codefrag">processPOIFSReaderEvent</span> method. You have been warned!
+      <div name="tsUpdate" data-id="t_47a69bc4261946f3814c2307fa63e080" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="sec2" id="sec2"></a><a name="Additional+Standard+Properties%2C+Exceptions+And+Embedded%0A++++Objects"></a>
+     <h3 class="boxed">Additional Standard Properties, Exceptions And Embedded Objects
+      <div name="tsUpdate" data-id="t_187fd9cb367f4b8595c76862ca26c2b9" data-tpl="0" data-txt-color="orange"></div></h3>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_fd8b5cf0115c419da014e0db1ebb166d" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This section focusses on reading additional standard properties which are kept in the <strong>document summary information</strong> stream. It also talks about exceptions that may be thrown when dealing with HPSF and shows how you can read properties of embedded objects.
+       <div name="tsUpdate" data-id="t_f6b3375391cf48adb8aab240d8643e9c" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>A couple of <strong>additional standard properties</strong> are not contained in the <em>\005SummaryInformation</em> stream explained above. Examples for such properties are a document's category or the number of multimedia clips in a PowerPoint presentation. Microsoft has invented an additional stream named <em>\005DocumentSummaryInformation</em> to hold these properties. With two minor exceptions you can proceed exactly as described above to read the properties stored in <em>\005DocumentSummaryInformation</em>:
+      <div name="tsUpdate" data-id="t_f8e3e01dd2bb404b87e8bbf89c459f82" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Instead of <em>\005SummaryInformation</em> use <em>\005DocumentSummaryInformation</em> as the stream's name.
+       <div name="tsUpdate" data-id="t_7639dfa2391b41bba1503ddeccb4da9a" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Replace all occurrences of the class <span class="codefrag">SummaryInformation</span> by <span class="codefrag">DocumentSummaryInformation</span>.
+       <div name="tsUpdate" data-id="t_5f930140aa814d28a0b524d821d76fc0" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>And of course you cannot call <span class="codefrag">getTitle()</span> because <span class="codefrag">DocumentSummaryInformation</span> has different query methods, e.g. <span class="codefrag">getCategory</span>. See the Javadoc API documentation for the details.
+      <div name="tsUpdate" data-id="t_b94595891b5a429da42173ecabaff334" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In the previous section the application simply caught all <strong>exceptions</strong> and was in no way interested in any details. However, a real application will likely want to know what went wrong and act appropriately. Besides any I/O exceptions there are three HPSF resp. POI specific exceptions you should know about:
+      <div name="tsUpdate" data-id="t_5491fc61d1904a85922e977bb016250f" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>
+       <span class="codefrag">NoPropertySetStreamException</span>:
+      </dt>
+      <dd>
+       This exception is thrown if the application tries to create a <span class="codefrag">PropertySet</span> instance from a stream that is not a property set stream. (<span class="codefrag">SummaryInformation</span> and <span class="codefrag">DocumentSummaryInformation</span> are subclasses of <span class="codefrag">PropertySet</span>.) A faulty property set stream counts as not being a property set stream at all. An application should be prepared to deal with this case even if it opens streams named <em>\005SummaryInformation</em> or <em>\005DocumentSummaryInformation</em>. These are just names. A stream's name by itself does not ensure that the stream contains the expected contents and that this contents is correct.
+      </dd>
+      <dt>
+       <span class="codefrag">UnexpectedPropertySetTypeException</span>
+      </dt>
+      <dd>
+       This exception is thrown if a certain type of property set is expected somewhere (e.g. a <span class="codefrag">SummaryInformation</span> or <span class="codefrag">DocumentSummaryInformation</span>) but the provided property set is not of that type.
+      </dd>
+      <dt>
+       <span class="codefrag">MarkUnsupportedException</span>
+      </dt>
+      <dd>
+       This exception is thrown if an input stream that is to be parsed into a property set does not support the <span class="codefrag">InputStream.mark(int)</span> operation. The POI filesystem uses the <span class="codefrag">DocumentInputStream</span> class which does support this operation, so you are safe here. However, if you read a property set stream from another kind of input stream things may be different.
+      </dd>
+     </dl>
+     <p>Many Microsoft Office documents contain <strong>embedded objects</strong>, for example an Excel sheet within a Word document. Embedded objects may have property sets of their own. An application can open these property set streams as described above. The only difference is that they are not located in the POI filesystem's root but in a <strong>nested directory</strong> instead. Just register a <span class="codefrag">POIFSReaderListener</span> for the property set streams you are interested in.
+      <div name="tsUpdate" data-id="t_b0332a58835b4020afd3a48f46895bdf" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="sec3" id="sec3"></a><a name="Writing+Standard+Properties"></a>
+     <h3 class="boxed">Writing Standard Properties
+      <div name="tsUpdate" data-id="t_168c24203b4c474384e02c0d76951ef8" data-tpl="0" data-txt-color="orange"></div></h3>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_10a259e8dfd54538809cab72508d2039" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This section explains how to <strong>write standard properties</strong>. HPSF provides some high-level classes and methods which make writing of standard properties easy. They are based on the low-level writing functions explained in <a href="#sec4">another section</a>.
+       <div name="tsUpdate" data-id="t_2922edb37f054489a0c64e773387275b" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>As explained above, standard properties are located in the summary information and document summary information streams of typical POI filesystems. You have already learned about the classes <span class="codefrag">SummaryInformation</span> and <span class="codefrag">DocumentSummaryInformation</span> and their <span class="codefrag">get...()</span> methods for reading standard properties. These classes also provide <span class="codefrag">set...()</span> methods for writing properties.
+      <div name="tsUpdate" data-id="t_83b3ec6d66e941feb350748114b2d533" data-tpl="0" data-txt-color="green"></div></p>
+     <p>After setting properties in <span class="codefrag">SummaryInformation</span> or <span class="codefrag">DocumentSummaryInformation</span> you have to write them to a disk file. The following sample program shows how you can
+      <div name="tsUpdate" data-id="t_f36922d99516453089696a7c9f9ba578" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>read a disk file into a POI filesystem,
+       <div name="tsUpdate" data-id="t_a3a736a4fe914f8c9af7a7a7fec8d192" data-tpl="0" data-txt-color="green"></div></li>
+      <li>read the document summary information from the POI filesystem,
+       <div name="tsUpdate" data-id="t_410264077b504cf2a32f2af2d3dc2ccb" data-tpl="0" data-txt-color="green"></div></li>
+      <li>set a property to a new value,
+       <div name="tsUpdate" data-id="t_657f6e79e8944bef9252a2ed7ac77010" data-tpl="0" data-txt-color="green"></div></li>
+      <li>write the modified document summary information back to the POI filesystem, and
+       <div name="tsUpdate" data-id="t_9618751eeb0e4fc2ac2c6925f66c9501" data-tpl="0" data-txt-color="green"></div></li>
+      <li>write the POI filesystem to a disk file.
+       <div name="tsUpdate" data-id="t_dc541e58c8b84a35b286e14958c0b2d2" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <p>The complete source code of this program is available as <em>ModifyDocumentSummaryInformation.java</em> in the <em>examples</em> section of the POI source tree.
+      <div name="tsUpdate" data-id="t_70706fdfa14144ff8acdaef4c22427af" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_b65c5810277e49bc96b1503773307190" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       Dealing with the summary information stream is analogous to handling the document summary information and therefore does not need to be explained here in detailed. See the HPSF API documentation to learn about the <span class="codefrag">set...()</span> methods of the class <span class="codefrag">SummaryInformation</span>.
+       <div name="tsUpdate" data-id="t_557780ace09f4c68bb9be28f4a55b0ce" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>The first step is to read the POI filesystem into memory:
+      <div name="tsUpdate" data-id="t_fb0648cfbe7640ea8d0ed97f99ad6df4" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">InputStream is = new FileInputStream(poiFilesystem);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSFileSystem poifs = new POIFSFileSystem(is);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">is.close();</span>
+      </div>
+     </div>
+     <p>The code snippet above assumes that the variable <span class="codefrag">poiFilesystem</span> holds the name of a disk file. It reads the file from an input stream and creates a <span class="codefrag">POIFSFileSystem</span> object in memory. After having read the file, the input stream should be closed as shown.
+      <div name="tsUpdate" data-id="t_aa5fe3229b004af4a9d647a9b83d92f7" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In order to read the document summary information stream the application must open the element <em>\005DocumentSummaryInformation</em> in the POI filesystem's root directory. However, the POI filesystem does not necessarily contain a document summary information stream, and the application should be able to deal with that situation. The following code does so by creating a new <span class="codefrag">DocumentSummaryInformation</span> if there is none in the POI filesystem:
+      <div name="tsUpdate" data-id="t_40b35fb0023d413795dad6562f8a802d" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry dir = poifs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentSummaryInformation dsi;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentEntry dsiEntry = (DocumentEntry)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dir.getEntry(DocumentSummaryInformation.DEFAULT_STREAM_NAME);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentInputStream dis = new DocumentInputStream(dsiEntry);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> PropertySet ps = new PropertySet(dis);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dis.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dsi = new DocumentSummaryInformation(ps);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">catch (FileNotFoundException ex)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* There is no document summary information. We have to create a</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * new one. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dsi = PropertySetFactory.newDocumentSummaryInformation();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p>In the source code above the statement
+      <div name="tsUpdate" data-id="t_4d1475893e7f41f392eee3af0a991315" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry dir = poifs.getRoot();</span>
+      </div>
+     </div>
+     <p>gets hold of the POI filesystem's root directory as a <span class="codefrag">DirectoryEntry</span>. The <span class="codefrag">getEntry()</span> method of this class is used to access a file or directory entry in a directory. However, if the file to be opened does not exist, a <span class="codefrag">FileNotFoundException</span> will be thrown. Therefore opening the document summary information entry should be done in a <span class="codefrag">try</span> block:
+      <div name="tsUpdate" data-id="t_f5616089c84d49a2abddce9f918cec84" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentEntry dsiEntry = (DocumentEntry)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dir.getEntry(DocumentSummaryInformation.DEFAULT_STREAM_NAME);</span>
+      </div>
+     </div>
+     <p><span class="codefrag">DocumentSummaryInformation.DEFAULT_STREAM_NAME</span> represents the string "\005DocumentSummaryInformation", i.e. the standard name of a document summary information stream. If this stream exists, the <span class="codefrag">getEntry()</span> method returns a <span class="codefrag">DocumentEntry</span>. To read the <span class="codefrag">DocumentEntry</span>'s contents, create a <span class="codefrag">DocumentInputStream</span>:
+      <div name="tsUpdate" data-id="t_4353515520464876b947f257b0da7bc2" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentInputStream dis = new DocumentInputStream(dsiEntry);</span>
+      </div>
+     </div>
+     <p>Up to this point we have used POI's <a href="../poifs/index.html">POIFS component</a>. Now HPSF enters the stage. A property set is created from the input stream's data:
+      <div name="tsUpdate" data-id="t_cd430704e322446daedbd44d26f8756d" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> PropertySet ps = new PropertySet(dis);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dis.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dsi = new DocumentSummaryInformation(ps); </span>
+      </div>
+     </div>
+     <p>If the data really constitutes a property set, a <span class="codefrag">PropertySet</span> object is created. Otherwise a <span class="codefrag">NoPropertySetStreamException</span> is thrown. After having read the data from the input stream the latter should be closed.
+      <div name="tsUpdate" data-id="t_5e37601323b34734a8491023f4cddabb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Since we know - or at least hope - that the stream named "\005DocumentSummaryInformation" is not just any property set but really contains the document summary information, we try to create a new <span class="codefrag">DocumentSummaryInformation</span> from the property set. If the stream is not document summary information stream the sample application fails with a <span class="codefrag">UnexpectedPropertySetTypeException</span>.
+      <div name="tsUpdate" data-id="t_f8efe7348244451d8549738535e0ebcb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If the POI document does not contain a document summary information stream, we can create a new one in the <span class="codefrag">catch</span> clause. The <span class="codefrag">PropertySetFactory</span>'s method <span class="codefrag">newDocumentSummaryInformation()</span> establishes a new and empty <span class="codefrag">DocumentSummaryInformation</span> instance:
+      <div name="tsUpdate" data-id="t_78ca60de1273478e8d72451ad577c503" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> dsi = PropertySetFactory.newDocumentSummaryInformation();</span>
+      </div>
+     </div>
+     <p>Whether we read the document summary information from the POI filesystem or created it from scratch, in either case we now have a <span class="codefrag">DocumentSummaryInformation</span> instance we can write to. Writing is quite simple, as the following line of code shows:
+      <div name="tsUpdate" data-id="t_c3bbf555356c4728b54b8649108e82d5" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">dsi.setCategory("POI example");</span>
+      </div>
+     </div>
+     <p>This statement sets the "category" property to "POI example". Any former "category" value will be lost. If there hasn't been a "category" property yet, a new one will be created.
+      <div name="tsUpdate" data-id="t_531ae062eeb848e0814456fa1174623d" data-tpl="0" data-txt-color="green"></div></p>
+     <p><span class="codefrag">DocumentSummaryInformation</span> of course has methods to set the other standard properties, too - look into the API documentation to see all of them.
+      <div name="tsUpdate" data-id="t_246c188af19d43219b60dfb60f4af5f9" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Once all properties are set as needed, they should be stored into the file on disk. The first step is to write the <span class="codefrag">DocumentSummaryInformation</span> into the POI filesystem:
+      <div name="tsUpdate" data-id="t_8bae7b5f249f4da7ade337d8e4a1ad5e" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">dsi.write(dir, DocumentSummaryInformation.DEFAULT_STREAM_NAME);</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">DocumentSummaryInformation</span>'s <span class="codefrag">write()</span> method takes two parameters: The first is the <span class="codefrag">DirectoryEntry</span> in the POI filesystem, the second is the name of the stream to create in the directory. If this stream already exists, it will be overwritten.
+      <div name="tsUpdate" data-id="t_c51023af5ce849b5b37f266eec3898ae" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_379bea702cd94f26a1ea0c0ea0f8ebc0" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       If you not only modified the document summary information but also the summary information you have to write both of them to the POI filesystem.
+       <div name="tsUpdate" data-id="t_2cb733f5b16f42c0ac095bd8f4f94d82" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>Still the POI filesystem is a data structure in memory only and must be written to a disk file to make it permanent. The following lines write back the POI filesystem to the file it was read from before. Please note that in production-quality code you should never write directly to the origin file, because in case of an error everything would be lost. Here it is done this way to keep the example short.
+      <div name="tsUpdate" data-id="t_9cec3dbd1ee14049b9fc7bffadcb5783" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">OutputStream out = new FileOutputStream(poiFilesystem);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">poifs.writeFilesystem(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out.close();</span>
+      </div>
+     </div>
+     <a name="User-Defined+Properties"></a>
+     <h4>User-Defined Properties
+      <div name="tsUpdate" data-id="t_6ec94912a0d841c485839e36ec2b1080" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>If you compare the source code excerpts above with the file containing the full source code, you will notice that I left out some following lines of code. The are dealing with the special topic of custom properties.
+      <div name="tsUpdate" data-id="t_992f1fbed24a4fd6b7a7fdb85f4fdea6" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentSummaryInformation dsi = ...</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">...</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CustomProperties customProperties = dsi.getCustomProperties();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (customProperties == null)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> customProperties = new CustomProperties();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Insert some custom properties into the container. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">customProperties.put("Key 1", "Value 1");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">customProperties.put("Schlüssel 2", "Wert 2");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">customProperties.put("Sample Number", new Integer(12345));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">customProperties.put("Sample Boolean", new Boolean(true));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">customProperties.put("Sample Date", new Date());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Read a custom property. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Object value = customProperties.get("Sample Number");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Write the custom properties back to the document summary</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * information. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">dsi.setCustomProperties(customProperties);</span>
+      </div>
+     </div>
+     <p>Custom properties are properties the user can define himself. Using for example Microsoft Word he can define these extra properties and give each of them a <strong>name</strong>, a <strong>type</strong> and a <strong>value</strong>. The custom properties are stored in the document information summary along with the standard properties.
+      <div name="tsUpdate" data-id="t_754159b49b914997a02a69afa72d0aa2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The source code example shows how to retrieve the custom properties as a whole from a <span class="codefrag">DocumentSummaryInformation</span> instance using the <span class="codefrag">getCustomProperties()</span> method. The result is a <span class="codefrag">CustomProperties</span> instance or <span class="codefrag">null</span> if no user-defined properties exist.
+      <div name="tsUpdate" data-id="t_5e88d4ee656c4eacaad9a4a8839422f2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Since <span class="codefrag">CustomProperties</span> implements the <span class="codefrag">Map</span> interface you can read and write properties with the usual <span class="codefrag">Map</span> methods. However, <span class="codefrag">CustomProperties</span> poses some restrictions on the types of keys and values.
+      <div name="tsUpdate" data-id="t_9ef9209e64bc4ce99c648f25359ba553" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>The <strong>key</strong> is a string.
+       <div name="tsUpdate" data-id="t_7c39e40263bb4875a5ad5555f3449cba" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <strong>value</strong> is one of <span class="codefrag">String</span>, <span class="codefrag">Boolean</span>, <span class="codefrag">Long</span>, <span class="codefrag">Integer</span>, <span class="codefrag">Short</span>, or <span class="codefrag">java.util.Date</span>.
+       <div name="tsUpdate" data-id="t_baa8323b2fc4401d8b26ab356064a8fe" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>The <span class="codefrag">CustomProperties</span> class has been designed for easy access using just keys and values. The underlying Microsoft-specific custom properties data structure is more complicated. However, it does not provide noteworthy additional benefits. It is possible to have multiple properties with the same name or properties without a name at all. When reading custom properties from a document summary information stream, the <span class="codefrag">CustomProperties</span> class ignores properties without a name and keeps only the "last" (whatever that means) of those properties having the same name. You can find out whether a <span class="codefrag">CustomProperties</span> instance dropped any properties with the <span class="codefrag">isPure()</span> method.
+      <div name="tsUpdate" data-id="t_a3fffabd9bf340d2b760a72d37998ac4" data-tpl="0" data-txt-color="green"></div></p>
+     <p>You can read and write the full spectrum of custom properties with HPSF's low-level methods. They are explained in the <a href="#sec4">next section</a>.
+      <div name="tsUpdate" data-id="t_055245aed1ba48f5a0e02b070766e147" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="sec4" id="sec4"></a><a name="Reading+Non-Standard+Properties"></a>
+     <h3 class="boxed">Reading Non-Standard Properties
+      <div name="tsUpdate" data-id="t_5cc2424ddbd24a278ee1310849eec3a1" data-tpl="0" data-txt-color="orange"></div></h3>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_fa8fee51f6ed4a81b17aba81aa8f9b39" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This section tells how to read non-standard properties. Non-standard properties are application-specific ID/type/value triples.
+       <div name="tsUpdate" data-id="t_ad3dbb06d9c24c66bcd7183d99c6f325" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <a name="Overview"></a>
+     <h4>Overview
+      <div name="tsUpdate" data-id="t_9b87a725cdda425dbca8e10e2c3401ae" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Now comes the real hardcode stuff. As mentioned above, <span class="codefrag">SummaryInformation</span> and <span class="codefrag">DocumentSummaryInformation</span> are just special cases of the general concept of a property set. This concept says that a <strong>property set</strong> consists of properties and that each <strong>property</strong> is an entity with an <strong>ID</strong>, a <strong>type</strong>, and a <strong>value</strong>.
+      <div name="tsUpdate" data-id="t_bc789faf2d3944049b885b9514749407" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Okay, that was still rather easy. However, to make things more complicated, Microsoft in its infinite wisdom decided that a property set shalt be broken into one or more <strong>sections</strong>. Each section holds a bunch of properties. But since that's still not complicated enough, a section may have an optional <strong>dictionary</strong> that maps property IDs to <strong>property names</strong> - we'll explain later what that means.
+      <div name="tsUpdate" data-id="t_31e12188247c4685a3f7fd06504ed93e" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The procedure to get to the properties is the following:
+      <div name="tsUpdate" data-id="t_79e8bd16f43e425685dabf26ea65d52c" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>Use the <strong><span class="codefrag">PropertySetFactory</span></strong> class to create a <span class="codefrag">PropertySet</span> object from a property set stream. If you don't know whether an input stream is a property set stream, just try to call <span class="codefrag">PropertySetFactory.create(java.io.InputStream)</span>: You'll either get a <span class="codefrag">PropertySet</span> instance returned or an exception is thrown.
+       <div name="tsUpdate" data-id="t_7e01feb144504d45b74449c3b8bc92cb" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Call the <span class="codefrag">PropertySet</span>'s method <span class="codefrag">getSections()</span> to get the sections contained in the property set. Each section is an instance of the <span class="codefrag">Section</span> class.
+       <div name="tsUpdate" data-id="t_a0b1257332674eb1b212685ba17c7444" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Each section has a format ID. The format ID of the first section in a property set determines the property set's type. For example, the first (and only) section of the summary information property set has a format ID of <span class="codefrag">F29F85E0-4FF9-1068-AB-91-08-00-2B-27-B3-D9</span>. You can get the format ID with <span class="codefrag">Section.getFormatID()</span>.
+       <div name="tsUpdate" data-id="t_077374dfd8a3467bbe5ff4d96a7b2bee" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The properties contained in a <span class="codefrag">Section</span> can be retrieved with <span class="codefrag">Section.getProperties()</span>. The result is an array of <span class="codefrag">Property</span> instances.
+       <div name="tsUpdate" data-id="t_7f54867df10444f3b1925870741fd1bf" data-tpl="0" data-txt-color="green"></div></li>
+      <li>A property has a name, a type, and a value. The <span class="codefrag">Property</span> class has methods to retrieve them.
+       <div name="tsUpdate" data-id="t_3c8c40dfefd74a92b3427fe9b32302a9" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <a name="A+Sample+Application"></a>
+     <h4>A Sample Application
+      <div name="tsUpdate" data-id="t_d976ce13983b46cc938636a47bd79595" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Let's have a look at a sample Java application that dumps all property set streams contained in a POI file system. The full source code of this program can be found as <em>ReadCustomPropertySets.java</em> in the <em>examples</em> area of the POI source code tree. Here are the key sections:
+      <div name="tsUpdate" data-id="t_3ede541e976544939f289edf170c9fa4" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.util.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.poifs.eventfilesystem.*;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.util.HexDump;</span>
+      </div>
+     </div>
+     <p>The most important package the application needs is <span class="codefrag">org.apache.poi.hpsf.*</span>. This package contains the HPSF classes. Most classes named below are from the HPSF package. Of course we also need the POIFS event file system's classes and <span class="codefrag">java.io.*</span> since we are dealing with POI I/O. From the <span class="codefrag">java.util</span> package we use the <span class="codefrag">List</span> and <span class="codefrag">Iterator</span> class. The class <span class="codefrag">org.apache.poi.util.HexDump</span> provides a methods to dump byte arrays as nicely formatted strings.
+      <div name="tsUpdate" data-id="t_cbc74bed743e4a90b02f6f66fe1341d7" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public static void main(String[] args)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throws IOException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final String filename = args[0];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> POIFSReader r = new POIFSReader();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Register a listener for *all* documents. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.registerListener(new MyPOIFSReaderListener());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.read(new FileInputStream(filename));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">POIFSReader</span> is set up in a way that the listener <span class="codefrag">MyPOIFSReaderListener</span> is called on every file in the POI file system.
+      <div name="tsUpdate" data-id="t_9b1c643fcd1b492ca4fc5741b3246a51" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="The+Property+Set"></a>
+     <h4>The Property Set
+      <div name="tsUpdate" data-id="t_c12f7ff043a2440c9e083faaf1193619" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The listener class tries to create a <span class="codefrag">PropertySet</span> from each stream using the <span class="codefrag">PropertySetFactory.create()</span> method:
+      <div name="tsUpdate" data-id="t_cb036052772c41b1b22f086e28919b18" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">static class MyPOIFSReaderListener implements POIFSReaderListener</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void processPOIFSReaderEvent(POIFSReaderEvent event)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> PropertySet ps = null;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ps = PropertySetFactory.create(event.getStream());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> catch (NoPropertySetStreamException ex)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out("No property set stream: \"" + event.getPath() +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> event.getName() + "\"");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> catch (Exception ex)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throw new RuntimeException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ("Property set stream \"" +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> event.getPath() + event.getName() + "\": " + ex);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Print the name of the property set stream: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out("Property set stream \"" + event.getPath() +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> event.getName() + "\":");</span>
+      </div>
+     </div>
+     <p>Creating the <span class="codefrag">PropertySet</span> is done in a <span class="codefrag">try</span> block, because not each stream in the POI file system contains a property set. If it is some other file, the <span class="codefrag">PropertySetFactory.create()</span> throws a <span class="codefrag">NoPropertySetStreamException</span>, which is caught and logged. Then the program continues with the next stream. However, all other types of exceptions cause the program to terminate by throwing a runtime exception. If all went well, we can print the name of the property set stream.
+      <div name="tsUpdate" data-id="t_d2a675abdf984b65a0e1bf9c5c51842c" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="The+Sections"></a>
+     <h4>The Sections
+      <div name="tsUpdate" data-id="t_f2d70d365f6e4dbbb0e4748c8134b3bf" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The next step is to print the number of sections followed by the sections themselves:
+      <div name="tsUpdate" data-id="t_bdcde3591aa94d94ab6a0b4052ab34dd" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Print the number of sections: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final long sectionCount = ps.getSectionCount();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" No. of sections: " + sectionCount);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Print the list of sections: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">List sections = ps.getSections();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int nr = 0;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (Iterator i = sections.iterator(); i.hasNext();)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Print a single section: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Section sec = (Section) i.next();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // See below for the complete loop body.</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_1e45c6ed72854f6bb4c30a0c41fd700c" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">PropertySet</span>'s method <span class="codefrag">getSectionCount()</span> returns the number of sections.
+      <div name="tsUpdate" data-id="t_5f967b9e618044a5891aaece7f362d89" data-tpl="0" data-txt-color="green"></div></p>
+     <p>To retrieve the sections, use the <span class="codefrag">getSections()</span> method. This method returns a <span class="codefrag">java.util.List</span> containing instances of the <span class="codefrag">Section</span> class in their proper order.
+      <div name="tsUpdate" data-id="t_71bae27ff4244710842e3cbc4c295cef" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The sample code shows a loop that retrieves the <span class="codefrag">Section</span> objects one by one and prints some information about each one. Here is the complete body of the loop:
+      <div name="tsUpdate" data-id="t_4c3a2f629d5541e7941c5f668c8c8728" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Print a single section: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Section sec = (Section) i.next();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" Section " + nr++ + ":");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">String s = hex(sec.getFormatID().getBytes());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">s = s.substring(0, s.length() - 1);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" Format ID: " + s);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Print the number of properties in this section. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int propertyCount = sec.getPropertyCount();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" No. of properties: " + propertyCount);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/* Print the properties: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Property[] properties = sec.getProperties();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (int i2 = 0; i2 &lt; properties.length; i2++)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Print a single property: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property p = properties[i2];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int id = p.getID();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> long type = p.getType();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Object value = p.getValue();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out(" Property ID: " + id + ", type: " + type +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ", value: " + value);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <a name="The+Section%27s+Format+ID"></a>
+     <h4>The Section's Format ID
+      <div name="tsUpdate" data-id="t_e6ae4c989c5146e1999677dcabc6895b" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The first method called on the <span class="codefrag">Section</span> instance is <span class="codefrag">getFormatID()</span>. As explained above, the format ID of the first section in a property set determines the type of the property set. Its type is <span class="codefrag">ClassID</span> which is essentially a sequence of 16 bytes. A real application using its own type of a custom property set should have defined a unique format ID and, when reading a property set stream, should check the format ID is equal to that unique format ID. The sample program just prints the format ID it finds in a section:
+      <div name="tsUpdate" data-id="t_409fabdf831c44b5baad73d3312314fc" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">String s = hex(sec.getFormatID().getBytes());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">s = s.substring(0, s.length() - 1);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" Format ID: " + s);</span>
+      </div>
+     </div>
+     <p>As you can see, the <span class="codefrag">getFormatID()</span> method returns a <span class="codefrag">ClassID</span> object. An array containing the bytes can be retrieved with <span class="codefrag">ClassID.getBytes()</span>. In order to get a nicely formatted printout, the sample program uses the <span class="codefrag">hex()</span> helper method which in turn uses the POI utility class <span class="codefrag">HexDump</span> in the <span class="codefrag">org.apache.poi.util</span> package. Another helper method is <span class="codefrag">out()</span> which just saves typing <span class="codefrag">System.out.println()</span>.
+      <div name="tsUpdate" data-id="t_582dc38c8dd14dfe90d323ead3c22100" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="The+Properties"></a>
+     <h4>The Properties
+      <div name="tsUpdate" data-id="t_9441f7cd6d3c49deb7a09f3f496d1114" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Before getting the properties, it is possible to find out how many properties are available in the section via the <span class="codefrag">Section.getPropertyCount()</span>. The sample application uses this method to print the number of properties to the standard output:
+      <div name="tsUpdate" data-id="t_4bb26775cb804f8fbbe13143f4600085" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int propertyCount = sec.getPropertyCount();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out(" No. of properties: " + propertyCount);</span>
+      </div>
+     </div>
+     <p>Now its time to get to the properties themselves. You can retrieve a section's properties with the method <span class="codefrag">Section.getProperties()</span>:
+      <div name="tsUpdate" data-id="t_adc6f6c020254ec3a7326657688436db" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Property[] properties = sec.getProperties();</span>
+      </div>
+     </div>
+     <p>As you can see the result is an array of <span class="codefrag">Property</span> objects. This class has three methods to retrieve a property's ID, its type, and its value. The following code snippet shows how to call them:
+      <div name="tsUpdate" data-id="t_71118e347fb34d84a041eae1f9a5a53e" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (int i2 = 0; i2 &lt; properties.length; i2++)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Print a single property: */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property p = properties[i2];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int id = p.getID();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> long type = p.getType();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Object value = p.getValue();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out(" Property ID: " + id + ", type: " + type +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ", value: " + value);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <a name="Sample+Output"></a>
+     <h4>Sample Output
+      <div name="tsUpdate" data-id="t_fc8ca4d32e534566a16548b7a09876d7" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The output of the sample program might look like the following. It shows the summary information and the document summary information property sets of a Microsoft Word document. However, unlike the first and second section of this HOW-TO the application does not have any code which is specific to the <span class="codefrag">SummaryInformation</span> and <span class="codefrag">DocumentSummaryInformation</span> classes.
+      <div name="tsUpdate" data-id="t_d22f0051412b4808ba0b354241447486" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Property set stream "/SummaryInformation":</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> No. of sections: 1</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Section 0:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Format ID: 00000000 F2 9F 85 E0 4F F9 10 68 AB 91 08 00 2B 27 B3 D9 ....O..h....+'..</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> No. of properties: 17</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 1, type: 2, value: 1252</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 2, type: 30, value: Titel</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 3, type: 30, value: Thema</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 4, type: 30, value: Rainer Klute (Autor)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 5, type: 30, value: Test (Stichwörter)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 6, type: 30, value: This is a document for testing HPSF</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 7, type: 30, value: Normal.dot</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 8, type: 30, value: Unknown User</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 9, type: 30, value: 3</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 18, type: 30, value: Microsoft Word 9.0</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 12, type: 64, value: Mon Jan 01 00:59:25 CET 1601</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 13, type: 64, value: Thu Jul 18 16:22:00 CEST 2002</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 14, type: 3, value: 1</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 15, type: 3, value: 20</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 16, type: 3, value: 93</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 19, type: 3, value: 0</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 17, type: 71, value: [B@13582d</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Property set stream "/DocumentSummaryInformation":</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> No. of sections: 2</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Section 0:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Format ID: 00000000 D5 CD D5 02 2E 9C 10 1B 93 97 08 00 2B 2C F9 AE ............+,..</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> No. of properties: 14</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 1, type: 2, value: 1252</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 2, type: 30, value: Test</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 14, type: 30, value: Rainer Klute (Manager)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 15, type: 30, value: Rainer Klute IT-Consulting GmbH</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 5, type: 3, value: 3</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 6, type: 3, value: 2</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 17, type: 3, value: 111</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 23, type: 3, value: 592636</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 11, type: 11, value: false</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 16, type: 11, value: false</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 19, type: 11, value: false</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 22, type: 11, value: false</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 13, type: 4126, value: [B@56a499</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 12, type: 4108, value: [B@506411</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Section 1:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Format ID: 00000000 D5 CD D5 05 2E 9C 10 1B 93 97 08 00 2B 2C F9 AE ............+,..</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> No. of properties: 7</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 0, type: 0, value: {6=Test-JaNein, 5=Test-Zahl, 4=Test-Datum, 3=Test-Text, 2=_PID_LINKBASE}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 1, type: 2, value: 1252</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 2, type: 65, value: [B@c9ba38</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 3, type: 30, value: This is some text.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 4, type: 64, value: Wed Jul 17 00:00:00 CEST 2002</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 5, type: 3, value: 27</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Property ID: 6, type: 11, value: true</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">No property set stream: "/WordDocument"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">No property set stream: "/CompObj"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">No property set stream: "/1Table"</span>
+      </div>
+     </div>
+     <p>There are some interesting items to note:
+      <div name="tsUpdate" data-id="t_a0d354c8fc3d4fbc8f3c93de70a54555" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>The first property set (summary information) consists of a single section, the second property set (document summary information) consists of two sections.
+       <div name="tsUpdate" data-id="t_7c5d3e1966f84e8bb6d34a3e22ab8aee" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Each section type (identified by its format ID) has its own domain of property ID. For example, in the second property set the properties with ID 2 have different meanings in the two section. By the way, the format IDs of these sections are <strong>not</strong> equal, but you have to look hard to find the difference.
+       <div name="tsUpdate" data-id="t_5edb36e6a352470a9189b6ee6ae85c8f" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The properties are not in any particular order in the section, although they slightly tend to be sorted by their IDs.
+       <div name="tsUpdate" data-id="t_e9f5fd53853141f2bc88956974ea1010" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="Property+IDs"></a>
+     <h4>Property IDs
+      <div name="tsUpdate" data-id="t_7633a47bb77946da9f34ef294b019d1c" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Properties in the same section are distinguished by their IDs. This is similar to variables in a programming language like Java, which are distinguished by their names. But unlike variable names, property IDs are simple integral numbers. There is another similarity, however. Just like a Java variable has a certain scope (e.g. a member variables in a class), a property ID also has its scope of validity: the section.
+      <div name="tsUpdate" data-id="t_5ac553322ce54cefae634cba38e3527a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Two property IDs in sections with different section format IDs don't have the same meaning even though their IDs might be equal. For example, ID 4 in the first (and only) section of a summary information property set denotes the document's author, while ID 4 in the first section of the document summary information property set means the document's byte count. The sample output above does not show a property with an ID of 4 in the first section of the document summary information property set. That means that the document does not have a byte count. However, there is a property with an ID of 4 in the <em>second</em> section: This is a user-defined property ID - we'll get to that topic in a minute.
+      <div name="tsUpdate" data-id="t_14e79f7f50b7495a87d8578943bc64cf" data-tpl="0" data-txt-color="green"></div></p>
+     <p>So, how can you find out what the meaning of a certain property ID in the summary information and the document summary information property set is? The standard property sets as such don't have any hints about the <strong>meanings of their property IDs</strong>. For example, the summary information property set does not tell you that the property ID 4 stands for the document's author. This is external knowledge. Microsoft defined standard meanings for some of the property IDs in the summary information and the document summary information property sets. As a help to the Java and POI programmer, the class <span class="codefrag">PropertyIDMap</span> in the <span class="codefrag">org.apache.poi.hpsf.wellknown</span> package defines constants for the "well-known" property IDs. For example, there is the definition
+      <div name="tsUpdate" data-id="t_edd933388b6e47a5a7ae72f6b6915e9b" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public final static int PID_AUTHOR = 4;</span>
+      </div>
+     </div>
+     <p>These definitions allow you to use symbolic names instead of numbers.
+      <div name="tsUpdate" data-id="t_8b5b7de817c94024bf70f774b850a2ba" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In order to provide support for the other way, too, - i.e. to map property IDs to property names - the class <span class="codefrag">PropertyIDMap</span> defines two static methods: <span class="codefrag">getSummaryInformationProperties()</span> and <span class="codefrag">getDocumentSummaryInformationProperties()</span>. Both return <span class="codefrag">java.util.Map</span> objects which map property IDs to strings. Such a string gives a hint about the property's meaning. For example, <span class="codefrag">PropertyIDMap.getSummaryInformationProperties().get(4)</span> returns the string "PID_AUTHOR". An application could use this string as a key to a localized string which is displayed to the user, e.g. "Author" in English or "Verfasser" in German. HPSF might provide such language-dependent ("localized") mappings in a later release.
+      <div name="tsUpdate" data-id="t_7b15019842fe4512824e7dc1b37e6305" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Usually you won't have to deal with those two maps. Instead you should call the <span class="codefrag">Section.getPIDString(int)</span> method. It returns the string associated with the specified property ID in the context of the <span class="codefrag">Section</span> object.
+      <div name="tsUpdate" data-id="t_510d52446e5d4bc3a98f1b7a43776e91" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Above you learned that property IDs have a meaning in the scope of a section only. However, there are two exceptions to the rule: The property IDs 0 and 1 have a fixed meaning in <strong>all</strong> sections:
+      <div name="tsUpdate" data-id="t_e50d563e402f4cecabd679c725aaf285" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Property ID
+         <div name="tsUpdate" data-id="t_367308b1779d469183b4b3fb8620cee6" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Meaning
+         <div name="tsUpdate" data-id="t_d23beccdcc2e4bd98720626f221af982" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0
+         <div name="tsUpdate" data-id="t_e1de1edbf4094065b41d386e6ef7744e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The property's value is a <strong>dictionary</strong>, i.e. a mapping from property IDs to strings.
+         <div name="tsUpdate" data-id="t_61f7efdd7edf43bd8997ff094be51d62" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">1
+         <div name="tsUpdate" data-id="t_c3ece5b952204202a414da5f48c2a3e8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The property's value is the number of a <strong>codepage</strong>, i.e. a mapping from character codes to characters. All strings in the section containing this property must be interpreted using this codepage. Typical property values are 1252 (8-bit "western" characters, ISO-8859-1), 1200 (16-bit Unicode characters, UFT-16), or 65001 (8-bit Unicode characters, UFT-8).
+         <div name="tsUpdate" data-id="t_7009683fd9884c8196254021bbc04cd7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Property+types"></a>
+     <h4>Property types
+      <div name="tsUpdate" data-id="t_3d70e62459f649cdaa8ca02982cbdfdf" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>A property is nothing without its value. It is stored in a property set stream as a sequence of bytes. You must know the property's <strong>type</strong> in order to properly interpret those bytes and reasonably handle the value. A property's type is one of the so-called Microsoft-defined <strong>"variant types"</strong>. When you call <span class="codefrag">Property.getType()</span> you'll get a <span class="codefrag">long</span> value which denoting the property's variant type. The class <span class="codefrag">Variant</span> in the <span class="codefrag">org.apache.poi.hpsf</span> package holds most of those <span class="codefrag">long</span> values as named constants. For example, the constant <span class="codefrag">VT_I4 = 3</span> means a signed integer value of four bytes. Examples of other types are <span class="codefrag">VT_LPSTR = 30</span> meaning a null-terminated string of 8-bit characters, <span class="codefrag">VT_LPWSTR = 31</span> which means a null-terminated Unicode string, or <span class="codefrag">VT_BOOL = 11</span> denoting a boolean value.
+      <div name="tsUpdate" data-id="t_6e56f30434aa4c7c93c8f46a0d74b411" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In most cases you won't need a property's type because HPSF does all the work for you.
+      <div name="tsUpdate" data-id="t_00f64fcc97a1404f9c3a19ba5f17e1aa" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Property+values"></a>
+     <h4>Property values
+      <div name="tsUpdate" data-id="t_9c771d240cd14e5194c5173e2b4916a4" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>When an application wants to retrieve a property's value and calls <span class="codefrag">Property.getValue()</span>, HPSF has to interpret the bytes making out the value according to the property's type. The type determines how many bytes the value consists of and what to do with them. For example, if the type is <span class="codefrag">VT_I4</span>, HPSF knows that the value is four bytes long and that these bytes comprise a signed integer value in the little-endian format. This is quite different from e.g. a type of <span class="codefrag">VT_LPWSTR</span>. In this case HPSF has to scan the value bytes for a Unicode null character and collect everything from the beginning to that null character as a Unicode string.
+      <div name="tsUpdate" data-id="t_8f872e63ebb24265a523cfbdce946e95" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The good new is that HPSF does another job for you, too: It maps the variant type to an adequate Java type.
+      <div name="tsUpdate" data-id="t_d7758f42df87472f89e6279be8c17125" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Variant type:
+         <div name="tsUpdate" data-id="t_525b5d86b7f3440fa2b3d21f0681172c" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Java type:
+         <div name="tsUpdate" data-id="t_ea8539b67c0b498eae996dff88511392" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_I2
+         <div name="tsUpdate" data-id="t_3e14cfd272e646cbac809909a3e1bef6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.lang.Integer
+         <div name="tsUpdate" data-id="t_1b158967b6404f4fbbf8d07d52b2279a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_c45aa498e3094da48dc27755c063532f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.lang.Long
+         <div name="tsUpdate" data-id="t_a9fff324c7fc4e48b5adacb3995e6c0d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_622eb842c4ab46e29e8c1304654f6a22" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.util.Date
+         <div name="tsUpdate" data-id="t_60c5e9be489c45f8ad1573f9b5cf278b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_54ac85170a354b8fb708b1773a1315a0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.lang.String
+         <div name="tsUpdate" data-id="t_f9ab29418baf4904a5b5c55d0b48627b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_LPWSTR
+         <div name="tsUpdate" data-id="t_b7d8c688e48e4c128793ab1dd189225b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.lang.String
+         <div name="tsUpdate" data-id="t_a4c1c68074fa49f89be1d38ab487f568" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_CF
+         <div name="tsUpdate" data-id="t_e924ef9bdf574bcc98e484613bd17f31" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">byte[]
+         <div name="tsUpdate" data-id="t_1161aee547c246ecaa9943912f76df40" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">VT_BOOL
+         <div name="tsUpdate" data-id="t_1d885da131574df6be7f921f8e668d2e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">java.lang.Boolean
+         <div name="tsUpdate" data-id="t_625d812ee6014964a2d3baa174fcc01e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>The bad news is that there are still a couple of variant types HPSF does not yet support. If it encounters one of these types it returns the property's value as a byte array and leaves it to be interpreted by the application.
+      <div name="tsUpdate" data-id="t_4a5b2cf1a5174d88b240cc47b02402bf" data-tpl="0" data-txt-color="green"></div></p>
+     <p>An application retrieves a property's value by calling the <span class="codefrag">Property.getValue()</span> method. This method's return type is the abstract <span class="codefrag">Object</span> class. The <span class="codefrag">getValue()</span> method looks up the property's variant type, reads the property's value bytes, creates an instance of an adequate Java type, assigns it the property's value and returns it. Primitive types like <span class="codefrag">int</span> or <span class="codefrag">long</span> will be returned as the corresponding class, e.g. <span class="codefrag">Integer</span> or <span class="codefrag">Long</span>.
+      <div name="tsUpdate" data-id="t_9730ffd0f0d049e49294e695852462a7" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Dictionaries"></a>
+     <h4>Dictionaries
+      <div name="tsUpdate" data-id="t_fcbd9a5fccd74940823038dfcd8a1d44" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The property with ID 0 has a very special meaning: It is a <strong>dictionary</strong> mapping property IDs to property names. We have seen already that the meanings of standard properties in the summary information and the document summary information property sets have been defined by Microsoft. The advantage is that the labels of properties like "Author" or "Title" don't have to be stored in the property set. However, a user can define custom fields in, say, Microsoft Word. For each field the user has to specify a name, a type, and a value.
+      <div name="tsUpdate" data-id="t_95b467762ce5437dad01e63369e6407e" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The names of the custom-defined fields (i.e. the property names) are stored in the document summary information second section's <strong>dictionary</strong>. The dictionary is a map which associates property IDs with property names.
+      <div name="tsUpdate" data-id="t_a3f0d093435e459fa2c780cf41a4e459" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The method <span class="codefrag">Section.getPIDString(int)</span> not only returns with the well-known property names of the summary information and document summary information property sets, but with self-defined properties, too. It should also work with self-defined properties in self-defined sections.
+      <div name="tsUpdate" data-id="t_381ba737e3144b0ca5fc49b486ada438" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Codepage+support"></a>
+     <h4>Codepage support
+      <div name="tsUpdate" data-id="t_85ff37414ef44679a50e37abc3ca816e" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The property with ID 1 holds the number of the codepage which was used to encode the strings in this section. If this property is not available in a section, the platform's default character encoding will be used. This works fine as long as the document being read has been written on a platform with the same default character encoding. However, if you receive a document from another region of the world and the codepage is undefined, you are in trouble.
+      <div name="tsUpdate" data-id="t_f60efcec649048e2b52578bdca73d521" data-tpl="0" data-txt-color="green"></div></p>
+     <p>HPSF's codepage support is only as good as the character encoding support of the Java Virtual Machine (JVM) the application runs on. If HPSF encounters a codepage number it assumes that the JVM has a character encoding with a corresponding name. For example, if the codepage is 1252, HPSF uses the character encoding "cp1252" to read or write strings. If the JVM does not have that character encoding installed or if the codepage number is illegal, an UnsupportedEncodingException will be thrown. This works quite well with Java 2 Standard Edition (J2SE) versions since 1.4. However, under J2SE 1.3 or lower you are out of luck. You should install a newer J2SE version to process codepages with HPSF.
+      <div name="tsUpdate" data-id="t_a1354764e81345a19621f873e03ce67f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>There are some exceptions to the rule saying that a character encoding's name is derived from the codepage number by prepending the string "cp" to it. In these cases the codepage number is mapped to a well-known character encoding name. Here are a few examples:
+      <div name="tsUpdate" data-id="t_cd4b2afd17af46239f60ffba6c53ce0b" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>Codepage 932</dt>
+      <dd>is mapped to the character encoding "SJIS".</dd>
+      <dt>Codepage 1200</dt>
+      <dd>is mapped to the character encoding "UTF-16".</dd>
+      <dt>Codepage 65001</dt>
+      <dd>is mapped to the character encoding "UTF-8".</dd>
+     </dl>
+     <p>More of these mappings between codepage and character encoding name are hard-coded in the classes <span class="codefrag">org.apache.poi.hpsf.Constants</span> and <span class="codefrag">org.apache.poi.hpsf.VariantSupport</span>. Probably there will be a need to add more mappings. The HPSF author will appreciate any hints.
+      <div name="tsUpdate" data-id="t_74c0f9d2ca26441c81956cc9083f5506" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="sec5" id="sec5"></a><a name="Writing+Properties"></a>
+     <h3 class="boxed">Writing Properties
+      <div name="tsUpdate" data-id="t_617aa5e986c6425da57c5ba4990c8ec8" data-tpl="0" data-txt-color="orange"></div></h3>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_424ac43890144d209756e531efc3bbc9" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This section describes how to write properties.
+       <div name="tsUpdate" data-id="t_7323b3572ff24d7d8f866449eceed214" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <a name="Overview+of+Writing+Properties"></a>
+     <h4>Overview of Writing Properties
+      <div name="tsUpdate" data-id="t_2f4687c1011540328d030c9a42fbb856" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Writing properties is possible at a high level and at a low level:
+      <div name="tsUpdate" data-id="t_7c34672c38184ad297a1752999be7615" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Most users will want to create or change entries in the summary information or document summary information streams.
+       <div name="tsUpdate" data-id="t_9cc9aac49e4a41ff9cee5643efc02d1c" data-tpl="0" data-txt-color="green"></div></li>
+      <li>On the low level, there are no convenience classes or methods. You have to deal with things like property IDs and variant types to write properties. Therefore you should have read <a href="#sec3">section 3</a> to understand the description of the low-level writing functions.
+       <div name="tsUpdate" data-id="t_862d5659969b4980a84f94efb6786572" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>HPSF's writing capabilities come with the classes <span class="codefrag">PropertySet</span>, <span class="codefrag">Section</span>, <span class="codefrag">Property</span>, and some helper classes.
+      <div name="tsUpdate" data-id="t_7244ddcccc544092ad4ad6246586c664" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Low-Level+Writing%3A+An+Overview"></a>
+     <h4>Low-Level Writing: An Overview
+      <div name="tsUpdate" data-id="t_aee4603462e740bc9e8a7294c719b015" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>When you are going to write a property set stream your application has to perform the following steps:
+      <div name="tsUpdate" data-id="t_b9ff5f73ade646b687b6c0f5fc99bb90" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>Create a <span class="codefrag">PropertySet</span> instance.
+       <div name="tsUpdate" data-id="t_323b8261bd25486a8a400dec2a235311" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Get hold of a <span class="codefrag">Section</span>. You can either retrieve the one that is always present in a new <span class="codefrag">PropertySet</span>, or you have to create a new <span class="codefrag">Section</span> and add it to the <span class="codefrag">PropertySet</span>.
+       <div name="tsUpdate" data-id="t_c2efa9309c7148e4ac722e413af0ffda" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Set any <span class="codefrag">Section</span> fields as you like.
+       <div name="tsUpdate" data-id="t_a153894d231347c7a6ce11d9b614341a" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Create as many <span class="codefrag">Property</span> objects as you need. Set each property's ID, type, and value. Add the <span class="codefrag">Property</span> objects to the <span class="codefrag">Section</span>.
+       <div name="tsUpdate" data-id="t_9901a084f4b0433088fcc56a8f0dc068" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Create further <span class="codefrag">Section</span>s if you need them.
+       <div name="tsUpdate" data-id="t_a8f1c69df67c4272ae7bfcc1b7a5fdf7" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Eventually retrieve the property set as a byte stream using <span class="codefrag">PropertySet.toInputStream()</span> and write it to a POIFS document.
+       <div name="tsUpdate" data-id="t_c606bfae7a39485d8e287fc8805a7f5d" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <a name="Low-level+Writing+Functions+In+Details"></a>
+     <h4>Low-level Writing Functions In Details
+      <div name="tsUpdate" data-id="t_189255b95d324f2b9a6ad577cbb2ef98" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Writing properties is introduced by an artificial but simple example: a program creating a new document (aka POI file system) which contains only a single document: a summary information property set stream. The latter will hold the document's title only. This is artificial in that it does not contain any Word, Excel or other kind of useful application document data. A document containing just a property set is without any practical use. However, it is perfectly fine for an example because it make it very simple and easy to understand, and you will get used to writing properties in real applications quickly.
+      <div name="tsUpdate" data-id="t_112e26c287014ffea460c93a84b4431a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The application expects the name of the POI file system to be written on the command line. The title property it writes is "Sample title".
+      <div name="tsUpdate" data-id="t_ada0ef413a784c858a2fb5aa75482c43" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Here's the application's source code. You can also find it in the "examples" section of the POI source code distribution. Explanations are following below.
+      <div name="tsUpdate" data-id="t_6978b96b5f934f0cb9adaff38880f145" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">package org.apache.poi.hpsf.examples;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.FileOutputStream;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.IOException;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.InputStream;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.Property;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.PropertySet;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.Section;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.Section;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.SummaryInformation;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.Variant;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.WritingNotSupportedException;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.wellknown.PropertyIDMap;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.hpsf.wellknown.SectionIDMap;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.poifs.filesystem.POIFSFileSystem;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">/**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * &lt;p&gt;This class is a simple sample application showing how to create a property</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * set and write it to disk.&lt;/p&gt;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> *</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @author Rainer Klute</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @since 2003-09-12</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_0df79ca487cd4fe4a06583adb204d3bd" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class WriteTitle</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> /**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * &lt;p&gt;Runs the example program.&lt;/p&gt;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> *</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @param args Command-line arguments. The first and only command-line</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * argument is the name of the POI file system to create.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @throws IOException if any I/O exception occurs.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @throws WritingNotSupportedException if HPSF does not (yet) support</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * writing a certain property type.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_d7a4acbe81aa406fa5df9a62df1095c9" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main(final String[] args)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throws WritingNotSupportedException, IOException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Check whether we have exactly one command-line argument. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (args.length != 1)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.err.println("Usage: " + WriteTitle.class.getName() +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "destinationPOIFS");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.exit(1);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final String fileName = args[0];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Create a mutable property set. Initially it contains a single section</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * with no properties. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final PropertySet mps = new PropertySet();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Retrieve the section the property set already contains. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final Section ms = mps.getSections().get(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Turn the property set into a summary information property. This is</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * done by setting the format ID of its first section to</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * SectionIDMap.SUMMARY_INFORMATION_ID. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ms.setFormatID(SectionIDMap.SUMMARY_INFORMATION_ID);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Create an empty property. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final Property p = new Property();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Fill the property with appropriate settings so that it specifies the</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * document's title. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> p.setID(PropertyIDMap.PID_TITLE);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> p.setType(Variant.VT_LPWSTR);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> p.setValue("Sample title");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Place the property into the section. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ms.setProperty(p);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Create the POI file system the property set is to be written to. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final POIFSFileSystem poiFs = new POIFSFileSystem();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* For writing the property set into a POI file system it has to be</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * handed over to the POIFS.createDocument() method as an input stream</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * which produces the bytes making out the property set stream. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> final InputStream is = mps.toInputStream();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Create the summary information property set in the POI file</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * system. It is given the default name most (if not all) summary</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> * information property sets have. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> poiFs.createDocument(is, SummaryInformation.DEFAULT_STREAM_NAME);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> /* Write the whole POI file system to a disk file. */</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> poiFs.writeFilesystem(new FileOutputStream(fileName));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>The application first checks that there is exactly one single argument on the command line: the name of the file to write. If this single argument is present, the application stores it in the <span class="codefrag">fileName</span> variable. It will be used in the end when the POI file system is written to a disk file.
+      <div name="tsUpdate" data-id="t_f0aff924b1e242c594a2132f2ae04924" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (args.length != 1)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.err.println("Usage: " + WriteTitle.class.getName() +</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "destinationPOIFS");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.exit(1);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final String fileName = args[0];</span>
+      </div>
+     </div>
+     <p>Let's create a property set now. We cannot use the <span class="codefrag">PropertySet</span> class, because it is read-only. It does not have a constructor creating an empty property set, and it does not have any methods to modify its contents, i.e. to write sections containing properties into it.
+      <div name="tsUpdate" data-id="t_b8d6ce2c9bfe4334be8d56e47c36cc41" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The class to use is <span class="codefrag">PropertySet</span>. The sample application calls its no-args constructor in order to establish an empty property set:
+      <div name="tsUpdate" data-id="t_58b62081b0624fe789dcc3431fe5ad40" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final PropertySet mps = new PropertySet();</span>
+      </div>
+     </div>
+     <p>As said, we have an empty property set now. Later we will put some contents into it.
+      <div name="tsUpdate" data-id="t_cb8513c724db46848ce0eb80a1399a7c" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <span class="codefrag">PropertySet</span> created by the no-args constructor is not really empty: It contains a single section without properties. We can either retrieve that section and fill it with properties or we can replace it by another section. We can also add further sections to the property set. The sample application decides to retrieve the section being already there:
+      <div name="tsUpdate" data-id="t_c463cb846b914ac69e4fc35b10016397" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final Section ms = mps.getSections().get(0);</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">getSections()</span> method returns the property set's sections as a list, i.e. an instance of <span class="codefrag">java.util.List</span>. Calling <span class="codefrag">get(0)</span> returns the list's first (or zeroth, if you prefer) element.
+      <div name="tsUpdate" data-id="t_69f6ea6d9df94cccb42d1c8122e42d36" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The alternative to retrieving the <span class="codefrag">Section</span> being already there would have been to create an new <span class="codefrag">Section</span> like this:
+      <div name="tsUpdate" data-id="t_4ade8953a51d443485a123c2c79b2f9f" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Section s = new Section();</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">Section</span> the sample application retrieved from the <span class="codefrag">PropertySet</span> is still empty. It contains no properties and does not have a format ID. As you have read <a href="#sec3">above</a> the format ID of the first section in a property set determines the property set's type. Since our property set should become a SummaryInformation property set we have to set the format ID of its first (and only) section to <span class="codefrag">F29F85E0-4FF9-1068-AB-91-08-00-2B-27-B3-D9</span>. However, you won't have to remember that ID: HPSF has it defined as the well-known constant <span class="codefrag">SectionIDMap.SUMMARY_INFORMATION_ID</span>. The sample application writes it to the section using the <span class="codefrag">setFormatID(byte[])</span> method:
+      <div name="tsUpdate" data-id="t_91f5ceef79dc4f4ba609660afd4da440" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ms.setFormatID(SectionIDMap.SUMMARY_INFORMATION_ID);</span>
+      </div>
+     </div>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final Property p = new Property();</span>
+      </div>
+     </div>
+     <p>A <span class="codefrag">Property</span> object must have an ID, a type, and a value (see <a href="#sec3">above</a> for details). The class provides methods to set these attributes:
+      <div name="tsUpdate" data-id="t_f3c235a916d04ad9be16260c5fb0d7b6" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">p.setID(PropertyIDMap.PID_TITLE);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">p.setType(Variant.VT_LPWSTR);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">p.setValue("Sample title");</span>
+      </div>
+     </div>
+     <p>The <span class="codefrag">Property</span> class has a constructor which you can use to pass in all three attributes in a single call. See the Javadoc API documentation for details!
+      <div name="tsUpdate" data-id="t_34d710a93a1347c9a628dc192a0f4142" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The sample property set is complete now. We have a <span class="codefrag">PropertySet</span> containing a <span class="codefrag">Section</span> containing a <span class="codefrag">Property</span>. Of course we could have added more sections to the property set and more properties to the sections but we wanted to keep things simple.
+      <div name="tsUpdate" data-id="t_d0177ebbd1f64bf580652af7b2cd5fc2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The property set has to be written to a POI file system. The following statement creates it.
+      <div name="tsUpdate" data-id="t_ff2c3d521e184cc18a0abcea25e7104e" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final POIFSFileSystem poiFs = new POIFSFileSystem();</span>
+      </div>
+     </div>
+     <p>Writing the property set includes the step of converting it into a sequence of bytes. The <span class="codefrag">PropertySet</span> class has the method <span class="codefrag">toInputStream()</span> for this purpose. It returns the bytes making out the property set stream as an <span class="codefrag">InputStream</span>:
+      <div name="tsUpdate" data-id="t_e521b8c2b1bd4ecea9290bd4c91887cf" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">final InputStream is = mps.toInputStream();</span>
+      </div>
+     </div>
+     <p>If you'd read from this input stream you'd receive all the property set's bytes. However, it is very likely that you'll never do that. Instead you'll pass the input stream to the <span class="codefrag">POIFSFileSystem.createDocument()</span> method, like this:
+      <div name="tsUpdate" data-id="t_27ff7504d332456db8c820ddbc87ca93" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">poiFs.createDocument(is, SummaryInformation.DEFAULT_STREAM_NAME);</span>
+      </div>
+     </div>
+     <p>Besides the <span class="codefrag">InputStream</span> <span class="codefrag">createDocument()</span> takes a second parameter: the name of the document to be created. For a SummaryInformation property set stream the default name is available as the constant <span class="codefrag">SummaryInformation.DEFAULT_STREAM_NAME</span>.
+      <div name="tsUpdate" data-id="t_5f57909a5a8749e494acdbe7a4fc3c53" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The last step is to write the POI file system to a disk file:
+      <div name="tsUpdate" data-id="t_ba1cc7f865b74e92917fb54704e71d98" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">poiFs.writeFilesystem(new FileOutputStream(fileName));</span>
+      </div>
+     </div>
+     <a name="Further+Reading"></a>
+     <h3 class="boxed">Further Reading
+      <div name="tsUpdate" data-id="t_81dea0cf80ff44099b60ad2483fcb203" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>There are still some aspects of HSPF left which are not covered by this HOW-TO. You should dig into the Javadoc API documentation to learn further details. Since you've struggled through this document up to this point, you are well prepared.
+      <div name="tsUpdate" data-id="t_1b82cecdcdd648e89d025da829a75141" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Rainer Klute</font>
+     <div name="tsUpdate" data-id="t_1be1f41668904c6a88fa931874e0d1fa" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hpsf/how-to.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='5cd41f4b3ed44f8e9d513c3e0e209082';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

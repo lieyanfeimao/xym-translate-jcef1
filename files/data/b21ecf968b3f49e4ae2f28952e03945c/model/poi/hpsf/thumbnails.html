@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>HPSF THUMBNAIL HOW-TO</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_953eca5397d342f3a233ea14b145c177">HPSF THUMBNAIL HOW-TO</span><span class="tscolor" lg_zh="t_953eca5397d342f3a233ea14b145c177"><span lg_kh="1">(</span>${t_953eca5397d342f3a233ea14b145c177}<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="The+VT_CF+Format"></a>
+    <h2 class="boxed"><span lg_en="t_a3122d58dc8f465784e63eec1b31d589">The VT_CF Format</span><span class="tscolor" lg_zh="t_a3122d58dc8f465784e63eec1b31d589"><span lg_kh="1">(</span>${t_a3122d58dc8f465784e63eec1b31d589}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_34c0f31b8843493f948c022d38f47244">Thumbnail information is stored as a VT_CF, or Thumbnail Variant. The Thumbnail Variant is used to store various types of information in a clipboard. The VT_CF can store information in formats for the Macintosh or Windows clipboard.</span><span class="tscolor" lg_zh="t_34c0f31b8843493f948c022d38f47244"><span lg_kh="1">(</span>${t_34c0f31b8843493f948c022d38f47244}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_7520e270d9144e379164d4af8449fa21">There are many types of data that can be copied to the clipboard, but the only types of information needed for thumbnail manipulation are the image formats.</span><span class="tscolor" lg_zh="t_7520e270d9144e379164d4af8449fa21"><span lg_kh="1">(</span>${t_7520e270d9144e379164d4af8449fa21}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_acd24a68ad274b9db2b51a3d19e9968a">The <span class="codefrag">VT_CF</span> structure looks like this:</span><span class="tscolor" lg_zh="t_acd24a68ad274b9db2b51a3d19e9968a"><span lg_kh="1">(</span>${t_acd24a68ad274b9db2b51a3d19e9968a}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_300520e2bc124fbe830ee312be35d8df">Element:</span><span class="tscolor" lg_zh="t_300520e2bc124fbe830ee312be35d8df"><span lg_kh="1">(</span>${t_300520e2bc124fbe830ee312be35d8df}<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_7f9dba5e894b44d2b2de73e60a069768">Clipboard Size</span><span class="tscolor" lg_zh="t_7f9dba5e894b44d2b2de73e60a069768"><span lg_kh="1">(</span>${t_7f9dba5e894b44d2b2de73e60a069768}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_b4b902312c704539a72230c3fc2f3f19">Clipboard Format Tag</span><span class="tscolor" lg_zh="t_b4b902312c704539a72230c3fc2f3f19"><span lg_kh="1">(</span>${t_b4b902312c704539a72230c3fc2f3f19}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_67cdb2bea5ed44639ab17d93f2bd717e">Clipboard Data</span><span class="tscolor" lg_zh="t_67cdb2bea5ed44639ab17d93f2bd717e"><span lg_kh="1">(</span>${t_67cdb2bea5ed44639ab17d93f2bd717e}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3430faa1fcfd43018003a2e2b4687105">Size:</span><span class="tscolor" lg_zh="t_3430faa1fcfd43018003a2e2b4687105"><span lg_kh="1">(</span>${t_3430faa1fcfd43018003a2e2b4687105}<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_aa1b0e02a2f640b2b136e5ce6b746b5a">32 bit unsigned integer (DWord)</span><span class="tscolor" lg_zh="t_aa1b0e02a2f640b2b136e5ce6b746b5a"><span lg_kh="1">(</span>${t_aa1b0e02a2f640b2b136e5ce6b746b5a}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_613a9d03d25a47329b0b558936ef2f94">32 bit signed integer (DWord)</span><span class="tscolor" lg_zh="t_613a9d03d25a47329b0b558936ef2f94"><span lg_kh="1">(</span>${t_613a9d03d25a47329b0b558936ef2f94}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_a2e28a8152cf4f68b117c9a03615f853">variable length (byte array)</span><span class="tscolor" lg_zh="t_a2e28a8152cf4f68b117c9a03615f853"><span lg_kh="1">(</span>${t_a2e28a8152cf4f68b117c9a03615f853}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <p><span lg_en="t_b66557f5b2264127850821df8917f2d2">The Clipboard Size refers to the size (in bytes) of Clipboard Data (variable size) plus the Clipboard Format (four bytes).</span><span class="tscolor" lg_zh="t_b66557f5b2264127850821df8917f2d2"><span lg_kh="1">(</span>${t_b66557f5b2264127850821df8917f2d2}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_1e4b3440f36846f1a20a823c939ef008">Clipboard Format Tag has four possible values:</span><span class="tscolor" lg_zh="t_1e4b3440f36846f1a20a823c939ef008"><span lg_kh="1">(</span>${t_1e4b3440f36846f1a20a823c939ef008}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_2effaf3121254dcaa47c896ce6437ced">Value</span><span class="tscolor" lg_zh="t_2effaf3121254dcaa47c896ce6437ced"><span lg_kh="1">(</span>${t_2effaf3121254dcaa47c896ce6437ced}<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_71619c9262af4c308d20f2e1d55b5164">Identifier</span><span class="tscolor" lg_zh="t_71619c9262af4c308d20f2e1d55b5164"><span lg_kh="1">(</span>${t_71619c9262af4c308d20f2e1d55b5164}<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_338a974ea5cc48069f0294bc7e90149a">Description</span><span class="tscolor" lg_zh="t_338a974ea5cc48069f0294bc7e90149a"><span lg_kh="1">(</span>${t_338a974ea5cc48069f0294bc7e90149a}<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_82b8dd33b81e497685f9ee7a4f06f2ad"><span class="codefrag">-1L</span></span><span class="tscolor" lg_zh="t_82b8dd33b81e497685f9ee7a4f06f2ad"><span lg_kh="1">(</span>${t_82b8dd33b81e497685f9ee7a4f06f2ad}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_156d76e0a5954a04a39ebc0807f3edcd"><span class="codefrag">CFTAG_WINDOWS</span></span><span class="tscolor" lg_zh="t_156d76e0a5954a04a39ebc0807f3edcd"><span lg_kh="1">(</span>${t_156d76e0a5954a04a39ebc0807f3edcd}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_4baf854c3ad647e4acf71355d5c6d717">a built-in Windows© clipboard format value</span><span class="tscolor" lg_zh="t_4baf854c3ad647e4acf71355d5c6d717"><span lg_kh="1">(</span>${t_4baf854c3ad647e4acf71355d5c6d717}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_b135c6df78394000a13492b7c1b8fe5a"><span class="codefrag">-2L</span></span><span class="tscolor" lg_zh="t_b135c6df78394000a13492b7c1b8fe5a"><span lg_kh="1">(</span>${t_b135c6df78394000a13492b7c1b8fe5a}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_f594beff8c9e49c8aee6e74ecb2c5626"><span class="codefrag">CFTAG_MACINTOSH</span></span><span class="tscolor" lg_zh="t_f594beff8c9e49c8aee6e74ecb2c5626"><span lg_kh="1">(</span>${t_f594beff8c9e49c8aee6e74ecb2c5626}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_48626f6392b64cf8aa2e894e157fa215">a Macintosh clipboard format value</span><span class="tscolor" lg_zh="t_48626f6392b64cf8aa2e894e157fa215"><span lg_kh="1">(</span>${t_48626f6392b64cf8aa2e894e157fa215}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_f235f1f2e8994e22bdc32cfca1f783e3"><span class="codefrag">-3L</span></span><span class="tscolor" lg_zh="t_f235f1f2e8994e22bdc32cfca1f783e3"><span lg_kh="1">(</span>${t_f235f1f2e8994e22bdc32cfca1f783e3}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_25ecf69d2291440296b2833ae71a9a5a"><span class="codefrag">CFTAG_FMTID</span></span><span class="tscolor" lg_zh="t_25ecf69d2291440296b2833ae71a9a5a"><span lg_kh="1">(</span>${t_25ecf69d2291440296b2833ae71a9a5a}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_4465e02cce824162a58a976d62862fb7">a format identifier (FMTID) This is rarely used.</span><span class="tscolor" lg_zh="t_4465e02cce824162a58a976d62862fb7"><span lg_kh="1">(</span>${t_4465e02cce824162a58a976d62862fb7}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_8356a6f77d3d495cbf73bd856beef450"><span class="codefrag">0L</span></span><span class="tscolor" lg_zh="t_8356a6f77d3d495cbf73bd856beef450"><span lg_kh="1">(</span>${t_8356a6f77d3d495cbf73bd856beef450}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_bf3750ec11ee421a9865ec51fe909dc7"><span class="codefrag">CFTAG_NODATA</span></span><span class="tscolor" lg_zh="t_bf3750ec11ee421a9865ec51fe909dc7"><span lg_kh="1">(</span>${t_bf3750ec11ee421a9865ec51fe909dc7}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_536b755d36924be38f66a680af15f1a0">No data This is rarely used.</span><span class="tscolor" lg_zh="t_536b755d36924be38f66a680af15f1a0"><span lg_kh="1">(</span>${t_536b755d36924be38f66a680af15f1a0}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Windows+Clipboard+Data"></a>
+    <h2 class="boxed"><span lg_en="t_b725182e60c84c8583e291593d629947">Windows Clipboard Data</span><span class="tscolor" lg_zh="t_b725182e60c84c8583e291593d629947"><span lg_kh="1">(</span>${t_b725182e60c84c8583e291593d629947}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_592c94c9b47b46d49220f3cce3fd7282">Windows clipboard data has four image formats for thumbnails:</span><span class="tscolor" lg_zh="t_592c94c9b47b46d49220f3cce3fd7282"><span lg_kh="1">(</span>${t_592c94c9b47b46d49220f3cce3fd7282}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_9af7658069c54048960fdd550fc8501e">Value</span><span class="tscolor" lg_zh="t_9af7658069c54048960fdd550fc8501e"><span lg_kh="1">(</span>${t_9af7658069c54048960fdd550fc8501e}<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_3224d28605a84630a56407b01e3de4f4">Identifier</span><span class="tscolor" lg_zh="t_3224d28605a84630a56407b01e3de4f4"><span lg_kh="1">(</span>${t_3224d28605a84630a56407b01e3de4f4}<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_d39a2cf5632740808411ce203e9c809e">Description</span><span class="tscolor" lg_zh="t_d39a2cf5632740808411ce203e9c809e"><span lg_kh="1">(</span>${t_d39a2cf5632740808411ce203e9c809e}<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_3b507f41242d43b788dd6944e7b9143f">3</span><span class="tscolor" lg_zh="t_3b507f41242d43b788dd6944e7b9143f"><span lg_kh="1">(</span>${t_3b507f41242d43b788dd6944e7b9143f}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_fe5bb4cf221244419b4f851c4f9e0ca2"><span class="codefrag">CF_METAFILEPICT</span></span><span class="tscolor" lg_zh="t_fe5bb4cf221244419b4f851c4f9e0ca2"><span lg_kh="1">(</span>${t_fe5bb4cf221244419b4f851c4f9e0ca2}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_075f71e1d2cc44cd9cad6ea465882abd">Windows metafile format - recommended</span><span class="tscolor" lg_zh="t_075f71e1d2cc44cd9cad6ea465882abd"><span lg_kh="1">(</span>${t_075f71e1d2cc44cd9cad6ea465882abd}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_3585348a47b74100ab6f1e5a9d18e288">8</span><span class="tscolor" lg_zh="t_3585348a47b74100ab6f1e5a9d18e288"><span lg_kh="1">(</span>${t_3585348a47b74100ab6f1e5a9d18e288}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_9cad1595d6424fdeab096b31c7c07cc4"><span class="codefrag">CF_DIB</span></span><span class="tscolor" lg_zh="t_9cad1595d6424fdeab096b31c7c07cc4"><span lg_kh="1">(</span>${t_9cad1595d6424fdeab096b31c7c07cc4}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_3f33ce83780a4adb8fd72ae241fe39fc">Device Independent Bitmap</span><span class="tscolor" lg_zh="t_3f33ce83780a4adb8fd72ae241fe39fc"><span lg_kh="1">(</span>${t_3f33ce83780a4adb8fd72ae241fe39fc}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_7e430454cbfc41cb8832fc193fc53d21">14</span><span class="tscolor" lg_zh="t_7e430454cbfc41cb8832fc193fc53d21"><span lg_kh="1">(</span>${t_7e430454cbfc41cb8832fc193fc53d21}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_1be667069bc647acb9811671e615e773"><span class="codefrag">CF_ENHMETAFILE</span></span><span class="tscolor" lg_zh="t_1be667069bc647acb9811671e615e773"><span lg_kh="1">(</span>${t_1be667069bc647acb9811671e615e773}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_c5262187f0344ab39a200abc5011d06e">Enhanced Windows metafile format</span><span class="tscolor" lg_zh="t_c5262187f0344ab39a200abc5011d06e"><span lg_kh="1">(</span>${t_c5262187f0344ab39a200abc5011d06e}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_da1478dd28fd44a996b7b1ba24faa4f5">2</span><span class="tscolor" lg_zh="t_da1478dd28fd44a996b7b1ba24faa4f5"><span lg_kh="1">(</span>${t_da1478dd28fd44a996b7b1ba24faa4f5}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_5b0f3771f8e3426ca7512c2a47e9298e"><span class="codefrag">CF_BITMAP</span></span><span class="tscolor" lg_zh="t_5b0f3771f8e3426ca7512c2a47e9298e"><span lg_kh="1">(</span>${t_5b0f3771f8e3426ca7512c2a47e9298e}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_de916d4082394b68bd723ec8cd57068e">Bitmap - Obsolete - Use <span class="codefrag">CF_DIB</span> instead</span><span class="tscolor" lg_zh="t_de916d4082394b68bd723ec8cd57068e"><span lg_kh="1">(</span>${t_de916d4082394b68bd723ec8cd57068e}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Windows+Metafile+Format"></a>
+    <h2 class="boxed"><span lg_en="t_ae507971ac0c435fad19b1dc1a07dffd">Windows Metafile Format</span><span class="tscolor" lg_zh="t_ae507971ac0c435fad19b1dc1a07dffd"><span lg_kh="1">(</span>${t_ae507971ac0c435fad19b1dc1a07dffd}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_df67fd9df7794abbb3c44237c31ffd0a">The most common format for thumbnails on the Windows platform is the Windows metafile format. The Clipboard places and extra header in front of a the standard Windows Metafile Format data.</span><span class="tscolor" lg_zh="t_df67fd9df7794abbb3c44237c31ffd0a"><span lg_kh="1">(</span>${t_df67fd9df7794abbb3c44237c31ffd0a}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_3b986ab5dbd94a41ab0fa907b3517f00">The Clipboard Data byte array looks like this when an image is stored in Windows' Clipboard WMF format.</span><span class="tscolor" lg_zh="t_3b986ab5dbd94a41ab0fa907b3517f00"><span lg_kh="1">(</span>${t_3b986ab5dbd94a41ab0fa907b3517f00}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_58c6ae6e73e144f0a7e9088a4925eea0">Identifier</span><span class="tscolor" lg_zh="t_58c6ae6e73e144f0a7e9088a4925eea0"><span lg_kh="1">(</span>${t_58c6ae6e73e144f0a7e9088a4925eea0}<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_222710b5fca149718a92d659c3b117c8">CF_METAFILEPICT</span><span class="tscolor" lg_zh="t_222710b5fca149718a92d659c3b117c8"><span lg_kh="1">(</span>${t_222710b5fca149718a92d659c3b117c8}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_1eb510c5be1e46f28f27c35296c3dddd">mm</span><span class="tscolor" lg_zh="t_1eb510c5be1e46f28f27c35296c3dddd"><span lg_kh="1">(</span>${t_1eb510c5be1e46f28f27c35296c3dddd}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_801b4a5125b44c2c99a44e42d9744bcf">width</span><span class="tscolor" lg_zh="t_801b4a5125b44c2c99a44e42d9744bcf"><span lg_kh="1">(</span>${t_801b4a5125b44c2c99a44e42d9744bcf}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_20a216a6b97a4ff19751becb5933e300">height</span><span class="tscolor" lg_zh="t_20a216a6b97a4ff19751becb5933e300"><span lg_kh="1">(</span>${t_20a216a6b97a4ff19751becb5933e300}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_06578db4d9c84ae7a2df1317e1f0e7c0">handle</span><span class="tscolor" lg_zh="t_06578db4d9c84ae7a2df1317e1f0e7c0"><span lg_kh="1">(</span>${t_06578db4d9c84ae7a2df1317e1f0e7c0}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_c788ec32374449a68497fee2d3ac3237">WMF data</span><span class="tscolor" lg_zh="t_c788ec32374449a68497fee2d3ac3237"><span lg_kh="1">(</span>${t_c788ec32374449a68497fee2d3ac3237}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_c503e73a897b427985736fc25aceb1e1">Size</span><span class="tscolor" lg_zh="t_c503e73a897b427985736fc25aceb1e1"><span lg_kh="1">(</span>${t_c503e73a897b427985736fc25aceb1e1}<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_f2ec7a8dbeb242799033628e82c25203">32 bit unsigned int</span><span class="tscolor" lg_zh="t_f2ec7a8dbeb242799033628e82c25203"><span lg_kh="1">(</span>${t_f2ec7a8dbeb242799033628e82c25203}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_e7b0c262c47144b396224a719207bcf1">16 bit unsigned(?) int</span><span class="tscolor" lg_zh="t_e7b0c262c47144b396224a719207bcf1"><span lg_kh="1">(</span>${t_e7b0c262c47144b396224a719207bcf1}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_a20d6645c82b429f90e197c40c2b9e44">16 bit unsigned(?) int</span><span class="tscolor" lg_zh="t_a20d6645c82b429f90e197c40c2b9e44"><span lg_kh="1">(</span>${t_a20d6645c82b429f90e197c40c2b9e44}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_1631ea7813174877842362f309473093">16 bit unsigned(?) int</span><span class="tscolor" lg_zh="t_1631ea7813174877842362f309473093"><span lg_kh="1">(</span>${t_1631ea7813174877842362f309473093}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_07e445251e804d6a9d5a24ccf2fb5fd8">16 bit unsigned(?) int</span><span class="tscolor" lg_zh="t_07e445251e804d6a9d5a24ccf2fb5fd8"><span lg_kh="1">(</span>${t_07e445251e804d6a9d5a24ccf2fb5fd8}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_ba0b95a8ea36468899f3fefe9b222fa3">byte array - variable length</span><span class="tscolor" lg_zh="t_ba0b95a8ea36468899f3fefe9b222fa3"><span lg_kh="1">(</span>${t_ba0b95a8ea36468899f3fefe9b222fa3}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3bc224b57b7144fc9cfac919411caa82">Description</span><span class="tscolor" lg_zh="t_3bc224b57b7144fc9cfac919411caa82"><span lg_kh="1">(</span>${t_3bc224b57b7144fc9cfac919411caa82}<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_3ced844c859c46679b2ba12ed4492b06">Clipboard WMF</span><span class="tscolor" lg_zh="t_3ced844c859c46679b2ba12ed4492b06"><span lg_kh="1">(</span>${t_3ced844c859c46679b2ba12ed4492b06}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_d8fde5b5410546b49d1f23c8e8ca9147">Mapping Mode</span><span class="tscolor" lg_zh="t_d8fde5b5410546b49d1f23c8e8ca9147"><span lg_kh="1">(</span>${t_d8fde5b5410546b49d1f23c8e8ca9147}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_b02718ed201a4cca871e2cc8b1e0b457">Image Width</span><span class="tscolor" lg_zh="t_b02718ed201a4cca871e2cc8b1e0b457"><span lg_kh="1">(</span>${t_b02718ed201a4cca871e2cc8b1e0b457}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_940896567e344485b43569d2209df596">Image Height</span><span class="tscolor" lg_zh="t_940896567e344485b43569d2209df596"><span lg_kh="1">(</span>${t_940896567e344485b43569d2209df596}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_cfb80cef48b040a1b7f5ce6b8d5f20ac">handle to the WMF data array in memory, or 0</span><span class="tscolor" lg_zh="t_cfb80cef48b040a1b7f5ce6b8d5f20ac"><span lg_kh="1">(</span>${t_cfb80cef48b040a1b7f5ce6b8d5f20ac}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_51546b42958a4322ab98905480d4501b">standard WMF byte stream</span><span class="tscolor" lg_zh="t_51546b42958a4322ab98905480d4501b"><span lg_kh="1">(</span>${t_51546b42958a4322ab98905480d4501b}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Device+Independent+Bitmap"></a>
+    <h2 class="boxed"><span lg_en="t_f41de879f3bf4f0286aa4245052d3f2b">Device Independent Bitmap</span><span class="tscolor" lg_zh="t_f41de879f3bf4f0286aa4245052d3f2b"><span lg_kh="1">(</span>${t_f41de879f3bf4f0286aa4245052d3f2b}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_f269fbc48b6c4ee8b8d6c643aa0e39ef"><strong>FIXME:</strong> Describe the Device Independent Bitmap format!</span><span class="tscolor" lg_zh="t_f269fbc48b6c4ee8b8d6c643aa0e39ef"><span lg_kh="1">(</span>${t_f269fbc48b6c4ee8b8d6c643aa0e39ef}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Macintosh+Clipboard+Data"></a>
+    <h2 class="boxed"><span lg_en="t_996638ddb19b4771a994b822cf45a565">Macintosh Clipboard Data</span><span class="tscolor" lg_zh="t_996638ddb19b4771a994b822cf45a565"><span lg_kh="1">(</span>${t_996638ddb19b4771a994b822cf45a565}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_5bdd277e9cbc45238a425b2b4e98688f"><strong>FIXME:</strong> Describe the Macintosh clipboard formats!</span><span class="tscolor" lg_zh="t_5bdd277e9cbc45238a425b2b4e98688f"><span lg_kh="1">(</span>${t_5bdd277e9cbc45238a425b2b4e98688f}<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_794a3d9f260540fea315cb275b14bf8b"><font size="-2">by&nbsp;Drew Varner</font></span><span class="tscolor" lg_zh="t_794a3d9f260540fea315cb275b14bf8b"><span lg_kh="1">(</span>${t_794a3d9f260540fea315cb275b14bf8b}<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hpsf/thumbnails.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

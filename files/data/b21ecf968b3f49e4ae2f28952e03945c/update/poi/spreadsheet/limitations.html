@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - HSSF and XSSF Limitations</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>Apache POI - HSSF and XSSF Limitations
+     <div name="tsUpdate" data-id="t_6f34a06f16054f778b945c217627f701" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="Current+HSSF+%2F+XSSF+main+limitations"></a>
+    <h2 class="boxed">Current HSSF / XSSF main limitations
+     <div name="tsUpdate" data-id="t_ae3a2b1c8fde4e3e9bb2d4d074061cbe" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>The intent of this document is to outline some of the known limitations of the POI HSSF and XSSF APIs. It is not intended to be complete list of every bug or missing feature of HSSF or XSSF, rather it's purpose is to provide a broad feel for some of the functionality that is missing or broken.
+      <div name="tsUpdate" data-id="t_e6ddeab0d1904895a7c752f37cfc3693" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>File sizes/Memory usage
+       <br>
+       <br>
+       <ul>
+        <li>There are some inherent limits in the Excel file formats. These are defined in class <a href="../../apidocs/dev/org/apache/poi/ss/SpreadsheetVersion.html">SpreadsheetVersion</a>. As long as you have enough main-memory, you should be able to handle files up to these limits. For huge files using the default POI classes you will likely need a very large amount of memory.
+         <br>
+         <br>
+         There are ways to overcome the main-memory limitations if needed:
+         <br>
+         <ul>
+          <li>For writing very huge files, there is <a href="../../components/spreadsheet/">SXSSFWorkbook</a> which allows to do a streaming write of data out to files (with certain limitations on what you can do as only parts of the file are held in memory).
+           <div name="tsUpdate" data-id="t_66b6f2d31bf44f69b0f05e179cea0a20" data-tpl="0" data-txt-color="green"></div></li>
+          <li>For reading very huge files, take a look at the sample <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/XLSX2CSV.java">XLSX2CSV</a> which shows how you can read a file in streaming fashion (again with some limitations on what information you can read out of the file, but there are ways to get at most of it if necessary).
+           <div name="tsUpdate" data-id="t_4fb37d9866884012a3a301b5ffa9ee12" data-tpl="0" data-txt-color="green"></div></li>
+         </ul>
+         <div name="tsUpdate" data-id="t_dc2691d5df23454abe3f2028c3a2e2e7" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+       <div name="tsUpdate" data-id="t_eb1aaee4bf2942d08110906330c9c0c8" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Charts
+       <br>
+       <br>
+       <ul>
+        <li>HSSF has some limited support for creating a handful of very simple Chart types, but largely this isn't supported. HSSF (largely) doesn't support changing Charts. You can however create a chart in Excel using Named ranges, modify the chart data values using HSSF and write a new spreadsheet out. This is possible because POI attempts to keep existing records intact as far as possible.
+         <br>
+         <div name="tsUpdate" data-id="t_ab615f7ac98c4b5998034067e3dde572" data-tpl="0" data-txt-color="green"></div></li>
+        <li>XSSF has only limited chart support including making some simple changes and adding at least some line and scatter charts, see the examples <em>LineChart</em> and <em>ScatterChart</em>.
+         <br>
+         <br>
+         <div name="tsUpdate" data-id="t_1ef00ff1a91941c4b77e8891dd2b0421" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+       <div name="tsUpdate" data-id="t_8613f2a77eb547d4849dc68ec0b25d3e" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Macros
+       <br>
+       <br>
+       Macros can not be created. The are currently no plans to support macros. However, reading and re-writing files containing macros will safely preserve the macros. Recent versions of Apache POI support extracting the macro data via <a href="../../apidocs/dev/org/apache/poi/poifs/macros/VBAMacroExtractor.html">VBAMacroExtractor</a> and <a href="../../apidocs/dev/org/apache/poi/poifs/macros/VBAMacroReader.html">VBAMacroReader</a>
+       <br>
+       <br>
+       <div name="tsUpdate" data-id="t_c086cb5acfd649318d9e65f6698882e5" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Pivot Tables
+       <br>
+       <br>
+       HSSF doesn't have support for reading or creating Pivot tables. XSSF has limited support for creating Pivot Tables, and very limited read/change support.
+       <div name="tsUpdate" data-id="t_228f244ffa5c47d8b2e4fc46ba6ab106" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Glen Stampoultzis</font>
+     <div name="tsUpdate" data-id="t_6e66dd7e322f4517a6559e8cfe0ca05d" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/limitations.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='e09ded679e5a4618839475788f8b47eb';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

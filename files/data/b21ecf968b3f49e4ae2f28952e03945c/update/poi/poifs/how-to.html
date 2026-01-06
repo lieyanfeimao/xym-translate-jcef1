@@ -1,0 +1,807 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>How To Use the POIFS APIs</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>How To Use the POIFS APIs
+     <div name="tsUpdate" data-id="t_0672703515ed4faf8f34ae441a5836a9" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="How+To+Use+the+POIFS+APIs"></a>
+    <h2 class="boxed">How To Use the POIFS APIs
+     <div name="tsUpdate" data-id="t_676b951700224970a3300721e15e933b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>This document describes how to use the POIFS APIs to read, write, and modify files that employ a POIFS-compatible data structure to organize their content.
+      <div name="tsUpdate" data-id="t_e62430880a8545f2a2cee6d42ded1c25" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Target+Audience"></a>
+     <h3 class="boxed">Target Audience
+      <div name="tsUpdate" data-id="t_9daf677aa174407a8439b68036bdc678" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>This document is intended for Java developers who need to use the POIFS APIs to read, write, or modify files that employ a POIFS-compatible data structure to organize their content. It is not necessary for developers to understand the POIFS data structures, and an explanation of those data structures is beyond the scope of this document. It is expected that the members of the target audience will understand the rudiments of a hierarchical file system, and familiarity with the event pattern employed by Java APIs such as AWT would be helpful.
+      <div name="tsUpdate" data-id="t_49da45dc20a1432a89a55faec096a4cc" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Glossary"></a>
+     <h3 class="boxed">Glossary
+      <div name="tsUpdate" data-id="t_7111f31e8c6746c1933db50d90f4349a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>This document attempts to be consistent in its terminology, which is defined here:
+      <div name="tsUpdate" data-id="t_b74fe30aae0f45b28c51204cd2594fca" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>Directory</dt>
+      <dd>A special file that may contain other directories and documents.</dd>
+      <dt>DirectoryEntry</dt>
+      <dd>Representation of a directory within another directory.</dd>
+      <dt>Document</dt>
+      <dd>A file containing data, such as word processing data or a spreadsheet workbook.</dd>
+      <dt>DocumentEntry</dt>
+      <dd>Representation of a document within a directory.</dd>
+      <dt>Entry</dt>
+      <dd>Representation of a file in a directory.</dd>
+      <dt>File</dt>
+      <dd>A named entity, managed and contained by the file system.</dd>
+      <dt>File System</dt>
+      <dd>The POIFS data structures, plus the contained directories and documents, which are maintained in a hierarchical directory structure.</dd>
+      <dt>Root Directory</dt>
+      <dd>The directory at the base of a file system. All file systems have a root directory. The POIFS APIs will not allow the root directory to be removed or renamed, but it can be accessed for the purpose of reading its contents or adding files (directories and documents) to it.</dd>
+     </dl>
+    </div>
+    <a name="The+different+ways+of+working+with+POIFS"></a>
+    <h2 class="boxed">The different ways of working with POIFS
+     <div name="tsUpdate" data-id="t_afd456287ea74714980a59bba9ba87ba" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>The POIFS API provides ways to read, modify and write files and streams that employ a POIFS-compatible data structure to organize their content. The following use cases are covered:
+      <div name="tsUpdate" data-id="t_35175b4749f74ba2bbc6110c0116f0d4" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><a href="#reading">Reading a File System</a>
+       <div name="tsUpdate" data-id="t_6d0cfcd17b8a404c97f61fbd653d3f88" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#reading_poifsfilesystem">Conventional Reading with POIFSFileSystem</a>
+       <div name="tsUpdate" data-id="t_d515ae372ef44be9ba84426178bcfd20" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#reading_event">Event-Driven Reading</a>
+       <div name="tsUpdate" data-id="t_8a2fd2599662489a98b44250e52290ab" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#writing">Writing a File System</a>
+       <div name="tsUpdate" data-id="t_0a2a5a106d2044f8a03a9fc71a3b208b" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#modifying">Modifying a File System</a>
+       <div name="tsUpdate" data-id="t_b6b8f57aa0f14aff9031d09bb0af2809" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <a name="Reading+a+File+System"></a>
+    <h2 class="boxed">Reading a File System
+     <div name="tsUpdate" data-id="t_0cebec0e86d147f597dc61ab047cbcfe" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="reading" id="reading"></a>
+     <p>This section covers reading a file system. There are two ways to read a file system; these techniques are sketched out in the following table, and then explained in greater depth in the sections following the table.
+      <div name="tsUpdate" data-id="t_d4327a6562ba41bc8286069dc1330c1e" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>Conventional Reading with POIFSFileSystem</dt>
+      <dd>
+       <ul>
+        <li class="pro">Simpler API similar to reading a conventional file system.
+         <div name="tsUpdate" data-id="t_182306dcaabb4359937ecc868ff478f2" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="pro">Can read documents in any order.
+         <div name="tsUpdate" data-id="t_06f365cc2ac14dd4b825bc14f4d60ebb" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="pro">Well tested read and write support.
+         <div name="tsUpdate" data-id="t_7072e533f7974fc3948c51009dcfd1aa" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">If created from an InputStream, all files are resident in memory. (If created from a File, only certain key structures are)
+         <div name="tsUpdate" data-id="t_422b82e2ec02420ca3432a55a954ca74" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+      </dd>
+      <dt>Event-Driven Reading</dt>
+      <dd>
+       <ul>
+        <li class="pro">Reduced footprint -- only the documents you care about are processed.
+         <div name="tsUpdate" data-id="t_375adb22a8e94750a6e95c4f55dc8f37" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="pro">Improved performance -- no time is wasted reading the documents you're not interested in.
+         <div name="tsUpdate" data-id="t_ad2a4aa2c7424c6c8d68dfb883b214b2" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">More complicated API.
+         <div name="tsUpdate" data-id="t_9392337ec0d34ebe878e38d2642e6027" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">Need to know in advance which documents you want to read.
+         <div name="tsUpdate" data-id="t_661cff71b5f44a84b6e03ade14ca1ed4" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">No control over the order in which the documents are read.
+         <div name="tsUpdate" data-id="t_6fbd10d6974e4a73a596462140298ba3" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">No way to go back and get additional documents except to re-read the file system, which may not be possible, e.g., if the file system is being read from an input stream that lacks random access support.
+         <div name="tsUpdate" data-id="t_95f8fdc357e741bab3e279b198476fbf" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+      </dd>
+     </dl>
+     <a name="Conventional+Reading+with+POIFSFileSystem"></a>
+     <h3 class="boxed">Conventional Reading with POIFSFileSystem
+      <div name="tsUpdate" data-id="t_0c67ab05eb8d4217b05387d44e4ca215" data-tpl="0" data-txt-color="orange"></div></h3>
+     <a name="reading_poifsfilesystem" id="reading_poifsfilesystem"></a>
+     <p>In this technique for reading, certain key structures are loaded into memory, and the entire directory tree can be walked by the application, reading specific documents at leisure.
+      <div name="tsUpdate" data-id="t_85387dfed49246dfaf0d607fe5f6b3c6" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you create a POIFSFileSystem instance from a File, the memory footprint is very small. However, if you createa a POIFSFileSystem instance from an input stream, then the whole contents must be buffered into memory to allow random access. As such, you should budget on memory use of up to 20% of the file size when using a File, or up to 120% of the file size when using an InputStream.
+      <div name="tsUpdate" data-id="t_c37a16ac8e2b47c0a9b2bcf65ba830d5" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Preparation"></a>
+     <h4>Preparation
+      <div name="tsUpdate" data-id="t_c4cc9ce1280d438faa02b148de924c64" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Before an application can read a file from the file system, the file system needs to be opened and core parts processed. This is done using the <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSFileSystem</span> class. Once the file system has been loaded into memory, the application may need the root directory. The following code fragment will accomplish this preparation stage:
+      <div name="tsUpdate" data-id="t_b51f169f014341408ef8fb7b13075d54" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// This is the most memory efficient way to open the FileSystem</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_ab15b5fdc0444672b2d3cf7ab6cf0b4e" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(new File(filename))) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // an I/O error occurred, or the File did not provide a compatible</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // POIFS data structure</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_166f4766df724f8391628da438b56a0c" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Using an InputStream requires more memory than using a File</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_9c967ee54dd14b6aa1cf9d11e85dc8b2" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(inputStream)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // an I/O error occurred, or the InputStream did not provide</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // a compatible POIFS data structure</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_d61f9b22049747d5acdb056d9b870191" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>Assuming no exception was thrown, the file system can then be read.
+      <div name="tsUpdate" data-id="t_12488379ad604787af6711307f7c8007" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Reading+the+Directory+Tree"></a>
+     <h4>Reading the Directory Tree
+      <div name="tsUpdate" data-id="t_8860710d24954b1a93301fe024b79e82" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Once the file system has been loaded into memory and the root directory has been obtained, the root directory can be read. The following code fragment shows how to read the entries in an <span class="codefrag"> org.apache.poi.poifs.filesystem.DirectoryEntry </span> instance:
+      <div name="tsUpdate" data-id="t_d235dd296a074196a95bc34fa8bee59e" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// dir is an instance of DirectoryEntry ...</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_588b970bc31c448dbe5cbfa2959eeb45" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (Entry entry : dir) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("found entry: " + entry.getName());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (entry instanceof DirectoryEntry) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // .. recurse into this directory</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_40a4672e500140c393de1d5198c2c0a3" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else if (entry instanceof DocumentEntry) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // entry is a document, which you can read</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_8d5de607b4e441b3b09aeeda6d7a012a" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // currently, either an Entry is a DirectoryEntry or a DocumentEntry,</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // but in the future, there may be other entry subinterfaces.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // The internal data structure certainly allows for a lot more entry types.</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_845679c7d7014348b5c8f3b3e361a697" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Reading+a+Specific+Document"></a>
+     <h4>Reading a Specific Document
+      <div name="tsUpdate" data-id="t_f54b7d42bb594d228e94817e4e900c29" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>There are a couple of ways to read a document, depending on whether the document resides in the root directory or in another directory. Either way, you will obtain an <span class="codefrag"> org.apache.poi.poifs.filesystem.DocumentInputStream </span> instance.
+      <div name="tsUpdate" data-id="t_e33c469b807a4940806baa9b9969a53c" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="DocumentInputStream"></a>
+     <h5>DocumentInputStream</h5>
+     <p>The DocumentInputStream class is a simple implementation of InputStream that makes a few guarantees worth noting:
+      <div name="tsUpdate" data-id="t_634bcc3270ce496f875561ef6284997a" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><span class="codefrag">available()</span> always returns the number of bytes in the document from your current position in the document.
+       <div name="tsUpdate" data-id="t_d9c69d8b9e9a4a8082c3a09bfd0af386" data-tpl="0" data-txt-color="green"></div></li>
+      <li><span class="codefrag">markSupported()</span> returns <span class="codefrag">true</span>.
+       <div name="tsUpdate" data-id="t_da6ecbbc66004a358f43612c66aa6e7b" data-tpl="0" data-txt-color="green"></div></li>
+      <li><span class="codefrag">mark(int limit)</span> ignores the limit parameter; basically the method marks the current position in the document.
+       <div name="tsUpdate" data-id="t_001cd8ef23734ff49bbfb4f19eef73b1" data-tpl="0" data-txt-color="green"></div></li>
+      <li><span class="codefrag">reset()</span> takes you back to the position when <span class="codefrag">mark()</span> was last called, or to the beginning of the document if <span class="codefrag">mark()</span> has not been called.
+       <div name="tsUpdate" data-id="t_4af81b47f4af427fb2a24f74d1653f92" data-tpl="0" data-txt-color="green"></div></li>
+      <li><span class="codefrag">skip(long n)</span> will take you to your current position + n (but not past the end of the document).
+       <div name="tsUpdate" data-id="t_ffd1f59d941349cb8fac1066cd6cb34c" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>The behavior of <span class="codefrag">available</span> means you can read in a document in a single read call like this:
+      <div name="tsUpdate" data-id="t_ac6bd7dc08544d1a97e77bf702124ba5" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">byte[] content = new byte[ stream.available() ];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">stream.read(content);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">stream.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>The combination of <span class="codefrag">mark</span>, <span class="codefrag">reset</span>, and <span class="codefrag">skip</span> provide the basic mechanisms needed for random access of the document contents.
+      <div name="tsUpdate" data-id="t_dfc83483150447cfad10d64ee48c3bb5" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Reading+a+Document+From+the+Root+Directory"></a>
+     <h5>Reading a Document From the Root Directory</h5>
+     <p>If the document resides in the root directory, you can obtain a <span class="codefrag">DocumentInputStream </span> like this:
+      <div name="tsUpdate" data-id="t_4aebc5c628f74f8faeb6582793590b7a" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// load file system</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_271feee2bf584681b0c471e58e284924" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (DocumentInputStream stream = filesystem.createDocumentInputStream(documentName)) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // process data from stream</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_5deabc240ba04985a1d511202b6640a7" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // no such document, or the Entry represented by documentName is not a DocumentEntry</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_5d6c4986754346be9cacd9a3d2a82fac" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Reading+a+Document+From+an+Arbitrary+Directory"></a>
+     <h5>Reading a Document From an Arbitrary Directory</h5>
+     <p>A more generic technique for reading a document is to obtain an <span class="codefrag"> org.apache.poi.poifs.filesystem.DirectoryEntry </span> instance for the directory containing the desired document (recall that you can use <span class="codefrag"> getRoot() </span> to obtain the root directory from its file system). From that DirectoryEntry, you can then obtain a <span class="codefrag">DocumentInputStream</span> like this:
+      <div name="tsUpdate" data-id="t_c4ff0442a3114124a150e76b813a825e" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentEntry document = (DocumentEntry)directory.getEntry(documentName);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentInputStream stream = new DocumentInputStream(document);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Event-Driven+Reading"></a>
+     <h3 class="boxed">Event-Driven Reading
+      <div name="tsUpdate" data-id="t_c7d7e5d862e7452baaf3e704c9107c1a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <a name="reading_event" id="reading_event"></a>
+     <p>The event-driven API for reading documents is a little more complicated and requires that your application know, in advance, which files it wants to read. The benefit of using this API is that each document is in memory just long enough for your application to read it, and documents that you never read at all are not in memory at all. When you're finished reading the documents you wanted, the file system has no data structures associated with it at all and can be discarded.
+      <div name="tsUpdate" data-id="t_c306885fb44c4142bd3f03e122b951e9" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Preparation-N102E7"></a>
+     <h4>Preparation
+      <div name="tsUpdate" data-id="t_ed11e9a424f64baa8a861d1eebaba043" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The preparation phase involves creating an instance of <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReader </span> and to then register one or more <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReaderListener </span> instances with the <span class="codefrag">POIFSReader</span>.
+      <div name="tsUpdate" data-id="t_e61a7952d6154bba98ca7232a1ecf8a0" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSReader reader = new POIFSReader();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for everything</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_532f470cfb7c45fd9a06db02b43196f1" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOmnivorousListener);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for selective files</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_9d23ac6683a946db98e79eee1e9797da" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myPickyListener, "foo");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myPickyListener, "bar");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for selective files</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_86dcb9e1f87b4a0483e50d2036ab40c6" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOtherPickyListener, new POIFSDocumentPath(), "fubar");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOtherPickyListener, new POIFSDocumentPath( new String[] { "usr", "bin" ), "fubar");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="POIFSReaderListener"></a>
+     <h4>POIFSReaderListener
+      <div name="tsUpdate" data-id="t_0990d7fcc90145a68698afdbe8b89511" data-tpl="0" data-txt-color="green"></div></h4>
+     <p><span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderListener</span> is an interface used to register for documents. When a matching document is read by the <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReader</span>, the <span class="codefrag">POIFSReaderListener</span> instance receives an <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent</span> instance, which contains an open <span class="codefrag">DocumentInputStream</span> and information about the document.
+      <div name="tsUpdate" data-id="t_29660ac0e864488ea09466945d621e36" data-tpl="0" data-txt-color="green"></div></p>
+     <p>A <span class="codefrag">POIFSReaderListener</span> instance can register for individual documents, or it can register for all documents; once it has registered for all documents, subsequent (and previous!) registration requests for individual documents are ignored. There is no way to unregister a <span class="codefrag">POIFSReaderListener</span>.
+      <div name="tsUpdate" data-id="t_69af65cc60304d4ba4d9a43f839c679b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Thus, it is possible to register a single <span class="codefrag">POIFSReaderListener</span> for multiple documents - one, some, or all documents. It is guaranteed that a single <span class="codefrag">POIFSReaderListener</span> will receive exactly one notification per registered document. There is no guarantee as to the order in which it will receive notification of its documents, as future implementations of <span class="codefrag"> POIFSReader </span> are free to change the algorithm for walking the file system's directory structure.
+      <div name="tsUpdate" data-id="t_ca05590001ad424a97dcdbe36a34d38a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>It is also permitted to register more than one <span class="codefrag">POIFSReaderListener</span> for the same document. There is no guarantee of ordering for notification of <span class="codefrag">POIFSReaderListener</span> instances that have registered for the same document when <span class="codefrag">POIFSReader</span> processes that document.
+      <div name="tsUpdate" data-id="t_8ce89a05be9e4f66bf9b155b4ec1df38" data-tpl="0" data-txt-color="green"></div></p>
+     <p>It is guaranteed that all notifications occur in the same thread. A future enhancement may be made to provide multi-threaded notifications, but such an enhancement would very probably be made in a new reader class, a <span class="codefrag">ThreadedPOIFSReader</span> perhaps.
+      <div name="tsUpdate" data-id="t_4dfc4c80257f4370809803c91d911c18" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The following describes the three ways to register a <span class="codefrag">POIFSReaderListener</span> for a document or set of documents:
+      <div name="tsUpdate" data-id="t_4d7575f8d60f4f96a9d68d67ed576d30" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>
+       registers <em>listener</em> for all documents.
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>)
+      </dd>
+      <dt>
+       registers <em>listener</em> for a document with the specified <em>name</em> in the root directory.
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>, String <em>name</em>)
+      </dd>
+      <dt>
+       registers <em>listener</em> for a document with the specified <em>name</em> in the directory described by <em>path</em>
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>, POIFSDocumentPath <em>path</em>, String <em>name</em>)
+      </dd>
+     </dl>
+     <a name="POIFSDocumentPath"></a>
+     <h4>POIFSDocumentPath
+      <div name="tsUpdate" data-id="t_bac8fd5132fb4a53a128d1b8728883fe" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSDocumentPath</span> class is used to describe a directory in a POIFS file system. Since there are no reserved characters in the name of a file in a POIFS file system, a more traditional string-based solution for describing a directory, with special characters delimiting the components of the directory name, is not feasible. The constructors for the class are used as follows:
+      <div name="tsUpdate" data-id="t_0d3f9e8127f544a1a8cad6ee0ee42be7" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>Constructor example</em>
+         <div name="tsUpdate" data-id="t_020285bd28a14f8fa6ab933a186c798b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>Directory described</em>
+         <div name="tsUpdate" data-id="t_05f5e0bec9514054a184738ebb1495cd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">new POIFSDocumentPath()
+         <div name="tsUpdate" data-id="t_7d91b009efa045f4bdd75c74c49f87a9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The root directory.
+         <div name="tsUpdate" data-id="t_7ec601a65705428da87cb6403ee8cd1b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">new POIFSDocumentPath(null)
+         <div name="tsUpdate" data-id="t_a95f458537714a03a0d4132e1eaf3442" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The root directory.
+         <div name="tsUpdate" data-id="t_ef94cbf23f574625945018c1cca70317" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">new POIFSDocumentPath(new String[ 0 ])
+         <div name="tsUpdate" data-id="t_33083111b569423bbfb3e6bf9aea3d8f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The root directory.
+         <div name="tsUpdate" data-id="t_9232752aab1b47028bd3989fb7d7834d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">new POIFSDocumentPath(new String[ ] { "foo", "bar"} )
+         <div name="tsUpdate" data-id="t_2603afbca1934ae38671301054e4eb00" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">in Unix terminology, "/foo/bar".
+         <div name="tsUpdate" data-id="t_abd638a5884c4c789bdf4af6e8e8f6a7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">new POIFSDocumentPath(new POIFSDocumentPath(new String[] { "foo" }), new String[ ] { "fu", "bar"} )
+         <div name="tsUpdate" data-id="t_493b6a6ae0574257a2fc99dc7644edca" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">in Unix terminology, "/foo/fu/bar".
+         <div name="tsUpdate" data-id="t_5b414e204a274847836177962f87daca" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Processing+POIFSReaderEvent+Events"></a>
+     <h4>Processing POIFSReaderEvent Events
+      <div name="tsUpdate" data-id="t_86ae3bc2851b47a9a5c84b73ea84d42b" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Processing <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent</span> events is relatively easy. After all of the <span class="codefrag">POIFSReaderListener</span> instances have been registered with <span class="codefrag">POIFSReader</span>, the <span class="codefrag">POIFSReader.read(InputStream stream)</span> method is called.
+      <div name="tsUpdate" data-id="t_6ac6af256f95499799cdbd3f24b02af2" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Assuming that there are no problems with the data, as the <span class="codefrag">POIFSReader</span> processes the documents in the specified <span class="codefrag">InputStream</span>'s data, it calls registered <span class="codefrag"> POIFSReaderListener </span> instances' <span class="codefrag">processPOIFSReaderEvent</span> method with a <span class="codefrag">POIFSReaderEvent </span> instance.
+      <div name="tsUpdate" data-id="t_79fabe1fe83d4b96b3b4fb936d6cc748" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <span class="codefrag">POIFSReaderEvent</span> instance contains information to identify the document (a <span class="codefrag"> POIFSDocumentPath </span> object to identify the directory that the document is in, and the document name), and an open <span class="codefrag">DocumentInputStream</span> instance from which to read the document.
+      <div name="tsUpdate" data-id="t_adec2e1081f44a3a98f53b68bfe73646" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Writing+a+File+System"></a>
+    <h2 class="boxed">Writing a File System
+     <div name="tsUpdate" data-id="t_2f54419568fa4f779a429436b91fa697" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="writing" id="writing"></a>
+     <p>Writing a file system is very much like reading a file system in that there are multiple ways to do so. You can load an existing file system into memory and modify it (removing files, renaming files) and/or add new files to it, and write it, or you can start with a new, empty file system:
+      <div name="tsUpdate" data-id="t_ef40c3b5f2c24337aa46e0c818becb18" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSFileSystem fs = new POIFSFileSystem();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="The+Naming+of+Names"></a>
+     <h3 class="boxed">The Naming of Names
+      <div name="tsUpdate" data-id="t_da4432741f7b4b97a7990f40d02dfd69" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>There are two restrictions on the names of files in a file system that must be considered when creating files:
+      <div name="tsUpdate" data-id="t_8c114e3af1a440848a0e53f8427d5adf" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>The name of the file must not exceed 31 characters. If it does, the POIFS API will silently truncate the name to fit.
+       <div name="tsUpdate" data-id="t_ef20ec6a0fc94869a35c40d7b218576d" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The name of the file must be unique within its containing directory. This seems pretty obvious, but if it isn't spelled out, there'll be hell to pay, to be sure. Uniqueness, of course, is determined <em>after</em> the name has been truncated, if the original name was too long to begin with.
+       <div name="tsUpdate" data-id="t_88eefee2cc294888a7b22120f8adf2f3" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <a name="Creating+a+Document"></a>
+     <h3 class="boxed">Creating a Document
+      <div name="tsUpdate" data-id="t_3637c7dbd0c64c7d99bfeb921cd421c8" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>A document can be created by acquiring a <span class="codefrag">DirectoryEntry</span> and calling one of the two <span class="codefrag"> createDocument </span> methods:
+      <div name="tsUpdate" data-id="t_6eab30795a5d4b88b806dda8b6bf207f" data-tpl="0" data-txt-color="green"></div></p>
+     <dl>
+      <dt>createDocument(String name, InputStream stream)</dt>
+      <dd>
+       <ul>
+        <li class="pro">Simple API
+         <div name="tsUpdate" data-id="t_526fdab8bc714665818c3d973385702f" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">Increased memory footprint (document is in memory until file system is written).
+         <div name="tsUpdate" data-id="t_27163db10ed5487dae78f6fc1ba8d4ec" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+      </dd>
+      <dt>createDocument(String name, int size, POIFSWriterListener writer)</dt>
+      <dd>
+       <ul>
+        <li class="pro">Decreased memory footprint (only very small documents are held in memory, and then only for a short time).
+         <div name="tsUpdate" data-id="t_c1fb656577134b78b414888bd895a9b9" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">More complex API.
+         <div name="tsUpdate" data-id="t_9f8e135579cf4417a19489f13b117c12" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">Determining document size in advance may be difficult.
+         <div name="tsUpdate" data-id="t_4496ea1219b64b1db366abc786b6a68c" data-tpl="0" data-txt-color="green"></div></li>
+        <li class="con">Lose control over when document is to be written.
+         <div name="tsUpdate" data-id="t_04272afbeaa0407ca8eb80fe65213e67" data-tpl="0" data-txt-color="green"></div></li>
+       </ul>
+      </dd>
+     </dl>
+     <p>Unlike reading, you don't have to choose between the in-memory and event-driven writing models; both can co-exist in the same file system.
+      <div name="tsUpdate" data-id="t_2f149217ccf3454785ef8b2a85504c27" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Writing is initiated when the <span class="codefrag">POIFSFileSystem</span> instance's <span class="codefrag">writeFilesystem()</span> method is called with an <span class="codefrag">OutputStream</span> to write to.
+      <div name="tsUpdate" data-id="t_9e1c4e7445944394ae7d0979472c5589" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The event-driven model is quite similar to the event-driven model for reading, in that the file system calls your <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSWriterListener</span> when it's time to write your document, just as the <span class="codefrag">POIFSReader</span> calls your <span class="codefrag">POIFSReaderListener </span> when it's time to read your document. Internally, when <span class="codefrag">writeFilesystem()</span> is called, the final POIFS data structures are created and are written to the specified <span class="codefrag"> OutputStream</span>. When the file system needs to write a document out that was created with the event-driven model, it calls the <span class="codefrag">POIFSWriterListener</span> back, calling its <span class="codefrag"> processPOIFSWriterEvent() </span> method, passing an <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSWriterEvent</span> instance. This object contains the <span class="codefrag">POIFSDocumentPath</span> and name of the document, its size, and an open <span class="codefrag">org.apache.poi.poifs.filesystem.DocumentOutputStream</span> to which to write. A <span class="codefrag"> DocumentOutputStream </span> is a wrapper over the <span class="codefrag">OutputStream</span> that was provided to the <span class="codefrag"> POIFSFileSystem </span> to write to, and has the responsibility of making sure that the document your application writes fits within the size you specified for it.
+      <div name="tsUpdate" data-id="t_466af6afc9974e30b614a1e76edd6e27" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you are using a <span class="codefrag">POIFSFileSystem</span> loaded from a <span class="codefrag">File</span> with <span class="codefrag">readOnly</span> set to false, it is also possible to do an in-place write. Simply call <span class="codefrag"> writeFilesystem() </span> to have the (limited) in-memory structures synced with the disk, then <span class="codefrag">close()</span> to finish.
+      <div name="tsUpdate" data-id="t_daa69d703fa44b6d8fe9843e732790d8" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Creating+a+Directory"></a>
+     <h3 class="boxed">Creating a Directory
+      <div name="tsUpdate" data-id="t_6d4a870b6493499c8b880c68d671f8b7" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Creating a directory is similar to creating a document, except that there's only one way to do so:
+      <div name="tsUpdate" data-id="t_fb934a7297c24f0da41f09b492e42071" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry createdDir = existingDir.createDirectory(name);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Using+POIFSFileSystem+Directly+To+Create+a+Document+Or+Directory"></a>
+     <h3 class="boxed">Using POIFSFileSystem Directly To Create a Document Or Directory
+      <div name="tsUpdate" data-id="t_49d3c7ef12f34c13982e5044eda6d824" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>As with reading documents, it is possible to create a new document or directory in the root directory by using convenience methods of POIFSFileSystem.
+      <div name="tsUpdate" data-id="t_d7e738d016fc49d7ac8afdedd9543638" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><em>DirectoryEntry Method Signature</em>
+         <div name="tsUpdate" data-id="t_dc954597b53c47ad905fc3b6de3f7a07" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>POIFSFileSystem Method Signature</em>
+         <div name="tsUpdate" data-id="t_dde36c1bdb9b4a83ad3ed94d985fc66c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">createDocument(String name, InputStream stream)
+         <div name="tsUpdate" data-id="t_de79f930cdfc41c1b9d71725a1ed2815" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">createDocument(InputStream stream, String name)
+         <div name="tsUpdate" data-id="t_1c61759650f6429a9705f8311ebecb1d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">createDocument(String name, int size, POIFSWriterListener writer)
+         <div name="tsUpdate" data-id="t_613acb38339542fdb9843ffe9399953a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">createDocument(String name, int size, POIFSWriterListener writer)
+         <div name="tsUpdate" data-id="t_31286d5f28934b05900383575389cb7b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">createDirectory(String name)
+         <div name="tsUpdate" data-id="t_1d67424b7e8d44b0a3c06932932f1cb4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">createDirectory(String name)
+         <div name="tsUpdate" data-id="t_5edd8e4b41ac4d998b42839e94484f94" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Modifying+a+File+System"></a>
+    <h2 class="boxed">Modifying a File System
+     <div name="tsUpdate" data-id="t_433a4900a2ce47a085d2490b46c4c431" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="modifying" id="modifying"></a>
+     <p>It is possible to modify an existing POIFS file system, whether it's one your application has loaded into memory, or one which you are creating on the fly.
+      <div name="tsUpdate" data-id="t_5be3d8d68c304249a1b173a6dde0dc84" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Removing+a+Document"></a>
+     <h3 class="boxed">Removing a Document
+      <div name="tsUpdate" data-id="t_1781dc7ab6a549a3889ecff782b37332" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Removing a document is simple: you get the <span class="codefrag">Entry</span> corresponding to the document and call its <span class="codefrag">delete()</span> method. This is a boolean method, but should always return <span class="codefrag"> true</span>, indicating that the operation succeeded.
+      <div name="tsUpdate" data-id="t_54381671f7a44f70b5d87b3650f2d17f" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Removing+a+Directory"></a>
+     <h3 class="boxed">Removing a Directory
+      <div name="tsUpdate" data-id="t_7f4a0ce6deef414a86c372650749fc1d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Removing a directory is also simple: you get the <span class="codefrag">Entry</span> corresponding to the directory and call its <span class="codefrag">delete()</span> method. This is a boolean method, but, unlike deleting a document, may not always return <span class="codefrag">true</span>, indicating that the operation succeeded. Here are the reasons why the operation may fail:
+      <div name="tsUpdate" data-id="t_750293f6d98f49afbacaf8f70bfad4d7" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>The directory still has files in it (to check, call <span class="codefrag">isEmpty()</span> on its DirectoryEntry; is the return value <span class="codefrag">false</span>?)
+       <div name="tsUpdate" data-id="t_21b28b9ff63849268ee8bd45bc9dd3ae" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The directory is the root directory. You cannot remove the root directory.
+       <div name="tsUpdate" data-id="t_4eb061508fbc43bfa678af6a3dc85ca8" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="Changing+a+File%27s+contents"></a>
+     <h3 class="boxed">Changing a File's contents
+      <div name="tsUpdate" data-id="t_6f99b98618db40f29128b2def34bb312" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>There are two ways available to change the contents of an existing file within a POIFS file system. One is using a <span class="codefrag">DocumentOutputStream</span>, the other is with <span class="codefrag">POIFSDocument.replaceContents</span>
+      <div name="tsUpdate" data-id="t_bf1ee9b88e994f049e882913b2b69cb6" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you have available to you an <span class="codefrag">InputStream</span> to read the new File contents from, then the easiest way is via <span class="codefrag">POIFSDocument.replaceContents</span>. You would do something like:
+      <div name="tsUpdate" data-id="t_1dc7475a5abd4ad5b0db8e9f9d2fcadb" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Get the input stream from somewhere</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_17b22d4a0e994ea1a7756ee44e1c1eed" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">InputStream inp = db.getContentStream();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Open the POIFS File System, and get the entry of interest</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_69f3829ca5db4e94a2cbe4ce317810a5" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSFileSystem fs = new POIFSFileSystem(new File(filename), false);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentEntry myDocE = (DocumentEntry)root.getEntry("ToChange");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Replace the contents</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a428f84cdf2d47e888d44260aea4fee7" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSDocument myDoc = new POIFSDocument(myDocE);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">myDoc.replaceContents(inp);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Save the changes to the file in-place</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_7ec6d515df16427ab91bad7a64214fa9" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">fs.writeFileSystem();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">fs.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>Alternately, if you either have a byte array, or you need to write as you go along, then the OutputStream interface provided by <span class="codefrag">DocumentOutputStream</span> will likely be a better bet. Your code would want to look somewhat like:
+      <div name="tsUpdate" data-id="t_d2434866c44b4e21ba11e723cd7ae14f" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Open the POIFS File System, and get the entry of interest</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_2f6a866ccf364ae39898979bc218e345" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(new File(filename))) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentEntry myDoc = (DocumentEntry)root.getEntry("ToChange");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Replace the content with a Write</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_c369f21d58f4404c9f4ddd3dcc4a6cba" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try (DocumentOutputStream docOut = new DocumentOutputStream(myDoc)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> myDoc.writeTo(docOut);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Save the changes to a new file</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_5e383d439f2e45cc9e29bac5038010bb" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try (FileOutputStream out = new FileOutputStream("NewFile.ole2")) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> fs.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>For an example of an in-place change to one stream within a file, you can see the example <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hpsf/examples/ModifyDocumentSummaryInformation.java"> org/apache/poi/hpsf/examples/ModifyDocumentSummaryInformation.java </a>
+      <div name="tsUpdate" data-id="t_590ac5f3441f4594bfcbcd87b509c835" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Renaming+a+File"></a>
+     <h3 class="boxed">Renaming a File
+      <div name="tsUpdate" data-id="t_915206d660fd44468069b7ea1d16b4b4" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Regardless of whether the file is a directory or a document, it can be renamed, with one exception - the root directory has a special name that is expected by the components of a major software vendor's office suite, and the POIFS API will not let that name be changed. Renaming is done by acquiring the file's corresponding <span class="codefrag">Entry</span> instance and calling its <span class="codefrag">renameTo</span> method, passing in the new name.
+      <div name="tsUpdate" data-id="t_a2547e9cc0e54beaa29e3c01e417ff55" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Like <span class="codefrag">delete</span>, <span class="codefrag">renameTo</span> returns <span class="codefrag">true</span> if the operation succeeded, otherwise <span class="codefrag">false</span>. Reasons for failure include these:
+      <div name="tsUpdate" data-id="t_e14ec79e7d3c4ab292d10df4a82bb4f2" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>The new name is the same as another file in the same directory. And don't forget - if the new name is longer than 31 characters, it <em>will</em> be silently truncated. In its original length, the new name may have been unique, but truncated to 31 characters, it may not be unique any longer.
+       <div name="tsUpdate" data-id="t_dac4f6f0a1594317945fcb377db6b25a" data-tpl="0" data-txt-color="green"></div></li>
+      <li>You tried to rename the root directory.
+       <div name="tsUpdate" data-id="t_57596193a9d74db08fe1ca0320d6ebdd" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Marc Johnson</font>
+     <div name="tsUpdate" data-id="t_cae1346cb99a41a79d826655215ed4c7" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/poifs/how-to.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='aa3ed54a4d4047519f1d3a8e1f6a8e1c';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

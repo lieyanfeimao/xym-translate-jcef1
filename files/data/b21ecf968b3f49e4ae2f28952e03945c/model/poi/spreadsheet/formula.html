@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Formula Support</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_ab91b55fc3394d76af24ff7fdf6d8632">Formula Support</span><span class="tscolor" lg_zh="t_ab91b55fc3394d76af24ff7fdf6d8632"><span lg_kh="1">(</span>${t_ab91b55fc3394d76af24ff7fdf6d8632}<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="Introduction"></a>
+    <h2 class="boxed"><span lg_en="t_20ca50dc430a4aa7a920aa8521177be2">Introduction</span><span class="tscolor" lg_zh="t_20ca50dc430a4aa7a920aa8521177be2"><span lg_kh="1">(</span>${t_20ca50dc430a4aa7a920aa8521177be2}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_c4295e77cdd74d9db7b386ad089a3bb8">This document describes the current state of formula support in POI. The information in this document currently applies to the 3.13 version of POI. Since this area is a work in progress, this document will be updated with new features as and when they are added.</span><span class="tscolor" lg_zh="t_c4295e77cdd74d9db7b386ad089a3bb8"><span lg_kh="1">(</span>${t_c4295e77cdd74d9db7b386ad089a3bb8}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="The+basics"></a>
+    <h2 class="boxed"><span lg_en="t_bd83d8070b9a4ed49ca78d0fe5c903e7">The basics</span><span class="tscolor" lg_zh="t_bd83d8070b9a4ed49ca78d0fe5c903e7"><span lg_kh="1">(</span>${t_bd83d8070b9a4ed49ca78d0fe5c903e7}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_a78818e1745d4ee2b94948fe908ca27a">In org.apache.poi.ss.usermodel.Cell <strong> setCellFormula("formulaString") </strong> is used to add a formula to a sheet, and <strong> getCellFormula() </strong> is used to retrieve the string representation of a formula.</span><span class="tscolor" lg_zh="t_a78818e1745d4ee2b94948fe908ca27a"><span lg_kh="1">(</span>${t_a78818e1745d4ee2b94948fe908ca27a}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_23621090da0b47f3988b30fc8d39d93e">We aim to support the complete excel grammar for formulas. Thus, the string that you pass in to the <em> setCellFormula </em> call should be what you expect to type into excel. Also, note that you should NOT add a "=" to the front of the string.</span><span class="tscolor" lg_zh="t_23621090da0b47f3988b30fc8d39d93e"><span lg_kh="1">(</span>${t_23621090da0b47f3988b30fc8d39d93e}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_faab0063bdf5423f861809707508a8a6">Please note that localized versions of Excel allow to enter localized function-names. However internally Excel stores the English names and thus POI only supports these and not the localized ones. Also note that only commas may be used to separate arguments, as per the Excel English style, alternate delimeters used in other localizations are not supported.</span><span class="tscolor" lg_zh="t_faab0063bdf5423f861809707508a8a6"><span lg_kh="1">(</span>${t_faab0063bdf5423f861809707508a8a6}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Supported+Features"></a>
+    <h2 class="boxed"><span lg_en="t_e433b7c440f349a78f3f7cc0ef213469">Supported Features</span><span class="tscolor" lg_zh="t_e433b7c440f349a78f3f7cc0ef213469"><span lg_kh="1">(</span>${t_e433b7c440f349a78f3f7cc0ef213469}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <ul>
+      <li><span lg_en="t_0b461ad8a3134ca5af40880b48690960">References: single cell &amp; area, 2D &amp; 3D, relative &amp; absolute</span><span class="tscolor" lg_zh="t_0b461ad8a3134ca5af40880b48690960"><span lg_kh="1">(</span>${t_0b461ad8a3134ca5af40880b48690960}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_3dbad9ae751f43e19297fc07848e82b0">Literals: number, text, boolean, error and array</span><span class="tscolor" lg_zh="t_3dbad9ae751f43e19297fc07848e82b0"><span lg_kh="1">(</span>${t_3dbad9ae751f43e19297fc07848e82b0}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_900673613cef40dd9ab534014553c501">Operators: arithmetic and logical, some region operators</span><span class="tscolor" lg_zh="t_900673613cef40dd9ab534014553c501"><span lg_kh="1">(</span>${t_900673613cef40dd9ab534014553c501}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_c104811c2762480a8722550908d83d4d">Built-in functions: over 350 recognised, 280 evaluatable</span><span class="tscolor" lg_zh="t_c104811c2762480a8722550908d83d4d"><span lg_kh="1">(</span>${t_c104811c2762480a8722550908d83d4d}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_470dbbd10b414f59a9eb2f277a2a85b2">Add-in functions: 24 from Analysis Toolpack</span><span class="tscolor" lg_zh="t_470dbbd10b414f59a9eb2f277a2a85b2"><span lg_kh="1">(</span>${t_470dbbd10b414f59a9eb2f277a2a85b2}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_cc35d802f3e248f68b84d847e42a640f">Array Formulas: via Sheet.setArrayFormula() and Sheet.removeArrayFormula()</span><span class="tscolor" lg_zh="t_cc35d802f3e248f68b84d847e42a640f"><span lg_kh="1">(</span>${t_cc35d802f3e248f68b84d847e42a640f}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_5f96be011e054a3d9c7748a55ebfa63e">Region operators: union, intersection</span><span class="tscolor" lg_zh="t_5f96be011e054a3d9c7748a55ebfa63e"><span lg_kh="1">(</span>${t_5f96be011e054a3d9c7748a55ebfa63e}<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Not+yet+supported"></a>
+    <h2 class="boxed"><span lg_en="t_7e838dfcd5c34a818a344de4525d1dd1">Not yet supported</span><span class="tscolor" lg_zh="t_7e838dfcd5c34a818a344de4525d1dd1"><span lg_kh="1">(</span>${t_7e838dfcd5c34a818a344de4525d1dd1}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <ul>
+      <li><span lg_en="t_bd96b16552cb4038a7784da21bb09a52">Manipulating table formulas (In Excel, formulas that look like "{=...}" as opposed to "=...")</span><span class="tscolor" lg_zh="t_bd96b16552cb4038a7784da21bb09a52"><span lg_kh="1">(</span>${t_bd96b16552cb4038a7784da21bb09a52}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_dc00542882a04a78ba20593c4e07935b">Parsing of previously uncalled add-in functions</span><span class="tscolor" lg_zh="t_dc00542882a04a78ba20593c4e07935b"><span lg_kh="1">(</span>${t_dc00542882a04a78ba20593c4e07935b}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_e06c85e2c4944300945a71d918c7c225">Preservation of whitespace in formulas (when POI manipulates them)</span><span class="tscolor" lg_zh="t_e06c85e2c4944300945a71d918c7c225"><span lg_kh="1">(</span>${t_e06c85e2c4944300945a71d918c7c225}<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Supported+Functions"></a>
+    <h2 class="boxed"><span lg_en="t_b8fb69f2efcc43b89bcf47c0a09b7c4e">Supported Functions</span><span class="tscolor" lg_zh="t_b8fb69f2efcc43b89bcf47c0a09b7c4e"><span lg_kh="1">(</span>${t_b8fb69f2efcc43b89bcf47c0a09b7c4e}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_62726b7d03a74f58af03a29d3d45b972">To get the list of formula functions that POI supports, you need to call some code!</span><span class="tscolor" lg_zh="t_62726b7d03a74f58af03a29d3d45b972"><span lg_kh="1">(</span>${t_62726b7d03a74f58af03a29d3d45b972}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c17f100e925542179647389b243da381">The methods you need are available on <a href="../../apidocs/dev/org/apache/poi/ss/formula/eval/FunctionEval.html">org.apache.poi.ss.formula.eval.FunctionEval</a>. To find which functions your copy of Apache POI supports, use <a href="../../apidocs/dev/org/apache/poi/ss/formula/eval/FunctionEval.html#getSupportedFunctionNames()">getSupportedFunctionNames()</a> to get a list of the implemented function names. For the list of functions that POI knows the name of, but doesn't currently implement, use <a href="../../apidocs/dev/org/apache/poi/ss/formula/eval/FunctionEval.html#getNotSupportedFunctionNames()">getNotSupportedFunctionNames()</a></span><span class="tscolor" lg_zh="t_c17f100e925542179647389b243da381"><span lg_kh="1">(</span>${t_c17f100e925542179647389b243da381}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Internals"></a>
+    <h2 class="boxed"><span lg_en="t_efa5e20efc8c40c79792dc065359578a">Internals</span><span class="tscolor" lg_zh="t_efa5e20efc8c40c79792dc065359578a"><span lg_kh="1">(</span>${t_efa5e20efc8c40c79792dc065359578a}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_0ce500a6e06d4b63b3ebfe5d27ac1ba8">Formulas in Excel are stored as sequences of tokens in Reverse Polish Notation order. The <a href="http://sc.openoffice.org/excelfileformat.pdf">open office XLS spec</a> is the best documentation you will find for the format.</span><span class="tscolor" lg_zh="t_0ce500a6e06d4b63b3ebfe5d27ac1ba8"><span lg_kh="1">(</span>${t_0ce500a6e06d4b63b3ebfe5d27ac1ba8}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_ca855e1b311a48268147330e5db23547">The tokens used by excel are modeled as individual *Ptg classes in the <strong> org.apache.poi.hssf.record.formula</strong> package.</span><span class="tscolor" lg_zh="t_ca855e1b311a48268147330e5db23547"><span lg_kh="1">(</span>${t_ca855e1b311a48268147330e5db23547}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_bacf6e7d30d1405194a21b11cf0a6318">The task of parsing a formula string into an array of RPN ordered tokens is done by the <strong> org.apache.poi.ss.formula.FormulaParser</strong> class. This class implements a hand written recursive descent parser.</span><span class="tscolor" lg_zh="t_bacf6e7d30d1405194a21b11cf0a6318"><span lg_kh="1">(</span>${t_bacf6e7d30d1405194a21b11cf0a6318}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_29099cccb7254c909530544e49d9854c">Formula tokens in Excel are stored in one of three possible <em> operand classes </em>: Reference, Value and Array. Based on the location of a token, its class can change in complicated and undocumented ways. While we have support for most cases, we are not sure if we have covered all bases (since there is no documentation for this area.) We would therefore like you to report any occurrence of #VALUE! in a cell upon opening a POI generated workbook in excel. (Check that typing the formula into Excel directly gives a valid result.)</span><span class="tscolor" lg_zh="t_29099cccb7254c909530544e49d9854c"><span lg_kh="1">(</span>${t_29099cccb7254c909530544e49d9854c}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c20cc3dbbbfe481fba3e064495f1b7b0">Check out the <a href="../../apidocs/index.html">javadocs </a> for details.</span><span class="tscolor" lg_zh="t_c20cc3dbbbfe481fba3e064495f1b7b0"><span lg_kh="1">(</span>${t_c20cc3dbbbfe481fba3e064495f1b7b0}<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_043247c57d8a40079e6635554fcc1e4d"><font size="-2">by&nbsp;Avik Sengupta</font></span><span class="tscolor" lg_zh="t_043247c57d8a40079e6635554fcc1e4d"><span lg_kh="1">(</span>${t_043247c57d8a40079e6635554fcc1e4d}<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/formula.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

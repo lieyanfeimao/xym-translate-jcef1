@@ -1,0 +1,1 @@
+[{"id":"t_eb56bb9ad49b407b8f3e8841865b93fb","oldText":"The EMR_POLYLINE16 record specifies a series of line segments by connecting the points in the specified array.","tlText":"EMR_POLY 16记录通过连接指定数组中的点来指定一系列直线段。","version":0},{"id":"t_434933964f2e404e8c3f15fc1fdfe214","oldText":"getEmfRecordType in interface HemfRecord","tlText":"HemfRecord界面中的getEmfRecordType","version":0}]

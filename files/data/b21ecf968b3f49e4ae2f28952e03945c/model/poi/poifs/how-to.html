@@ -1,0 +1,723 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>How To Use the POIFS APIs</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_0672703515ed4faf8f34ae441a5836a9">How To Use the POIFS APIs</span><span class="tscolor" lg_zh="t_0672703515ed4faf8f34ae441a5836a9"><span lg_kh="1">(</span>${t_0672703515ed4faf8f34ae441a5836a9}<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="How+To+Use+the+POIFS+APIs"></a>
+    <h2 class="boxed"><span lg_en="t_676b951700224970a3300721e15e933b">How To Use the POIFS APIs</span><span class="tscolor" lg_zh="t_676b951700224970a3300721e15e933b"><span lg_kh="1">(</span>${t_676b951700224970a3300721e15e933b}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_e62430880a8545f2a2cee6d42ded1c25">This document describes how to use the POIFS APIs to read, write, and modify files that employ a POIFS-compatible data structure to organize their content.</span><span class="tscolor" lg_zh="t_e62430880a8545f2a2cee6d42ded1c25"><span lg_kh="1">(</span>${t_e62430880a8545f2a2cee6d42ded1c25}<span lg_kh="1">)</span></span></p>
+     <a name="Target+Audience"></a>
+     <h3 class="boxed"><span lg_en="t_9daf677aa174407a8439b68036bdc678">Target Audience</span><span class="tscolor" lg_zh="t_9daf677aa174407a8439b68036bdc678"><span lg_kh="1">(</span>${t_9daf677aa174407a8439b68036bdc678}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_49da45dc20a1432a89a55faec096a4cc">This document is intended for Java developers who need to use the POIFS APIs to read, write, or modify files that employ a POIFS-compatible data structure to organize their content. It is not necessary for developers to understand the POIFS data structures, and an explanation of those data structures is beyond the scope of this document. It is expected that the members of the target audience will understand the rudiments of a hierarchical file system, and familiarity with the event pattern employed by Java APIs such as AWT would be helpful.</span><span class="tscolor" lg_zh="t_49da45dc20a1432a89a55faec096a4cc"><span lg_kh="1">(</span>${t_49da45dc20a1432a89a55faec096a4cc}<span lg_kh="1">)</span></span></p>
+     <a name="Glossary"></a>
+     <h3 class="boxed"><span lg_en="t_7111f31e8c6746c1933db50d90f4349a">Glossary</span><span class="tscolor" lg_zh="t_7111f31e8c6746c1933db50d90f4349a"><span lg_kh="1">(</span>${t_7111f31e8c6746c1933db50d90f4349a}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_b74fe30aae0f45b28c51204cd2594fca">This document attempts to be consistent in its terminology, which is defined here:</span><span class="tscolor" lg_zh="t_b74fe30aae0f45b28c51204cd2594fca"><span lg_kh="1">(</span>${t_b74fe30aae0f45b28c51204cd2594fca}<span lg_kh="1">)</span></span></p>
+     <dl>
+      <dt>Directory</dt>
+      <dd>A special file that may contain other directories and documents.</dd>
+      <dt>DirectoryEntry</dt>
+      <dd>Representation of a directory within another directory.</dd>
+      <dt>Document</dt>
+      <dd>A file containing data, such as word processing data or a spreadsheet workbook.</dd>
+      <dt>DocumentEntry</dt>
+      <dd>Representation of a document within a directory.</dd>
+      <dt>Entry</dt>
+      <dd>Representation of a file in a directory.</dd>
+      <dt>File</dt>
+      <dd>A named entity, managed and contained by the file system.</dd>
+      <dt>File System</dt>
+      <dd>The POIFS data structures, plus the contained directories and documents, which are maintained in a hierarchical directory structure.</dd>
+      <dt>Root Directory</dt>
+      <dd>The directory at the base of a file system. All file systems have a root directory. The POIFS APIs will not allow the root directory to be removed or renamed, but it can be accessed for the purpose of reading its contents or adding files (directories and documents) to it.</dd>
+     </dl>
+    </div>
+    <a name="The+different+ways+of+working+with+POIFS"></a>
+    <h2 class="boxed"><span lg_en="t_afd456287ea74714980a59bba9ba87ba">The different ways of working with POIFS</span><span class="tscolor" lg_zh="t_afd456287ea74714980a59bba9ba87ba"><span lg_kh="1">(</span>${t_afd456287ea74714980a59bba9ba87ba}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_35175b4749f74ba2bbc6110c0116f0d4">The POIFS API provides ways to read, modify and write files and streams that employ a POIFS-compatible data structure to organize their content. The following use cases are covered:</span><span class="tscolor" lg_zh="t_35175b4749f74ba2bbc6110c0116f0d4"><span lg_kh="1">(</span>${t_35175b4749f74ba2bbc6110c0116f0d4}<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_6d0cfcd17b8a404c97f61fbd653d3f88"><a href="#reading">Reading a File System</a></span><span class="tscolor" lg_zh="t_6d0cfcd17b8a404c97f61fbd653d3f88"><span lg_kh="1">(</span>${t_6d0cfcd17b8a404c97f61fbd653d3f88}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_d515ae372ef44be9ba84426178bcfd20"><a href="#reading_poifsfilesystem">Conventional Reading with POIFSFileSystem</a></span><span class="tscolor" lg_zh="t_d515ae372ef44be9ba84426178bcfd20"><span lg_kh="1">(</span>${t_d515ae372ef44be9ba84426178bcfd20}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_8a2fd2599662489a98b44250e52290ab"><a href="#reading_event">Event-Driven Reading</a></span><span class="tscolor" lg_zh="t_8a2fd2599662489a98b44250e52290ab"><span lg_kh="1">(</span>${t_8a2fd2599662489a98b44250e52290ab}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_0a2a5a106d2044f8a03a9fc71a3b208b"><a href="#writing">Writing a File System</a></span><span class="tscolor" lg_zh="t_0a2a5a106d2044f8a03a9fc71a3b208b"><span lg_kh="1">(</span>${t_0a2a5a106d2044f8a03a9fc71a3b208b}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_b6b8f57aa0f14aff9031d09bb0af2809"><a href="#modifying">Modifying a File System</a></span><span class="tscolor" lg_zh="t_b6b8f57aa0f14aff9031d09bb0af2809"><span lg_kh="1">(</span>${t_b6b8f57aa0f14aff9031d09bb0af2809}<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Reading+a+File+System"></a>
+    <h2 class="boxed"><span lg_en="t_0cebec0e86d147f597dc61ab047cbcfe">Reading a File System</span><span class="tscolor" lg_zh="t_0cebec0e86d147f597dc61ab047cbcfe"><span lg_kh="1">(</span>${t_0cebec0e86d147f597dc61ab047cbcfe}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="reading" id="reading"></a>
+     <p><span lg_en="t_d4327a6562ba41bc8286069dc1330c1e">This section covers reading a file system. There are two ways to read a file system; these techniques are sketched out in the following table, and then explained in greater depth in the sections following the table.</span><span class="tscolor" lg_zh="t_d4327a6562ba41bc8286069dc1330c1e"><span lg_kh="1">(</span>${t_d4327a6562ba41bc8286069dc1330c1e}<span lg_kh="1">)</span></span></p>
+     <dl>
+      <dt>Conventional Reading with POIFSFileSystem</dt>
+      <dd>
+       <ul>
+        <li class="pro"><span lg_en="t_182306dcaabb4359937ecc868ff478f2">Simpler API similar to reading a conventional file system.</span><span class="tscolor" lg_zh="t_182306dcaabb4359937ecc868ff478f2"><span lg_kh="1">(</span>${t_182306dcaabb4359937ecc868ff478f2}<span lg_kh="1">)</span></span></li>
+        <li class="pro"><span lg_en="t_06f365cc2ac14dd4b825bc14f4d60ebb">Can read documents in any order.</span><span class="tscolor" lg_zh="t_06f365cc2ac14dd4b825bc14f4d60ebb"><span lg_kh="1">(</span>${t_06f365cc2ac14dd4b825bc14f4d60ebb}<span lg_kh="1">)</span></span></li>
+        <li class="pro"><span lg_en="t_7072e533f7974fc3948c51009dcfd1aa">Well tested read and write support.</span><span class="tscolor" lg_zh="t_7072e533f7974fc3948c51009dcfd1aa"><span lg_kh="1">(</span>${t_7072e533f7974fc3948c51009dcfd1aa}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_422b82e2ec02420ca3432a55a954ca74">If created from an InputStream, all files are resident in memory. (If created from a File, only certain key structures are)</span><span class="tscolor" lg_zh="t_422b82e2ec02420ca3432a55a954ca74"><span lg_kh="1">(</span>${t_422b82e2ec02420ca3432a55a954ca74}<span lg_kh="1">)</span></span></li>
+       </ul>
+      </dd>
+      <dt>Event-Driven Reading</dt>
+      <dd>
+       <ul>
+        <li class="pro"><span lg_en="t_375adb22a8e94750a6e95c4f55dc8f37">Reduced footprint -- only the documents you care about are processed.</span><span class="tscolor" lg_zh="t_375adb22a8e94750a6e95c4f55dc8f37"><span lg_kh="1">(</span>${t_375adb22a8e94750a6e95c4f55dc8f37}<span lg_kh="1">)</span></span></li>
+        <li class="pro"><span lg_en="t_ad2a4aa2c7424c6c8d68dfb883b214b2">Improved performance -- no time is wasted reading the documents you're not interested in.</span><span class="tscolor" lg_zh="t_ad2a4aa2c7424c6c8d68dfb883b214b2"><span lg_kh="1">(</span>${t_ad2a4aa2c7424c6c8d68dfb883b214b2}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_9392337ec0d34ebe878e38d2642e6027">More complicated API.</span><span class="tscolor" lg_zh="t_9392337ec0d34ebe878e38d2642e6027"><span lg_kh="1">(</span>${t_9392337ec0d34ebe878e38d2642e6027}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_661cff71b5f44a84b6e03ade14ca1ed4">Need to know in advance which documents you want to read.</span><span class="tscolor" lg_zh="t_661cff71b5f44a84b6e03ade14ca1ed4"><span lg_kh="1">(</span>${t_661cff71b5f44a84b6e03ade14ca1ed4}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_6fbd10d6974e4a73a596462140298ba3">No control over the order in which the documents are read.</span><span class="tscolor" lg_zh="t_6fbd10d6974e4a73a596462140298ba3"><span lg_kh="1">(</span>${t_6fbd10d6974e4a73a596462140298ba3}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_95f8fdc357e741bab3e279b198476fbf">No way to go back and get additional documents except to re-read the file system, which may not be possible, e.g., if the file system is being read from an input stream that lacks random access support.</span><span class="tscolor" lg_zh="t_95f8fdc357e741bab3e279b198476fbf"><span lg_kh="1">(</span>${t_95f8fdc357e741bab3e279b198476fbf}<span lg_kh="1">)</span></span></li>
+       </ul>
+      </dd>
+     </dl>
+     <a name="Conventional+Reading+with+POIFSFileSystem"></a>
+     <h3 class="boxed"><span lg_en="t_0c67ab05eb8d4217b05387d44e4ca215">Conventional Reading with POIFSFileSystem</span><span class="tscolor" lg_zh="t_0c67ab05eb8d4217b05387d44e4ca215"><span lg_kh="1">(</span>${t_0c67ab05eb8d4217b05387d44e4ca215}<span lg_kh="1">)</span></span></h3>
+     <a name="reading_poifsfilesystem" id="reading_poifsfilesystem"></a>
+     <p><span lg_en="t_85387dfed49246dfaf0d607fe5f6b3c6">In this technique for reading, certain key structures are loaded into memory, and the entire directory tree can be walked by the application, reading specific documents at leisure.</span><span class="tscolor" lg_zh="t_85387dfed49246dfaf0d607fe5f6b3c6"><span lg_kh="1">(</span>${t_85387dfed49246dfaf0d607fe5f6b3c6}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c37a16ac8e2b47c0a9b2bcf65ba830d5">If you create a POIFSFileSystem instance from a File, the memory footprint is very small. However, if you createa a POIFSFileSystem instance from an input stream, then the whole contents must be buffered into memory to allow random access. As such, you should budget on memory use of up to 20% of the file size when using a File, or up to 120% of the file size when using an InputStream.</span><span class="tscolor" lg_zh="t_c37a16ac8e2b47c0a9b2bcf65ba830d5"><span lg_kh="1">(</span>${t_c37a16ac8e2b47c0a9b2bcf65ba830d5}<span lg_kh="1">)</span></span></p>
+     <a name="Preparation"></a>
+     <h4><span lg_en="t_c4cc9ce1280d438faa02b148de924c64">Preparation</span><span class="tscolor" lg_zh="t_c4cc9ce1280d438faa02b148de924c64"><span lg_kh="1">(</span>${t_c4cc9ce1280d438faa02b148de924c64}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_b51f169f014341408ef8fb7b13075d54">Before an application can read a file from the file system, the file system needs to be opened and core parts processed. This is done using the <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSFileSystem</span> class. Once the file system has been loaded into memory, the application may need the root directory. The following code fragment will accomplish this preparation stage:</span><span class="tscolor" lg_zh="t_b51f169f014341408ef8fb7b13075d54"><span lg_kh="1">(</span>${t_b51f169f014341408ef8fb7b13075d54}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// This is the most memory efficient way to open the FileSystem</span>
+      </div>
+      <div class="codeline" lg_zh="t_ab15b5fdc0444672b2d3cf7ab6cf0b4e">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_ab15b5fdc0444672b2d3cf7ab6cf0b4e}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(new File(filename))) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // an I/O error occurred, or the File did not provide a compatible</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // POIFS data structure</span>
+      </div>
+      <div class="codeline" lg_zh="t_166f4766df724f8391628da438b56a0c">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_166f4766df724f8391628da438b56a0c}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Using an InputStream requires more memory than using a File</span>
+      </div>
+      <div class="codeline" lg_zh="t_9c967ee54dd14b6aa1cf9d11e85dc8b2">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_9c967ee54dd14b6aa1cf9d11e85dc8b2}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(inputStream)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // an I/O error occurred, or the InputStream did not provide</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // a compatible POIFS data structure</span>
+      </div>
+      <div class="codeline" lg_zh="t_d61f9b22049747d5acdb056d9b870191">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_d61f9b22049747d5acdb056d9b870191}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_12488379ad604787af6711307f7c8007">Assuming no exception was thrown, the file system can then be read.</span><span class="tscolor" lg_zh="t_12488379ad604787af6711307f7c8007"><span lg_kh="1">(</span>${t_12488379ad604787af6711307f7c8007}<span lg_kh="1">)</span></span></p>
+     <a name="Reading+the+Directory+Tree"></a>
+     <h4><span lg_en="t_8860710d24954b1a93301fe024b79e82">Reading the Directory Tree</span><span class="tscolor" lg_zh="t_8860710d24954b1a93301fe024b79e82"><span lg_kh="1">(</span>${t_8860710d24954b1a93301fe024b79e82}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_d235dd296a074196a95bc34fa8bee59e">Once the file system has been loaded into memory and the root directory has been obtained, the root directory can be read. The following code fragment shows how to read the entries in an <span class="codefrag"> org.apache.poi.poifs.filesystem.DirectoryEntry </span> instance:</span><span class="tscolor" lg_zh="t_d235dd296a074196a95bc34fa8bee59e"><span lg_kh="1">(</span>${t_d235dd296a074196a95bc34fa8bee59e}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// dir is an instance of DirectoryEntry ...</span>
+      </div>
+      <div class="codeline" lg_zh="t_588b970bc31c448dbe5cbfa2959eeb45">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_588b970bc31c448dbe5cbfa2959eeb45}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (Entry entry : dir) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("found entry: " + entry.getName());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (entry instanceof DirectoryEntry) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // .. recurse into this directory</span>
+      </div>
+      <div class="codeline" lg_zh="t_40a4672e500140c393de1d5198c2c0a3">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_40a4672e500140c393de1d5198c2c0a3}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else if (entry instanceof DocumentEntry) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // entry is a document, which you can read</span>
+      </div>
+      <div class="codeline" lg_zh="t_8d5de607b4e441b3b09aeeda6d7a012a">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_8d5de607b4e441b3b09aeeda6d7a012a}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // currently, either an Entry is a DirectoryEntry or a DocumentEntry,</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // but in the future, there may be other entry subinterfaces.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // The internal data structure certainly allows for a lot more entry types.</span>
+      </div>
+      <div class="codeline" lg_zh="t_845679c7d7014348b5c8f3b3e361a697">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_845679c7d7014348b5c8f3b3e361a697}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Reading+a+Specific+Document"></a>
+     <h4><span lg_en="t_f54b7d42bb594d228e94817e4e900c29">Reading a Specific Document</span><span class="tscolor" lg_zh="t_f54b7d42bb594d228e94817e4e900c29"><span lg_kh="1">(</span>${t_f54b7d42bb594d228e94817e4e900c29}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_e33c469b807a4940806baa9b9969a53c">There are a couple of ways to read a document, depending on whether the document resides in the root directory or in another directory. Either way, you will obtain an <span class="codefrag"> org.apache.poi.poifs.filesystem.DocumentInputStream </span> instance.</span><span class="tscolor" lg_zh="t_e33c469b807a4940806baa9b9969a53c"><span lg_kh="1">(</span>${t_e33c469b807a4940806baa9b9969a53c}<span lg_kh="1">)</span></span></p>
+     <a name="DocumentInputStream"></a>
+     <h5>DocumentInputStream</h5>
+     <p><span lg_en="t_634bcc3270ce496f875561ef6284997a">The DocumentInputStream class is a simple implementation of InputStream that makes a few guarantees worth noting:</span><span class="tscolor" lg_zh="t_634bcc3270ce496f875561ef6284997a"><span lg_kh="1">(</span>${t_634bcc3270ce496f875561ef6284997a}<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_d9c69d8b9e9a4a8082c3a09bfd0af386"><span class="codefrag">available()</span> always returns the number of bytes in the document from your current position in the document.</span><span class="tscolor" lg_zh="t_d9c69d8b9e9a4a8082c3a09bfd0af386"><span lg_kh="1">(</span>${t_d9c69d8b9e9a4a8082c3a09bfd0af386}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_da6ecbbc66004a358f43612c66aa6e7b"><span class="codefrag">markSupported()</span> returns <span class="codefrag">true</span>.</span><span class="tscolor" lg_zh="t_da6ecbbc66004a358f43612c66aa6e7b"><span lg_kh="1">(</span>${t_da6ecbbc66004a358f43612c66aa6e7b}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_001cd8ef23734ff49bbfb4f19eef73b1"><span class="codefrag">mark(int limit)</span> ignores the limit parameter; basically the method marks the current position in the document.</span><span class="tscolor" lg_zh="t_001cd8ef23734ff49bbfb4f19eef73b1"><span lg_kh="1">(</span>${t_001cd8ef23734ff49bbfb4f19eef73b1}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_4af81b47f4af427fb2a24f74d1653f92"><span class="codefrag">reset()</span> takes you back to the position when <span class="codefrag">mark()</span> was last called, or to the beginning of the document if <span class="codefrag">mark()</span> has not been called.</span><span class="tscolor" lg_zh="t_4af81b47f4af427fb2a24f74d1653f92"><span lg_kh="1">(</span>${t_4af81b47f4af427fb2a24f74d1653f92}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_ffd1f59d941349cb8fac1066cd6cb34c"><span class="codefrag">skip(long n)</span> will take you to your current position + n (but not past the end of the document).</span><span class="tscolor" lg_zh="t_ffd1f59d941349cb8fac1066cd6cb34c"><span lg_kh="1">(</span>${t_ffd1f59d941349cb8fac1066cd6cb34c}<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_ac6bd7dc08544d1a97e77bf702124ba5">The behavior of <span class="codefrag">available</span> means you can read in a document in a single read call like this:</span><span class="tscolor" lg_zh="t_ac6bd7dc08544d1a97e77bf702124ba5"><span lg_kh="1">(</span>${t_ac6bd7dc08544d1a97e77bf702124ba5}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">byte[] content = new byte[ stream.available() ];</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">stream.read(content);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">stream.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_dfc83483150447cfad10d64ee48c3bb5">The combination of <span class="codefrag">mark</span>, <span class="codefrag">reset</span>, and <span class="codefrag">skip</span> provide the basic mechanisms needed for random access of the document contents.</span><span class="tscolor" lg_zh="t_dfc83483150447cfad10d64ee48c3bb5"><span lg_kh="1">(</span>${t_dfc83483150447cfad10d64ee48c3bb5}<span lg_kh="1">)</span></span></p>
+     <a name="Reading+a+Document+From+the+Root+Directory"></a>
+     <h5>Reading a Document From the Root Directory</h5>
+     <p><span lg_en="t_4aebc5c628f74f8faeb6582793590b7a">If the document resides in the root directory, you can obtain a <span class="codefrag">DocumentInputStream </span> like this:</span><span class="tscolor" lg_zh="t_4aebc5c628f74f8faeb6582793590b7a"><span lg_kh="1">(</span>${t_4aebc5c628f74f8faeb6582793590b7a}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// load file system</span>
+      </div>
+      <div class="codeline" lg_zh="t_271feee2bf584681b0c471e58e284924">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_271feee2bf584681b0c471e58e284924}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (DocumentInputStream stream = filesystem.createDocumentInputStream(documentName)) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // process data from stream</span>
+      </div>
+      <div class="codeline" lg_zh="t_5deabc240ba04985a1d511202b6640a7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_5deabc240ba04985a1d511202b6640a7}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} catch (IOException e) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // no such document, or the Entry represented by documentName is not a DocumentEntry</span>
+      </div>
+      <div class="codeline" lg_zh="t_5d6c4986754346be9cacd9a3d2a82fac">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_5d6c4986754346be9cacd9a3d2a82fac}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Reading+a+Document+From+an+Arbitrary+Directory"></a>
+     <h5>Reading a Document From an Arbitrary Directory</h5>
+     <p><span lg_en="t_c4ff0442a3114124a150e76b813a825e">A more generic technique for reading a document is to obtain an <span class="codefrag"> org.apache.poi.poifs.filesystem.DirectoryEntry </span> instance for the directory containing the desired document (recall that you can use <span class="codefrag"> getRoot() </span> to obtain the root directory from its file system). From that DirectoryEntry, you can then obtain a <span class="codefrag">DocumentInputStream</span> like this:</span><span class="tscolor" lg_zh="t_c4ff0442a3114124a150e76b813a825e"><span lg_kh="1">(</span>${t_c4ff0442a3114124a150e76b813a825e}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentEntry document = (DocumentEntry)directory.getEntry(documentName);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentInputStream stream = new DocumentInputStream(document);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Event-Driven+Reading"></a>
+     <h3 class="boxed"><span lg_en="t_c7d7e5d862e7452baaf3e704c9107c1a">Event-Driven Reading</span><span class="tscolor" lg_zh="t_c7d7e5d862e7452baaf3e704c9107c1a"><span lg_kh="1">(</span>${t_c7d7e5d862e7452baaf3e704c9107c1a}<span lg_kh="1">)</span></span></h3>
+     <a name="reading_event" id="reading_event"></a>
+     <p><span lg_en="t_c306885fb44c4142bd3f03e122b951e9">The event-driven API for reading documents is a little more complicated and requires that your application know, in advance, which files it wants to read. The benefit of using this API is that each document is in memory just long enough for your application to read it, and documents that you never read at all are not in memory at all. When you're finished reading the documents you wanted, the file system has no data structures associated with it at all and can be discarded.</span><span class="tscolor" lg_zh="t_c306885fb44c4142bd3f03e122b951e9"><span lg_kh="1">(</span>${t_c306885fb44c4142bd3f03e122b951e9}<span lg_kh="1">)</span></span></p>
+     <a name="Preparation-N102E7"></a>
+     <h4><span lg_en="t_ed11e9a424f64baa8a861d1eebaba043">Preparation</span><span class="tscolor" lg_zh="t_ed11e9a424f64baa8a861d1eebaba043"><span lg_kh="1">(</span>${t_ed11e9a424f64baa8a861d1eebaba043}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_e61a7952d6154bba98ca7232a1ecf8a0">The preparation phase involves creating an instance of <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReader </span> and to then register one or more <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReaderListener </span> instances with the <span class="codefrag">POIFSReader</span>.</span><span class="tscolor" lg_zh="t_e61a7952d6154bba98ca7232a1ecf8a0"><span lg_kh="1">(</span>${t_e61a7952d6154bba98ca7232a1ecf8a0}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSReader reader = new POIFSReader();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for everything</span>
+      </div>
+      <div class="codeline" lg_zh="t_532f470cfb7c45fd9a06db02b43196f1">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_532f470cfb7c45fd9a06db02b43196f1}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOmnivorousListener);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for selective files</span>
+      </div>
+      <div class="codeline" lg_zh="t_9d23ac6683a946db98e79eee1e9797da">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_9d23ac6683a946db98e79eee1e9797da}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myPickyListener, "foo");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myPickyListener, "bar");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// register for selective files</span>
+      </div>
+      <div class="codeline" lg_zh="t_86dcb9e1f87b4a0483e50d2036ab40c6">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_86dcb9e1f87b4a0483e50d2036ab40c6}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOtherPickyListener, new POIFSDocumentPath(), "fubar");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">reader.registerListener(myOtherPickyListener, new POIFSDocumentPath( new String[] { "usr", "bin" ), "fubar");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="POIFSReaderListener"></a>
+     <h4><span lg_en="t_0990d7fcc90145a68698afdbe8b89511">POIFSReaderListener</span><span class="tscolor" lg_zh="t_0990d7fcc90145a68698afdbe8b89511"><span lg_kh="1">(</span>${t_0990d7fcc90145a68698afdbe8b89511}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_29660ac0e864488ea09466945d621e36"><span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderListener</span> is an interface used to register for documents. When a matching document is read by the <span class="codefrag"> org.apache.poi.poifs.eventfilesystem.POIFSReader</span>, the <span class="codefrag">POIFSReaderListener</span> instance receives an <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent</span> instance, which contains an open <span class="codefrag">DocumentInputStream</span> and information about the document.</span><span class="tscolor" lg_zh="t_29660ac0e864488ea09466945d621e36"><span lg_kh="1">(</span>${t_29660ac0e864488ea09466945d621e36}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_69af65cc60304d4ba4d9a43f839c679b">A <span class="codefrag">POIFSReaderListener</span> instance can register for individual documents, or it can register for all documents; once it has registered for all documents, subsequent (and previous!) registration requests for individual documents are ignored. There is no way to unregister a <span class="codefrag">POIFSReaderListener</span>.</span><span class="tscolor" lg_zh="t_69af65cc60304d4ba4d9a43f839c679b"><span lg_kh="1">(</span>${t_69af65cc60304d4ba4d9a43f839c679b}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_ca05590001ad424a97dcdbe36a34d38a">Thus, it is possible to register a single <span class="codefrag">POIFSReaderListener</span> for multiple documents - one, some, or all documents. It is guaranteed that a single <span class="codefrag">POIFSReaderListener</span> will receive exactly one notification per registered document. There is no guarantee as to the order in which it will receive notification of its documents, as future implementations of <span class="codefrag"> POIFSReader </span> are free to change the algorithm for walking the file system's directory structure.</span><span class="tscolor" lg_zh="t_ca05590001ad424a97dcdbe36a34d38a"><span lg_kh="1">(</span>${t_ca05590001ad424a97dcdbe36a34d38a}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_8ce89a05be9e4f66bf9b155b4ec1df38">It is also permitted to register more than one <span class="codefrag">POIFSReaderListener</span> for the same document. There is no guarantee of ordering for notification of <span class="codefrag">POIFSReaderListener</span> instances that have registered for the same document when <span class="codefrag">POIFSReader</span> processes that document.</span><span class="tscolor" lg_zh="t_8ce89a05be9e4f66bf9b155b4ec1df38"><span lg_kh="1">(</span>${t_8ce89a05be9e4f66bf9b155b4ec1df38}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4dfc4c80257f4370809803c91d911c18">It is guaranteed that all notifications occur in the same thread. A future enhancement may be made to provide multi-threaded notifications, but such an enhancement would very probably be made in a new reader class, a <span class="codefrag">ThreadedPOIFSReader</span> perhaps.</span><span class="tscolor" lg_zh="t_4dfc4c80257f4370809803c91d911c18"><span lg_kh="1">(</span>${t_4dfc4c80257f4370809803c91d911c18}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4d7575f8d60f4f96a9d68d67ed576d30">The following describes the three ways to register a <span class="codefrag">POIFSReaderListener</span> for a document or set of documents:</span><span class="tscolor" lg_zh="t_4d7575f8d60f4f96a9d68d67ed576d30"><span lg_kh="1">(</span>${t_4d7575f8d60f4f96a9d68d67ed576d30}<span lg_kh="1">)</span></span></p>
+     <dl>
+      <dt>
+       registers <em>listener</em> for all documents.
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>)
+      </dd>
+      <dt>
+       registers <em>listener</em> for a document with the specified <em>name</em> in the root directory.
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>, String <em>name</em>)
+      </dd>
+      <dt>
+       registers <em>listener</em> for a document with the specified <em>name</em> in the directory described by <em>path</em>
+      </dt>
+      <dd>
+       registerListener(POIFSReaderListener <em>listener</em>, POIFSDocumentPath <em>path</em>, String <em>name</em>)
+      </dd>
+     </dl>
+     <a name="POIFSDocumentPath"></a>
+     <h4><span lg_en="t_bac8fd5132fb4a53a128d1b8728883fe">POIFSDocumentPath</span><span class="tscolor" lg_zh="t_bac8fd5132fb4a53a128d1b8728883fe"><span lg_kh="1">(</span>${t_bac8fd5132fb4a53a128d1b8728883fe}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_0d3f9e8127f544a1a8cad6ee0ee42be7">The <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSDocumentPath</span> class is used to describe a directory in a POIFS file system. Since there are no reserved characters in the name of a file in a POIFS file system, a more traditional string-based solution for describing a directory, with special characters delimiting the components of the directory name, is not feasible. The constructors for the class are used as follows:</span><span class="tscolor" lg_zh="t_0d3f9e8127f544a1a8cad6ee0ee42be7"><span lg_kh="1">(</span>${t_0d3f9e8127f544a1a8cad6ee0ee42be7}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_020285bd28a14f8fa6ab933a186c798b"><em>Constructor example</em></span><span class="tscolor" lg_zh="t_020285bd28a14f8fa6ab933a186c798b"><span lg_kh="1">(</span>${t_020285bd28a14f8fa6ab933a186c798b}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_05f5e0bec9514054a184738ebb1495cd"><em>Directory described</em></span><span class="tscolor" lg_zh="t_05f5e0bec9514054a184738ebb1495cd"><span lg_kh="1">(</span>${t_05f5e0bec9514054a184738ebb1495cd}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_7d91b009efa045f4bdd75c74c49f87a9">new POIFSDocumentPath()</span><span class="tscolor" lg_zh="t_7d91b009efa045f4bdd75c74c49f87a9"><span lg_kh="1">(</span>${t_7d91b009efa045f4bdd75c74c49f87a9}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_7ec601a65705428da87cb6403ee8cd1b">The root directory.</span><span class="tscolor" lg_zh="t_7ec601a65705428da87cb6403ee8cd1b"><span lg_kh="1">(</span>${t_7ec601a65705428da87cb6403ee8cd1b}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_a95f458537714a03a0d4132e1eaf3442">new POIFSDocumentPath(null)</span><span class="tscolor" lg_zh="t_a95f458537714a03a0d4132e1eaf3442"><span lg_kh="1">(</span>${t_a95f458537714a03a0d4132e1eaf3442}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_ef94cbf23f574625945018c1cca70317">The root directory.</span><span class="tscolor" lg_zh="t_ef94cbf23f574625945018c1cca70317"><span lg_kh="1">(</span>${t_ef94cbf23f574625945018c1cca70317}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_33083111b569423bbfb3e6bf9aea3d8f">new POIFSDocumentPath(new String[ 0 ])</span><span class="tscolor" lg_zh="t_33083111b569423bbfb3e6bf9aea3d8f"><span lg_kh="1">(</span>${t_33083111b569423bbfb3e6bf9aea3d8f}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_9232752aab1b47028bd3989fb7d7834d">The root directory.</span><span class="tscolor" lg_zh="t_9232752aab1b47028bd3989fb7d7834d"><span lg_kh="1">(</span>${t_9232752aab1b47028bd3989fb7d7834d}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_2603afbca1934ae38671301054e4eb00">new POIFSDocumentPath(new String[ ] { "foo", "bar"} )</span><span class="tscolor" lg_zh="t_2603afbca1934ae38671301054e4eb00"><span lg_kh="1">(</span>${t_2603afbca1934ae38671301054e4eb00}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_abd638a5884c4c789bdf4af6e8e8f6a7">in Unix terminology, "/foo/bar".</span><span class="tscolor" lg_zh="t_abd638a5884c4c789bdf4af6e8e8f6a7"><span lg_kh="1">(</span>${t_abd638a5884c4c789bdf4af6e8e8f6a7}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_493b6a6ae0574257a2fc99dc7644edca">new POIFSDocumentPath(new POIFSDocumentPath(new String[] { "foo" }), new String[ ] { "fu", "bar"} )</span><span class="tscolor" lg_zh="t_493b6a6ae0574257a2fc99dc7644edca"><span lg_kh="1">(</span>${t_493b6a6ae0574257a2fc99dc7644edca}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_5b414e204a274847836177962f87daca">in Unix terminology, "/foo/fu/bar".</span><span class="tscolor" lg_zh="t_5b414e204a274847836177962f87daca"><span lg_kh="1">(</span>${t_5b414e204a274847836177962f87daca}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Processing+POIFSReaderEvent+Events"></a>
+     <h4><span lg_en="t_86ae3bc2851b47a9a5c84b73ea84d42b">Processing POIFSReaderEvent Events</span><span class="tscolor" lg_zh="t_86ae3bc2851b47a9a5c84b73ea84d42b"><span lg_kh="1">(</span>${t_86ae3bc2851b47a9a5c84b73ea84d42b}<span lg_kh="1">)</span></span></h4>
+     <p><span lg_en="t_6ac6af256f95499799cdbd3f24b02af2">Processing <span class="codefrag">org.apache.poi.poifs.eventfilesystem.POIFSReaderEvent</span> events is relatively easy. After all of the <span class="codefrag">POIFSReaderListener</span> instances have been registered with <span class="codefrag">POIFSReader</span>, the <span class="codefrag">POIFSReader.read(InputStream stream)</span> method is called.</span><span class="tscolor" lg_zh="t_6ac6af256f95499799cdbd3f24b02af2"><span lg_kh="1">(</span>${t_6ac6af256f95499799cdbd3f24b02af2}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_79fabe1fe83d4b96b3b4fb936d6cc748">Assuming that there are no problems with the data, as the <span class="codefrag">POIFSReader</span> processes the documents in the specified <span class="codefrag">InputStream</span>'s data, it calls registered <span class="codefrag"> POIFSReaderListener </span> instances' <span class="codefrag">processPOIFSReaderEvent</span> method with a <span class="codefrag">POIFSReaderEvent </span> instance.</span><span class="tscolor" lg_zh="t_79fabe1fe83d4b96b3b4fb936d6cc748"><span lg_kh="1">(</span>${t_79fabe1fe83d4b96b3b4fb936d6cc748}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_adec2e1081f44a3a98f53b68bfe73646">The <span class="codefrag">POIFSReaderEvent</span> instance contains information to identify the document (a <span class="codefrag"> POIFSDocumentPath </span> object to identify the directory that the document is in, and the document name), and an open <span class="codefrag">DocumentInputStream</span> instance from which to read the document.</span><span class="tscolor" lg_zh="t_adec2e1081f44a3a98f53b68bfe73646"><span lg_kh="1">(</span>${t_adec2e1081f44a3a98f53b68bfe73646}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Writing+a+File+System"></a>
+    <h2 class="boxed"><span lg_en="t_2f54419568fa4f779a429436b91fa697">Writing a File System</span><span class="tscolor" lg_zh="t_2f54419568fa4f779a429436b91fa697"><span lg_kh="1">(</span>${t_2f54419568fa4f779a429436b91fa697}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="writing" id="writing"></a>
+     <p><span lg_en="t_ef40c3b5f2c24337aa46e0c818becb18">Writing a file system is very much like reading a file system in that there are multiple ways to do so. You can load an existing file system into memory and modify it (removing files, renaming files) and/or add new files to it, and write it, or you can start with a new, empty file system:</span><span class="tscolor" lg_zh="t_ef40c3b5f2c24337aa46e0c818becb18"><span lg_kh="1">(</span>${t_ef40c3b5f2c24337aa46e0c818becb18}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSFileSystem fs = new POIFSFileSystem();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="The+Naming+of+Names"></a>
+     <h3 class="boxed"><span lg_en="t_da4432741f7b4b97a7990f40d02dfd69">The Naming of Names</span><span class="tscolor" lg_zh="t_da4432741f7b4b97a7990f40d02dfd69"><span lg_kh="1">(</span>${t_da4432741f7b4b97a7990f40d02dfd69}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_8c114e3af1a440848a0e53f8427d5adf">There are two restrictions on the names of files in a file system that must be considered when creating files:</span><span class="tscolor" lg_zh="t_8c114e3af1a440848a0e53f8427d5adf"><span lg_kh="1">(</span>${t_8c114e3af1a440848a0e53f8427d5adf}<span lg_kh="1">)</span></span></p>
+     <ol>
+      <li><span lg_en="t_ef20ec6a0fc94869a35c40d7b218576d">The name of the file must not exceed 31 characters. If it does, the POIFS API will silently truncate the name to fit.</span><span class="tscolor" lg_zh="t_ef20ec6a0fc94869a35c40d7b218576d"><span lg_kh="1">(</span>${t_ef20ec6a0fc94869a35c40d7b218576d}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_88eefee2cc294888a7b22120f8adf2f3">The name of the file must be unique within its containing directory. This seems pretty obvious, but if it isn't spelled out, there'll be hell to pay, to be sure. Uniqueness, of course, is determined <em>after</em> the name has been truncated, if the original name was too long to begin with.</span><span class="tscolor" lg_zh="t_88eefee2cc294888a7b22120f8adf2f3"><span lg_kh="1">(</span>${t_88eefee2cc294888a7b22120f8adf2f3}<span lg_kh="1">)</span></span></li>
+     </ol>
+     <a name="Creating+a+Document"></a>
+     <h3 class="boxed"><span lg_en="t_3637c7dbd0c64c7d99bfeb921cd421c8">Creating a Document</span><span class="tscolor" lg_zh="t_3637c7dbd0c64c7d99bfeb921cd421c8"><span lg_kh="1">(</span>${t_3637c7dbd0c64c7d99bfeb921cd421c8}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_6eab30795a5d4b88b806dda8b6bf207f">A document can be created by acquiring a <span class="codefrag">DirectoryEntry</span> and calling one of the two <span class="codefrag"> createDocument </span> methods:</span><span class="tscolor" lg_zh="t_6eab30795a5d4b88b806dda8b6bf207f"><span lg_kh="1">(</span>${t_6eab30795a5d4b88b806dda8b6bf207f}<span lg_kh="1">)</span></span></p>
+     <dl>
+      <dt>createDocument(String name, InputStream stream)</dt>
+      <dd>
+       <ul>
+        <li class="pro"><span lg_en="t_526fdab8bc714665818c3d973385702f">Simple API</span><span class="tscolor" lg_zh="t_526fdab8bc714665818c3d973385702f"><span lg_kh="1">(</span>${t_526fdab8bc714665818c3d973385702f}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_27163db10ed5487dae78f6fc1ba8d4ec">Increased memory footprint (document is in memory until file system is written).</span><span class="tscolor" lg_zh="t_27163db10ed5487dae78f6fc1ba8d4ec"><span lg_kh="1">(</span>${t_27163db10ed5487dae78f6fc1ba8d4ec}<span lg_kh="1">)</span></span></li>
+       </ul>
+      </dd>
+      <dt>createDocument(String name, int size, POIFSWriterListener writer)</dt>
+      <dd>
+       <ul>
+        <li class="pro"><span lg_en="t_c1fb656577134b78b414888bd895a9b9">Decreased memory footprint (only very small documents are held in memory, and then only for a short time).</span><span class="tscolor" lg_zh="t_c1fb656577134b78b414888bd895a9b9"><span lg_kh="1">(</span>${t_c1fb656577134b78b414888bd895a9b9}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_9f8e135579cf4417a19489f13b117c12">More complex API.</span><span class="tscolor" lg_zh="t_9f8e135579cf4417a19489f13b117c12"><span lg_kh="1">(</span>${t_9f8e135579cf4417a19489f13b117c12}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_4496ea1219b64b1db366abc786b6a68c">Determining document size in advance may be difficult.</span><span class="tscolor" lg_zh="t_4496ea1219b64b1db366abc786b6a68c"><span lg_kh="1">(</span>${t_4496ea1219b64b1db366abc786b6a68c}<span lg_kh="1">)</span></span></li>
+        <li class="con"><span lg_en="t_04272afbeaa0407ca8eb80fe65213e67">Lose control over when document is to be written.</span><span class="tscolor" lg_zh="t_04272afbeaa0407ca8eb80fe65213e67"><span lg_kh="1">(</span>${t_04272afbeaa0407ca8eb80fe65213e67}<span lg_kh="1">)</span></span></li>
+       </ul>
+      </dd>
+     </dl>
+     <p><span lg_en="t_2f149217ccf3454785ef8b2a85504c27">Unlike reading, you don't have to choose between the in-memory and event-driven writing models; both can co-exist in the same file system.</span><span class="tscolor" lg_zh="t_2f149217ccf3454785ef8b2a85504c27"><span lg_kh="1">(</span>${t_2f149217ccf3454785ef8b2a85504c27}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_9e1c4e7445944394ae7d0979472c5589">Writing is initiated when the <span class="codefrag">POIFSFileSystem</span> instance's <span class="codefrag">writeFilesystem()</span> method is called with an <span class="codefrag">OutputStream</span> to write to.</span><span class="tscolor" lg_zh="t_9e1c4e7445944394ae7d0979472c5589"><span lg_kh="1">(</span>${t_9e1c4e7445944394ae7d0979472c5589}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_466af6afc9974e30b614a1e76edd6e27">The event-driven model is quite similar to the event-driven model for reading, in that the file system calls your <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSWriterListener</span> when it's time to write your document, just as the <span class="codefrag">POIFSReader</span> calls your <span class="codefrag">POIFSReaderListener </span> when it's time to read your document. Internally, when <span class="codefrag">writeFilesystem()</span> is called, the final POIFS data structures are created and are written to the specified <span class="codefrag"> OutputStream</span>. When the file system needs to write a document out that was created with the event-driven model, it calls the <span class="codefrag">POIFSWriterListener</span> back, calling its <span class="codefrag"> processPOIFSWriterEvent() </span> method, passing an <span class="codefrag">org.apache.poi.poifs.filesystem.POIFSWriterEvent</span> instance. This object contains the <span class="codefrag">POIFSDocumentPath</span> and name of the document, its size, and an open <span class="codefrag">org.apache.poi.poifs.filesystem.DocumentOutputStream</span> to which to write. A <span class="codefrag"> DocumentOutputStream </span> is a wrapper over the <span class="codefrag">OutputStream</span> that was provided to the <span class="codefrag"> POIFSFileSystem </span> to write to, and has the responsibility of making sure that the document your application writes fits within the size you specified for it.</span><span class="tscolor" lg_zh="t_466af6afc9974e30b614a1e76edd6e27"><span lg_kh="1">(</span>${t_466af6afc9974e30b614a1e76edd6e27}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_daa69d703fa44b6d8fe9843e732790d8">If you are using a <span class="codefrag">POIFSFileSystem</span> loaded from a <span class="codefrag">File</span> with <span class="codefrag">readOnly</span> set to false, it is also possible to do an in-place write. Simply call <span class="codefrag"> writeFilesystem() </span> to have the (limited) in-memory structures synced with the disk, then <span class="codefrag">close()</span> to finish.</span><span class="tscolor" lg_zh="t_daa69d703fa44b6d8fe9843e732790d8"><span lg_kh="1">(</span>${t_daa69d703fa44b6d8fe9843e732790d8}<span lg_kh="1">)</span></span></p>
+     <a name="Creating+a+Directory"></a>
+     <h3 class="boxed"><span lg_en="t_6d4a870b6493499c8b880c68d671f8b7">Creating a Directory</span><span class="tscolor" lg_zh="t_6d4a870b6493499c8b880c68d671f8b7"><span lg_kh="1">(</span>${t_6d4a870b6493499c8b880c68d671f8b7}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_fb934a7297c24f0da41f09b492e42071">Creating a directory is similar to creating a document, except that there's only one way to do so:</span><span class="tscolor" lg_zh="t_fb934a7297c24f0da41f09b492e42071"><span lg_kh="1">(</span>${t_fb934a7297c24f0da41f09b492e42071}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry createdDir = existingDir.createDirectory(name);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="Using+POIFSFileSystem+Directly+To+Create+a+Document+Or+Directory"></a>
+     <h3 class="boxed"><span lg_en="t_49d3c7ef12f34c13982e5044eda6d824">Using POIFSFileSystem Directly To Create a Document Or Directory</span><span class="tscolor" lg_zh="t_49d3c7ef12f34c13982e5044eda6d824"><span lg_kh="1">(</span>${t_49d3c7ef12f34c13982e5044eda6d824}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_d7e738d016fc49d7ac8afdedd9543638">As with reading documents, it is possible to create a new document or directory in the root directory by using convenience methods of POIFSFileSystem.</span><span class="tscolor" lg_zh="t_d7e738d016fc49d7ac8afdedd9543638"><span lg_kh="1">(</span>${t_d7e738d016fc49d7ac8afdedd9543638}<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_dc954597b53c47ad905fc3b6de3f7a07"><em>DirectoryEntry Method Signature</em></span><span class="tscolor" lg_zh="t_dc954597b53c47ad905fc3b6de3f7a07"><span lg_kh="1">(</span>${t_dc954597b53c47ad905fc3b6de3f7a07}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_dde36c1bdb9b4a83ad3ed94d985fc66c"><em>POIFSFileSystem Method Signature</em></span><span class="tscolor" lg_zh="t_dde36c1bdb9b4a83ad3ed94d985fc66c"><span lg_kh="1">(</span>${t_dde36c1bdb9b4a83ad3ed94d985fc66c}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_de79f930cdfc41c1b9d71725a1ed2815">createDocument(String name, InputStream stream)</span><span class="tscolor" lg_zh="t_de79f930cdfc41c1b9d71725a1ed2815"><span lg_kh="1">(</span>${t_de79f930cdfc41c1b9d71725a1ed2815}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_1c61759650f6429a9705f8311ebecb1d">createDocument(InputStream stream, String name)</span><span class="tscolor" lg_zh="t_1c61759650f6429a9705f8311ebecb1d"><span lg_kh="1">(</span>${t_1c61759650f6429a9705f8311ebecb1d}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_613acb38339542fdb9843ffe9399953a">createDocument(String name, int size, POIFSWriterListener writer)</span><span class="tscolor" lg_zh="t_613acb38339542fdb9843ffe9399953a"><span lg_kh="1">(</span>${t_613acb38339542fdb9843ffe9399953a}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_31286d5f28934b05900383575389cb7b">createDocument(String name, int size, POIFSWriterListener writer)</span><span class="tscolor" lg_zh="t_31286d5f28934b05900383575389cb7b"><span lg_kh="1">(</span>${t_31286d5f28934b05900383575389cb7b}<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_1d67424b7e8d44b0a3c06932932f1cb4">createDirectory(String name)</span><span class="tscolor" lg_zh="t_1d67424b7e8d44b0a3c06932932f1cb4"><span lg_kh="1">(</span>${t_1d67424b7e8d44b0a3c06932932f1cb4}<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_5edd8e4b41ac4d998b42839e94484f94">createDirectory(String name)</span><span class="tscolor" lg_zh="t_5edd8e4b41ac4d998b42839e94484f94"><span lg_kh="1">(</span>${t_5edd8e4b41ac4d998b42839e94484f94}<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Modifying+a+File+System"></a>
+    <h2 class="boxed"><span lg_en="t_433a4900a2ce47a085d2490b46c4c431">Modifying a File System</span><span class="tscolor" lg_zh="t_433a4900a2ce47a085d2490b46c4c431"><span lg_kh="1">(</span>${t_433a4900a2ce47a085d2490b46c4c431}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="modifying" id="modifying"></a>
+     <p><span lg_en="t_5be3d8d68c304249a1b173a6dde0dc84">It is possible to modify an existing POIFS file system, whether it's one your application has loaded into memory, or one which you are creating on the fly.</span><span class="tscolor" lg_zh="t_5be3d8d68c304249a1b173a6dde0dc84"><span lg_kh="1">(</span>${t_5be3d8d68c304249a1b173a6dde0dc84}<span lg_kh="1">)</span></span></p>
+     <a name="Removing+a+Document"></a>
+     <h3 class="boxed"><span lg_en="t_1781dc7ab6a549a3889ecff782b37332">Removing a Document</span><span class="tscolor" lg_zh="t_1781dc7ab6a549a3889ecff782b37332"><span lg_kh="1">(</span>${t_1781dc7ab6a549a3889ecff782b37332}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_54381671f7a44f70b5d87b3650f2d17f">Removing a document is simple: you get the <span class="codefrag">Entry</span> corresponding to the document and call its <span class="codefrag">delete()</span> method. This is a boolean method, but should always return <span class="codefrag"> true</span>, indicating that the operation succeeded.</span><span class="tscolor" lg_zh="t_54381671f7a44f70b5d87b3650f2d17f"><span lg_kh="1">(</span>${t_54381671f7a44f70b5d87b3650f2d17f}<span lg_kh="1">)</span></span></p>
+     <a name="Removing+a+Directory"></a>
+     <h3 class="boxed"><span lg_en="t_7f4a0ce6deef414a86c372650749fc1d">Removing a Directory</span><span class="tscolor" lg_zh="t_7f4a0ce6deef414a86c372650749fc1d"><span lg_kh="1">(</span>${t_7f4a0ce6deef414a86c372650749fc1d}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_750293f6d98f49afbacaf8f70bfad4d7">Removing a directory is also simple: you get the <span class="codefrag">Entry</span> corresponding to the directory and call its <span class="codefrag">delete()</span> method. This is a boolean method, but, unlike deleting a document, may not always return <span class="codefrag">true</span>, indicating that the operation succeeded. Here are the reasons why the operation may fail:</span><span class="tscolor" lg_zh="t_750293f6d98f49afbacaf8f70bfad4d7"><span lg_kh="1">(</span>${t_750293f6d98f49afbacaf8f70bfad4d7}<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_21b28b9ff63849268ee8bd45bc9dd3ae">The directory still has files in it (to check, call <span class="codefrag">isEmpty()</span> on its DirectoryEntry; is the return value <span class="codefrag">false</span>?)</span><span class="tscolor" lg_zh="t_21b28b9ff63849268ee8bd45bc9dd3ae"><span lg_kh="1">(</span>${t_21b28b9ff63849268ee8bd45bc9dd3ae}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_4eb061508fbc43bfa678af6a3dc85ca8">The directory is the root directory. You cannot remove the root directory.</span><span class="tscolor" lg_zh="t_4eb061508fbc43bfa678af6a3dc85ca8"><span lg_kh="1">(</span>${t_4eb061508fbc43bfa678af6a3dc85ca8}<span lg_kh="1">)</span></span></li>
+     </ul>
+     <a name="Changing+a+File%27s+contents"></a>
+     <h3 class="boxed"><span lg_en="t_6f99b98618db40f29128b2def34bb312">Changing a File's contents</span><span class="tscolor" lg_zh="t_6f99b98618db40f29128b2def34bb312"><span lg_kh="1">(</span>${t_6f99b98618db40f29128b2def34bb312}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_bf1ee9b88e994f049e882913b2b69cb6">There are two ways available to change the contents of an existing file within a POIFS file system. One is using a <span class="codefrag">DocumentOutputStream</span>, the other is with <span class="codefrag">POIFSDocument.replaceContents</span></span><span class="tscolor" lg_zh="t_bf1ee9b88e994f049e882913b2b69cb6"><span lg_kh="1">(</span>${t_bf1ee9b88e994f049e882913b2b69cb6}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_1dc7475a5abd4ad5b0db8e9f9d2fcadb">If you have available to you an <span class="codefrag">InputStream</span> to read the new File contents from, then the easiest way is via <span class="codefrag">POIFSDocument.replaceContents</span>. You would do something like:</span><span class="tscolor" lg_zh="t_1dc7475a5abd4ad5b0db8e9f9d2fcadb"><span lg_kh="1">(</span>${t_1dc7475a5abd4ad5b0db8e9f9d2fcadb}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Get the input stream from somewhere</span>
+      </div>
+      <div class="codeline" lg_zh="t_17b22d4a0e994ea1a7756ee44e1c1eed">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_17b22d4a0e994ea1a7756ee44e1c1eed}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">InputStream inp = db.getContentStream();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Open the POIFS File System, and get the entry of interest</span>
+      </div>
+      <div class="codeline" lg_zh="t_69f3829ca5db4e94a2cbe4ce317810a5">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_69f3829ca5db4e94a2cbe4ce317810a5}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSFileSystem fs = new POIFSFileSystem(new File(filename), false);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DocumentEntry myDocE = (DocumentEntry)root.getEntry("ToChange");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Replace the contents</span>
+      </div>
+      <div class="codeline" lg_zh="t_a428f84cdf2d47e888d44260aea4fee7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_a428f84cdf2d47e888d44260aea4fee7}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">POIFSDocument myDoc = new POIFSDocument(myDocE);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">myDoc.replaceContents(inp);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Save the changes to the file in-place</span>
+      </div>
+      <div class="codeline" lg_zh="t_7ec6d515df16427ab91bad7a64214fa9">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_7ec6d515df16427ab91bad7a64214fa9}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">fs.writeFileSystem();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">fs.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_d2434866c44b4e21ba11e723cd7ae14f">Alternately, if you either have a byte array, or you need to write as you go along, then the OutputStream interface provided by <span class="codefrag">DocumentOutputStream</span> will likely be a better bet. Your code would want to look somewhat like:</span><span class="tscolor" lg_zh="t_d2434866c44b4e21ba11e723cd7ae14f"><span lg_kh="1">(</span>${t_d2434866c44b4e21ba11e723cd7ae14f}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Open the POIFS File System, and get the entry of interest</span>
+      </div>
+      <div class="codeline" lg_zh="t_2f6a866ccf364ae39898979bc218e345">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_2f6a866ccf364ae39898979bc218e345}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">try (POIFSFileSystem fs = new POIFSFileSystem(new File(filename))) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DirectoryEntry root = fs.getRoot();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DocumentEntry myDoc = (DocumentEntry)root.getEntry("ToChange");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Replace the content with a Write</span>
+      </div>
+      <div class="codeline" lg_zh="t_c369f21d58f4404c9f4ddd3dcc4a6cba">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_c369f21d58f4404c9f4ddd3dcc4a6cba}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try (DocumentOutputStream docOut = new DocumentOutputStream(myDoc)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> myDoc.writeTo(docOut);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Save the changes to a new file</span>
+      </div>
+      <div class="codeline" lg_zh="t_5e383d439f2e45cc9e29bac5038010bb">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_5e383d439f2e45cc9e29bac5038010bb}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try (FileOutputStream out = new FileOutputStream("NewFile.ole2")) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> fs.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_590ac5f3441f4594bfcbcd87b509c835">For an example of an in-place change to one stream within a file, you can see the example <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hpsf/examples/ModifyDocumentSummaryInformation.java"> org/apache/poi/hpsf/examples/ModifyDocumentSummaryInformation.java </a></span><span class="tscolor" lg_zh="t_590ac5f3441f4594bfcbcd87b509c835"><span lg_kh="1">(</span>${t_590ac5f3441f4594bfcbcd87b509c835}<span lg_kh="1">)</span></span></p>
+     <a name="Renaming+a+File"></a>
+     <h3 class="boxed"><span lg_en="t_915206d660fd44468069b7ea1d16b4b4">Renaming a File</span><span class="tscolor" lg_zh="t_915206d660fd44468069b7ea1d16b4b4"><span lg_kh="1">(</span>${t_915206d660fd44468069b7ea1d16b4b4}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_a2547e9cc0e54beaa29e3c01e417ff55">Regardless of whether the file is a directory or a document, it can be renamed, with one exception - the root directory has a special name that is expected by the components of a major software vendor's office suite, and the POIFS API will not let that name be changed. Renaming is done by acquiring the file's corresponding <span class="codefrag">Entry</span> instance and calling its <span class="codefrag">renameTo</span> method, passing in the new name.</span><span class="tscolor" lg_zh="t_a2547e9cc0e54beaa29e3c01e417ff55"><span lg_kh="1">(</span>${t_a2547e9cc0e54beaa29e3c01e417ff55}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_e14ec79e7d3c4ab292d10df4a82bb4f2">Like <span class="codefrag">delete</span>, <span class="codefrag">renameTo</span> returns <span class="codefrag">true</span> if the operation succeeded, otherwise <span class="codefrag">false</span>. Reasons for failure include these:</span><span class="tscolor" lg_zh="t_e14ec79e7d3c4ab292d10df4a82bb4f2"><span lg_kh="1">(</span>${t_e14ec79e7d3c4ab292d10df4a82bb4f2}<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_dac4f6f0a1594317945fcb377db6b25a">The new name is the same as another file in the same directory. And don't forget - if the new name is longer than 31 characters, it <em>will</em> be silently truncated. In its original length, the new name may have been unique, but truncated to 31 characters, it may not be unique any longer.</span><span class="tscolor" lg_zh="t_dac4f6f0a1594317945fcb377db6b25a"><span lg_kh="1">(</span>${t_dac4f6f0a1594317945fcb377db6b25a}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_57596193a9d74db08fe1ca0320d6ebdd">You tried to rename the root directory.</span><span class="tscolor" lg_zh="t_57596193a9d74db08fe1ca0320d6ebdd"><span lg_kh="1">(</span>${t_57596193a9d74db08fe1ca0320d6ebdd}<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <p align="right"><span lg_en="t_cae1346cb99a41a79d826655215ed4c7"><font size="-2">by&nbsp;Marc Johnson</font></span><span class="tscolor" lg_zh="t_cae1346cb99a41a79d826655215ed4c7"><span lg_kh="1">(</span>${t_cae1346cb99a41a79d826655215ed4c7}<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/poifs/how-to.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

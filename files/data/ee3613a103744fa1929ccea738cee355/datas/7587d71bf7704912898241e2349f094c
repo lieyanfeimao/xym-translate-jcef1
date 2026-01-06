@@ -1,0 +1,1 @@
+[{"id":"t_cd6a0d3d0832493b8a11aa60367ea9c6","oldText":"A sequence of KeyEncryptor elements. Exactly one KeyEncryptors element MUST be present, and the KeyEncryptors element MUST contain at least one KeyEncryptor.","tlText":"KeyProtect元素序列。必须恰好存在一个KeyProtect元素，并且KeyProtect元素必须包含至少一个KeyProtect。","version":0}]

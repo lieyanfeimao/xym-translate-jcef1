@@ -1,0 +1,1 @@
+[{"id":"t_e11f685e00c9443a92ea648572c45d8c","oldText":"We don\u0027t support .xlsb for read and write via XSSFWorkbook. As of POI 3.16-beta3, we do support streaming reading of xlsb files via XSSFBReader","tlText":"我们不支持.xlsb通过XSSFWorkbook读写。自DOE 3.16-beta3起，我们确实支持通过XSSFBReader流式读取xlsb文件","version":0}]

@@ -1,0 +1,771 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Formula Evaluation</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_03eddf94f078448ea6aa5bbc94349ef3">Formula Evaluation</span><span class="tscolor" lg_zh="t_03eddf94f078448ea6aa5bbc94349ef3"><span lg_kh="1">(</span>${t_03eddf94f078448ea6aa5bbc94349ef3}<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="Introduction"></a>
+    <h2 class="boxed"><span lg_en="t_0039445a7b0246b0b6096fa5000aff5e">Introduction</span><span class="tscolor" lg_zh="t_0039445a7b0246b0b6096fa5000aff5e"><span lg_kh="1">(</span>${t_0039445a7b0246b0b6096fa5000aff5e}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_36ac795c3cc94e4db1d7377a9b2dacf3">The POI formula evaluation code enables you to calculate the result of formulas in Excels sheets read-in, or created in POI. This document explains how to use the API to evaluate your formulas.</span><span class="tscolor" lg_zh="t_36ac795c3cc94e4db1d7377a9b2dacf3"><span lg_kh="1">(</span>${t_36ac795c3cc94e4db1d7377a9b2dacf3}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="WhyEvaluate" id="WhyEvaluate"></a> <a name="Why+do+I+need+to+evaluate+formulas%3F"></a>
+    <h2 class="boxed"><span lg_en="t_94985d6b277a4cf3afb8fb98bcc8a80a">Why do I need to evaluate formulas?</span><span class="tscolor" lg_zh="t_94985d6b277a4cf3afb8fb98bcc8a80a"><span lg_kh="1">(</span>${t_94985d6b277a4cf3afb8fb98bcc8a80a}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_e9cbf311b1fb42539c5c86a268d0a3ce">The Excel file format (both .xls and .xlsx) stores a "cached" result for every formula along with the formula itself. This means that when the file is opened, it can be quickly displayed, without needing to spend a long time calculating all of the formula results. It also means that when reading a file through Apache POI, the result is quickly available to you too!</span><span class="tscolor" lg_zh="t_e9cbf311b1fb42539c5c86a268d0a3ce"><span lg_kh="1">(</span>${t_e9cbf311b1fb42539c5c86a268d0a3ce}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_01a8f2abb08a4c8e831ad98a4a6bf73f">After making changes with Apache POI to either Formula Cells themselves, or those that they depend on, you should normally perform a Formula Evaluation to have these "cached" results updated. This is normally done after all changes have been performed, but before you write the file out. If you don't do this, there's a good chance that when you open the file in Excel, until you go to the cell and hit enter or F9, you will either see the old value or '#VALUE!' for the cell. (Sometimes Excel will notice itself, and trigger a recalculation on load, but unless you know you are using volatile functions it's generally best to trigger a <a href="#recalculation">Recalulation</a> through POI)</span><span class="tscolor" lg_zh="t_01a8f2abb08a4c8e831ad98a4a6bf73f"><span lg_kh="1">(</span>${t_01a8f2abb08a4c8e831ad98a4a6bf73f}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Status" id="Status"></a> <a name="Status-N1002D"></a>
+    <h2 class="boxed"><span lg_en="t_507ab8e7db2d4255899e22dab803431e">Status</span><span class="tscolor" lg_zh="t_507ab8e7db2d4255899e22dab803431e"><span lg_kh="1">(</span>${t_507ab8e7db2d4255899e22dab803431e}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_4b27200c3ace4f70ab7c4d4f6ed09d8b">The code currently provides implementations for all the arithmatic operators. It also provides implementations for approx. 140 built in functions in Excel. The framework however makes it easy to add implementation of new functions. See the <a href="eval-devguide.html"> Formula evaluation development guide</a> and <a href="../../apidocs/dev/org/apache/poi/hssf/record/formula/functions/package-summary.html">javadocs</a> for details.</span><span class="tscolor" lg_zh="t_4b27200c3ace4f70ab7c4d4f6ed09d8b"><span lg_kh="1">(</span>${t_4b27200c3ace4f70ab7c4d4f6ed09d8b}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_8f18e39b9e3943f1ae4d643dad88075a">Both HSSFWorkbook and XSSFWorkbook are supported, so you can evaluate formulas on both .xls and .xlsx files.</span><span class="tscolor" lg_zh="t_8f18e39b9e3943f1ae4d643dad88075a"><span lg_kh="1">(</span>${t_8f18e39b9e3943f1ae4d643dad88075a}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_51f64f9c48b34b38817aff14482c061d">User-defined functions are <a href="user-defined-functions.html">supported</a>, but must be rewritten in Java and registered with the macro-enabled workbook in order to be evaluated.</span><span class="tscolor" lg_zh="t_51f64f9c48b34b38817aff14482c061d"><span lg_kh="1">(</span>${t_51f64f9c48b34b38817aff14482c061d}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="User+API+How-TO"></a>
+    <h2 class="boxed"><span lg_en="t_74967bb71387410ba706657bb5e35317">User API How-TO</span><span class="tscolor" lg_zh="t_74967bb71387410ba706657bb5e35317"><span lg_kh="1">(</span>${t_74967bb71387410ba706657bb5e35317}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_accece03b82a4cdb896c36faa92626b0">The following code demonstrates how to use the FormulaEvaluator in the context of other POI excel reading code.</span><span class="tscolor" lg_zh="t_accece03b82a4cdb896c36faa92626b0"><span lg_kh="1">(</span>${t_accece03b82a4cdb896c36faa92626b0}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_fc3464dd9ca94666a1518c9b60833b63">There are several ways in which you can use the FormulaEvalutator API.</span><span class="tscolor" lg_zh="t_fc3464dd9ca94666a1518c9b60833b63"><span lg_kh="1">(</span>${t_fc3464dd9ca94666a1518c9b60833b63}<span lg_kh="1">)</span></span></p>
+     <a name="Evaluate" id="Evaluate"></a><a name="Using+FormulaEvaluator."></a>
+     <h3 class="boxed"><span lg_en="t_39336c2001204f7a88f13bcebd30ba24">Using FormulaEvaluator.evaluate(Cell cell)</span><span class="tscolor" lg_zh="t_39336c2001204f7a88f13bcebd30ba24"><span lg_kh="1">(</span>${t_39336c2001204f7a88f13bcebd30ba24}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_a5359ded729c42ed94a44c3febe0ea64">This evaluates a given cell, and returns the new value, without affecting the cell</span><span class="tscolor" lg_zh="t_a5359ded729c42ed94a44c3febe0ea64"><span lg_kh="1">(</span>${t_a5359ded729c42ed94a44c3febe0ea64}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileInputStream fis = new FileInputStream("c:/temp/test.xls");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook(fis); //<span><span lg_en="t_62ed12a978f145b790cc346bce6c4101">or new XSSFWorkbook("c:/temp/test.xls")</span><span class="tscolor" lg_zh="t_62ed12a978f145b790cc346bce6c4101"><span lg_kh="1">(</span>${t_62ed12a978f145b790cc346bce6c4101}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sheet = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// suppose your formula is in B3</span>
+      </div>
+      <div class="codeline" lg_zh="t_7c7017908e484abfa78c54d50f8b13ca">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_7c7017908e484abfa78c54d50f8b13ca}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellReference cellReference = new CellReference("B3"); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Row row = sheet.getRow(cellReference.getRow());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Cell cell = row.getCell(cellReference.getCol()); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellValue cellValue = evaluator.evaluate(cell);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">switch (cellValue.getCellType()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BOOLEAN:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cellValue.getBooleanValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_NUMERIC:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cellValue.getNumberValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_STRING:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cellValue.getStringValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BLANK:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_ERROR:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // CELL_TYPE_FORMULA will never happen</span>
+      </div>
+      <div class="codeline" lg_zh="t_7494c8c730274987a98c0dc32eb423aa">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_7494c8c730274987a98c0dc32eb423aa}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_FORMULA: </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_c6a14d364000434481d8ed8140aacfad">Thus using the retrieved value (of type FormulaEvaluator.CellValue - a nested class) returned by FormulaEvaluator is similar to using a Cell object containing the value of the formula evaluation. CellValue is a simple value object and does not maintain reference to the original cell.</span><span class="tscolor" lg_zh="t_c6a14d364000434481d8ed8140aacfad"><span lg_kh="1">(</span>${t_c6a14d364000434481d8ed8140aacfad}<span lg_kh="1">)</span></span></p>
+     <a name="EvaluateFormulaCell" id="EvaluateFormulaCell"></a><a name="Using+FormulaEvaluator.-N1014D"></a>
+     <h3 class="boxed"><span lg_en="t_810b6d09f2d8423c9eda687f0c5075c4">Using FormulaEvaluator.evaluateFormulaCell(Cell cell)</span><span class="tscolor" lg_zh="t_810b6d09f2d8423c9eda687f0c5075c4"><span lg_kh="1">(</span>${t_810b6d09f2d8423c9eda687f0c5075c4}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_8b17f51b128246bfbc2e2deb8bd8c485"><strong>evaluateFormulaCell</strong>(Cell cell) will check to see if the supplied cell is a formula cell. If it isn't, then no changes will be made to it. If it is, then the formula is evaluated. The value for the formula is saved alongside it, to be displayed in excel. The formula remains in the cell, just with a new value</span><span class="tscolor" lg_zh="t_8b17f51b128246bfbc2e2deb8bd8c485"><span lg_kh="1">(</span>${t_8b17f51b128246bfbc2e2deb8bd8c485}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_cf7df144a13042e4ac497ef6a02c39f6">The return of the function is the type of the formula result, such as Cell.CELL_TYPE_BOOLEAN</span><span class="tscolor" lg_zh="t_cf7df144a13042e4ac497ef6a02c39f6"><span lg_kh="1">(</span>${t_cf7df144a13042e4ac497ef6a02c39f6}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileInputStream fis = new FileInputStream("/somepath/test.xls");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook(fis); //<span><span lg_en="t_d590162c96fc4da9ba118dccbfad1e4e">or new XSSFWorkbook("/somepath/test.xls")</span><span class="tscolor" lg_zh="t_d590162c96fc4da9ba118dccbfad1e4e"><span lg_kh="1">(</span>${t_d590162c96fc4da9ba118dccbfad1e4e}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sheet = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// suppose your formula is in B3</span>
+      </div>
+      <div class="codeline" lg_zh="t_fbed038a7dbf4b70b1bcaa506ddc5738">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_fbed038a7dbf4b70b1bcaa506ddc5738}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellReference cellReference = new CellReference("B3"); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Row row = sheet.getRow(cellReference.getRow());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Cell cell = row.getCell(cellReference.getCol()); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (cell!=null) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> switch (evaluator.evaluateFormulaCell(cell)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BOOLEAN:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getBooleanCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_NUMERIC:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getNumericCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_STRING:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getStringCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BLANK:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_ERROR:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getErrorCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // CELL_TYPE_FORMULA will never occur</span>
+      </div>
+      <div class="codeline" lg_zh="t_2787ec4ec7b04d4ca8462f2b4cef08ac">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_2787ec4ec7b04d4ca8462f2b4cef08ac}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_FORMULA: </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="EvaluateInCell" id="EvaluateInCell"></a><a name="Using+FormulaEvaluator.-N1024E"></a>
+     <h3 class="boxed"><span lg_en="t_c1f7a9f77f664d2bba5e0f505bd6fcf0">Using FormulaEvaluator.evaluateInCell(Cell cell)</span><span class="tscolor" lg_zh="t_c1f7a9f77f664d2bba5e0f505bd6fcf0"><span lg_kh="1">(</span>${t_c1f7a9f77f664d2bba5e0f505bd6fcf0}<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_48297f867c1647128b489a1744977b86"><strong>evaluateInCell</strong>(Cell cell) will check to see if the supplied cell is a formula cell. If it isn't, then no changes will be made to it. If it is, then the formula is evaluated, and the new value saved into the cell, in place of the old formula.</span><span class="tscolor" lg_zh="t_48297f867c1647128b489a1744977b86"><span lg_kh="1">(</span>${t_48297f867c1647128b489a1744977b86}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileInputStream fis = new FileInputStream("/somepath/test.xls");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook(fis); //<span><span lg_en="t_c96b618ed85041d4bd91014856b8c22c">or new XSSFWorkbook("/somepath/test.xls")</span><span class="tscolor" lg_zh="t_c96b618ed85041d4bd91014856b8c22c"><span lg_kh="1">(</span>${t_c96b618ed85041d4bd91014856b8c22c}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sheet = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// suppose your formula is in B3</span>
+      </div>
+      <div class="codeline" lg_zh="t_a9255634aa2942d7ae3eddd297c759e5">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_a9255634aa2942d7ae3eddd297c759e5}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellReference cellReference = new CellReference("B3");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Row row = sheet.getRow(cellReference.getRow());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Cell cell = row.getCell(cellReference.getCol()); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (cell!=null) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> switch (evaluator.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">evaluateInCell</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">(cell).getCellType()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BOOLEAN:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getBooleanCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_NUMERIC:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getNumericCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_STRING:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getStringCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_BLANK:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_ERROR:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(cell.getErrorCellValue());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // CELL_TYPE_FORMULA will never occur</span>
+      </div>
+      <div class="codeline" lg_zh="t_d58b1c7fc5824dc0a02fab5b2d5cd430">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_d58b1c7fc5824dc0a02fab5b2d5cd430}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case Cell.CELL_TYPE_FORMULA:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="EvaluateAll" id="EvaluateAll"></a><a name="Re-calculating+all+formulas+in+a+Workbook"></a>
+     <h3 class="boxed"><span lg_en="t_72c5d2d4be6a4c1f98bfe0d1b6fe73b7">Re-calculating all formulas in a Workbook</span><span class="tscolor" lg_zh="t_72c5d2d4be6a4c1f98bfe0d1b6fe73b7"><span lg_kh="1">(</span>${t_72c5d2d4be6a4c1f98bfe0d1b6fe73b7}<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileInputStream fis = new FileInputStream("/somepath/test.xls");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook(fis); //<span><span lg_en="t_e08269c11201483987ed9acec84e8601">or new XSSFWorkbook("/somepath/test.xls")</span><span class="tscolor" lg_zh="t_e08269c11201483987ed9acec84e8601"><span lg_kh="1">(</span>${t_e08269c11201483987ed9acec84e8601}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (Sheet sheet : wb) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for (Row r : sheet) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for (Cell c : r) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (c.getCellType() == Cell.CELL_TYPE_FORMULA) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> evaluator.evaluateFormulaCell(c);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_139b5a3671b74de0bfa4d5347cb3cb3a">Alternately, if you know which of HSSF or XSSF you're working with, then you can call the static <strong>evaluateAllFormulaCells</strong> method on the appropriate HSSFFormulaEvaluator or XSSFFormulaEvaluator class.</span><span class="tscolor" lg_zh="t_139b5a3671b74de0bfa4d5347cb3cb3a"><span lg_kh="1">(</span>${t_139b5a3671b74de0bfa4d5347cb3cb3a}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="recalculation" id="recalculation"></a> <a name="Recalculation+of+Formulas"></a>
+    <h2 class="boxed"><span lg_en="t_58fb3759e65743f888c0594765b33a5a">Recalculation of Formulas</span><span class="tscolor" lg_zh="t_58fb3759e65743f888c0594765b33a5a"><span lg_kh="1">(</span>${t_58fb3759e65743f888c0594765b33a5a}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_475abd82a6784d938536e76c58933add">In certain cases you may want to force Excel to re-calculate formulas when the workbook is opened. Consider the following example:</span><span class="tscolor" lg_zh="t_475abd82a6784d938536e76c58933add"><span lg_kh="1">(</span>${t_475abd82a6784d938536e76c58933add}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_b5e48702d27847c980311ebfb55aecc1">Open Excel and create a new workbook. On the first sheet set A1=1, B1=1, C1=A1+B1. Excel automatically calculates formulas and the value in C1 is 2. So far so good.</span><span class="tscolor" lg_zh="t_b5e48702d27847c980311ebfb55aecc1"><span lg_kh="1">(</span>${t_b5e48702d27847c980311ebfb55aecc1}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_01f015a0b9584956898b81292b0c10e2">Now modify the workbook with POI:</span><span class="tscolor" lg_zh="t_01f015a0b9584956898b81292b0c10e2"><span lg_kh="1">(</span>${t_01f015a0b9584956898b81292b0c10e2}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = WorkbookFactory.create(new FileInputStream("workbook.xls"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sh = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">sh.getRow(0).getCell(0).setCellValue(2); //<span><span lg_en="t_640564e738f64fc68d2447a49239cc62">set A1=2</span><span class="tscolor" lg_zh="t_640564e738f64fc68d2447a49239cc62"><span lg_kh="1">(</span>${t_640564e738f64fc68d2447a49239cc62}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileOutputStream out = new FileOutputStream("workbook2.xls");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_610c4a7ccf6e4ef38bbf9c71004759e6">Now open workbook2.xls in Excel and the value in C1 is still 2 while you expected 3. Wrong? No! The point is that Excel caches previously calculated results and you need to trigger recalculation to updated them. It is not an issue when you are creating new workbooks from scratch, but important to remember when you are modifing existing workbooks with formulas. This can be done in two ways:</span><span class="tscolor" lg_zh="t_610c4a7ccf6e4ef38bbf9c71004759e6"><span lg_kh="1">(</span>${t_610c4a7ccf6e4ef38bbf9c71004759e6}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_90f80c4b2ca748d9a5ff91f017982a4a">1. Re-evaluate formulas with POI's FormulaEvaluator:</span><span class="tscolor" lg_zh="t_90f80c4b2ca748d9a5ff91f017982a4a"><span lg_kh="1">(</span>${t_90f80c4b2ca748d9a5ff91f017982a4a}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = WorkbookFactory.create(new FileInputStream("workbook.xls"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sh = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">sh.getRow(0).getCell(0).setCellValue(2); //<span><span lg_en="t_b6c0d63fd37542aa800535da3f7e99df">set A1=2</span><span class="tscolor" lg_zh="t_b6c0d63fd37542aa800535da3f7e99df"><span lg_kh="1">(</span>${t_b6c0d63fd37542aa800535da3f7e99df}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.getCreationHelper().createFormulaEvaluator().evaluateAll();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_cf26d8302bb943059460e32dbd265d9f">2. Delegate re-calculation to Excel. The application will perform a full recalculation when the workbook is opened:</span><span class="tscolor" lg_zh="t_cf26d8302bb943059460e32dbd265d9f"><span lg_kh="1">(</span>${t_cf26d8302bb943059460e32dbd265d9f}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = WorkbookFactory.create(new FileInputStream("workbook.xls"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet sh = wb.getSheetAt(0);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">sh.getRow(0).getCell(0).setCellValue(2); //<span><span lg_en="t_110220960afb404da173eb3ae6b8b966">set A1=2</span><span class="tscolor" lg_zh="t_110220960afb404da173eb3ae6b8b966"><span lg_kh="1">(</span>${t_110220960afb404da173eb3ae6b8b966}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.setForceFormulaRecalculation(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <a name="external" id="external"></a> <a name="External+%28Cross-Workbook%29+references"></a>
+    <h2 class="boxed"><span lg_en="t_1755f245b6fa4c7a85f6ce6e9e023991">External (Cross-Workbook) references</span><span class="tscolor" lg_zh="t_1755f245b6fa4c7a85f6ce6e9e023991"><span lg_kh="1">(</span>${t_1755f245b6fa4c7a85f6ce6e9e023991}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_6faa9819595248699e99f84bbca2980f">It is possible for a formula in an Excel spreadsheet to refer to a Named Range or Cell in a different workbook. These cross-workbook references are normally called <em>External References</em>. These are formulas which look something like:</span><span class="tscolor" lg_zh="t_6faa9819595248699e99f84bbca2980f"><span lg_kh="1">(</span>${t_6faa9819595248699e99f84bbca2980f}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">=SUM([Finances.xlsx]Numbers!D10:D25)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">=SUM('C:\Data\[Finances.xlsx]Numbers'!D10:D25)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">=SUM([Finances.xlsx]Range20)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_d5c7bbd1ffbc4dce9f203c2643d94202">If you don't have access to these other workbooks, then you should call <a href="../../apidocs/dev/org/apache/poi/ss/usermodel/FormulaEvaluator.html#setIgnoreMissingWorkbooks(boolean)">setIgnoreMissingWorkbooks(true)</a> to tell the Formula Evaluator to skip evaluating any external references it can't look up.</span><span class="tscolor" lg_zh="t_d5c7bbd1ffbc4dce9f203c2643d94202"><span lg_kh="1">(</span>${t_d5c7bbd1ffbc4dce9f203c2643d94202}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_fd8c9bcf1b2a44a0a2c11c7da04b3a20">In order for POI to be able to evaluate external references, it needs access to the workbooks in question. As these don't necessarily have the same names on your system as in the workbook, you need to give POI a map of external references to open workbooks, through the <a href="../../apidocs/dev/org/apache/poi/ss/usermodel/FormulaEvaluator.html#setupReferencedWorkbooks(java.util.Map)">setupReferencedWorkbooks(java.util.Map&lt;java.lang.String,FormulaEvaluator&gt; workbooks)</a> method. You should normally do something like:</span><span class="tscolor" lg_zh="t_fd8c9bcf1b2a44a0a2c11c7da04b3a20"><span lg_kh="1">(</span>${t_fd8c9bcf1b2a44a0a2c11c7da04b3a20}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Create a FormulaEvaluator to use</span>
+      </div>
+      <div class="codeline" lg_zh="t_847cca5856684394aeb7e4f60ca3d685">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_847cca5856684394aeb7e4f60ca3d685}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FormulaEvaluator mainWorkbookEvaluator = workbook.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Track the workbook references</span>
+      </div>
+      <div class="codeline" lg_zh="t_a9e7618be61c4fb8a47cabe4ea14aa16">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_a9e7618be61c4fb8a47cabe4ea14aa16}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Map&lt;String,FormulaEvaluator&gt; workbooks = new HashMap&lt;String, FormulaEvaluator&gt;();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Add this workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_05f89d36958b41ee95d064acaa1543b5">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_05f89d36958b41ee95d064acaa1543b5}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">workbooks.put("report.xlsx", mainWorkbookEvaluator);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Add two others</span>
+      </div>
+      <div class="codeline" lg_zh="t_a0dfdaf7fd69406795622e51d99493a5">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_a0dfdaf7fd69406795622e51d99493a5}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">workbooks.put("input.xls", WorkbookFactory.create("C:\\temp\\input22.xls").getCreationHelper().createFormulaEvaluator());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">workbooks.put("lookups.xlsx", WorkbookFactory.create("/home/poi/data/tmp-lookups.xlsx").getCreationHelper().createFormulaEvaluator());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Attach them</span>
+      </div>
+      <div class="codeline" lg_zh="t_59f6b03bd92f43b8ba6c383911195b31">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_59f6b03bd92f43b8ba6c383911195b31}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mainWorkbookEvaluator.setupReferencedWorkbooks(workbooks);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Evaluate</span>
+      </div>
+      <div class="codeline" lg_zh="t_082db994d99349dca0c41b0ef7d3b18e">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_082db994d99349dca0c41b0ef7d3b18e}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mainWorkbookEvaluator.evaluateAll();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <a name="Performance" id="Performance"></a> <a name="Performance+Notes"></a>
+    <h2 class="boxed"><span lg_en="t_28fa89131e69402a8bd069b8d3646ef2">Performance Notes</span><span class="tscolor" lg_zh="t_28fa89131e69402a8bd069b8d3646ef2"><span lg_kh="1">(</span>${t_28fa89131e69402a8bd069b8d3646ef2}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <ul>
+      <li><span lg_en="t_f1a27ebbfffb4999be504089623fb074">Generally you should have to create only one FormulaEvaluator instance per Workbook. The FormulaEvaluator will cache evaluations of dependent cells, so if you have multiple formulas all depending on a cell then subsequent evaluations will be faster.</span><span class="tscolor" lg_zh="t_f1a27ebbfffb4999be504089623fb074"><span lg_kh="1">(</span>${t_f1a27ebbfffb4999be504089623fb074}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_cfe8aeb80b5447aa9325c1d498f3c60c">You should normally perform all of your updates to cells, before triggering the evaluation, rather than doing one cell at a time. By waiting until all the updates/sets are performed, you'll be able to take best advantage of the caching for complex formulas.</span><span class="tscolor" lg_zh="t_cfe8aeb80b5447aa9325c1d498f3c60c"><span lg_kh="1">(</span>${t_cfe8aeb80b5447aa9325c1d498f3c60c}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_a0646b9b8a54499eb5e9f27289b43537">If you do end up making changes to cells part way through evaluation, you should call <em>notifySetFormula</em> or <em>notifyUpdateCell</em> to trigger suitable cache clearance. Alternately, you could instantiate a new FormulaEvaluator, which will start with empty caches.</span><span class="tscolor" lg_zh="t_a0646b9b8a54499eb5e9f27289b43537"><span lg_kh="1">(</span>${t_a0646b9b8a54499eb5e9f27289b43537}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_c5c0b142f96348c2bc692e2b0698bd75">Also note that FormulaEvaluator maintains a reference to the sheet and workbook, so ensure that the evaluator instance is available for garbage collection when you are done with it (in other words don't maintain long lived reference to FormulaEvaluator if you don't really need to - unless all references to the sheet and workbook are removed, these don't get garbage collected and continue to occupy potentially large amounts of memory).</span><span class="tscolor" lg_zh="t_c5c0b142f96348c2bc692e2b0698bd75"><span lg_kh="1">(</span>${t_c5c0b142f96348c2bc692e2b0698bd75}<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_49ed029ff23548d39b2fcca699eace3c">CellValue instances however do not maintain reference to the Cell or the sheet or workbook, so these can be long-lived objects without any adverse effect on performance.</span><span class="tscolor" lg_zh="t_49ed029ff23548d39b2fcca699eace3c"><span lg_kh="1">(</span>${t_49ed029ff23548d39b2fcca699eace3c}<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Formula+Evaluation+Debugging"></a>
+    <h2 class="boxed"><span lg_en="t_fbe8010421d24ce39d79243c1fe4efa5">Formula Evaluation Debugging</span><span class="tscolor" lg_zh="t_fbe8010421d24ce39d79243c1fe4efa5"><span lg_kh="1">(</span>${t_fbe8010421d24ce39d79243c1fe4efa5}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_1dbefd6e25a1455f8c9e0b79f47b9242">POI is not perfect and you may stumble across formula evaluation problems (Java exceptions or just different results) in your special use case. To support an easy detailed analysis, a special logging of the full evaluation is provided.</span><span class="tscolor" lg_zh="t_1dbefd6e25a1455f8c9e0b79f47b9242"><span lg_kh="1">(</span>${t_1dbefd6e25a1455f8c9e0b79f47b9242}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_54f98623964246d189635f63348a0e3f">The output of this logging may be very large (depends on your EXCEL), so this logging has to be explicitly enabled for each single formula evaluation. Should not be used in production - only for specific development use.</span><span class="tscolor" lg_zh="t_54f98623964246d189635f63348a0e3f"><span lg_kh="1">(</span>${t_54f98623964246d189635f63348a0e3f}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_df098cc463ce484c8b0c8ed708515b13">Example use:</span><span class="tscolor" lg_zh="t_df098cc463ce484c8b0c8ed708515b13"><span lg_kh="1">(</span>${t_df098cc463ce484c8b0c8ed708515b13}<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// activate logging to console</span>
+      </div>
+      <div class="codeline" lg_zh="t_efddd4ffcf42473190bf77dc4b22984b">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_efddd4ffcf42473190bf77dc4b22984b}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">System.setProperty("org.apache.poi.util.POILogger", "org.apache.poi.util.SystemOutLogger");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">System.setProperty("poi.log.level", POILogger.INFO + "");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// open your file</span>
+      </div>
+      <div class="codeline" lg_zh="t_969c9742237f4c56b66ff33cb4bcd096">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_969c9742237f4c56b66ff33cb4bcd096}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook(new FileInputStream("foobar.xls"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// get your cell</span>
+      </div>
+      <div class="codeline" lg_zh="t_ce6d3b4f2fe64f8283d56f471118336c">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_ce6d3b4f2fe64f8283d56f471118336c}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Cell cell = wb.getSheet(0).getRow(0).getCell(0); //<span><span lg_en="t_ad5423c9cb014e5485a6adecb91a8a0e">just a dummy example</span><span class="tscolor" lg_zh="t_ad5423c9cb014e5485a6adecb91a8a0e"><span lg_kh="1">(</span>${t_ad5423c9cb014e5485a6adecb91a8a0e}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// perform debug output for the next evaluate-call only</span>
+      </div>
+      <div class="codeline" lg_zh="t_5957a72925c642e8b22ea065e67a586f">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">${t_5957a72925c642e8b22ea065e67a586f}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> evaluator.setDebugEvaluationOutputForNextEval(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">evaluator.evaluateFormulaCell(cell);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">evaluator.evaluateFormulaCell(cell); //<span><span lg_en="t_e3b85e2a991e435aae62e686532773df">no logging performed for this next evaluate-call</span><span class="tscolor" lg_zh="t_e3b85e2a991e435aae62e686532773df"><span lg_kh="1">(</span>${t_e3b85e2a991e435aae62e686532773df}<span lg_kh="1">)</span></span></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_0a5c93dd5e774349a6571bf0ab638292">The special Logger called "POI.FormulaEval" is used (useful if you use the CommonsLogger and a detailed logging configuration). The used log levels are WARN and INFO (for detailed parameter info and results) - the level are so high to allow this special logging without being disturbed by the bunch of DEBUG log entries from other classes.</span><span class="tscolor" lg_zh="t_0a5c93dd5e774349a6571bf0ab638292"><span lg_kh="1">(</span>${t_0a5c93dd5e774349a6571bf0ab638292}<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="sxssf" id="sxssf"></a> <a name="Formula+Evaluation+and+SXSSF"></a>
+    <h2 class="boxed"><span lg_en="t_de39bd512b754dbbad64254f0705fe14">Formula Evaluation and SXSSF</span><span class="tscolor" lg_zh="t_de39bd512b754dbbad64254f0705fe14"><span lg_kh="1">(</span>${t_de39bd512b754dbbad64254f0705fe14}<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_28719793e0b94f50b445a2e275ccfb89">For versions before 3.13 final, no formula evaluation is possible with SXSSF.</span><span class="tscolor" lg_zh="t_28719793e0b94f50b445a2e275ccfb89"><span lg_kh="1">(</span>${t_28719793e0b94f50b445a2e275ccfb89}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c7a98e6ab1144af8b325a73857fead7c">If you are using POI 3.13 final or newer, formula evaluation is possible with SXSSF, but with some caveats.</span><span class="tscolor" lg_zh="t_c7a98e6ab1144af8b325a73857fead7c"><span lg_kh="1">(</span>${t_c7a98e6ab1144af8b325a73857fead7c}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_f4c2eb25996a48e886c30a2234af7cb6">The biggest restriction is that, since evaluating a cell needs that cell in memory and any others it depends on, only pure-function formulas and formulas referencing nearby cells can be evaluated with SXSSF. If a formula references a cell that hasn't yet been written, or one which has already been flushed to disk, then it won't be possible to evaluate it.</span><span class="tscolor" lg_zh="t_f4c2eb25996a48e886c30a2234af7cb6"><span lg_kh="1">(</span>${t_f4c2eb25996a48e886c30a2234af7cb6}<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_7fe78787d8414db8ae08e1cfdf163e1f">Because of this, a call to <em>wb.getCreationHelper().createFormulaEvaluator().evaluateAll();</em> will very rarely work on SXSSF, as it's very rare that all the cells wil be available and in memory at any time! Instead, it is suggested to evaluate formula cells just after writing them, or shortly after when cells they depend on are added. Just make sure that all cells needing or needed for evaluation are inside the window.</span><span class="tscolor" lg_zh="t_7fe78787d8414db8ae08e1cfdf163e1f"><span lg_kh="1">(</span>${t_7fe78787d8414db8ae08e1cfdf163e1f}<span lg_kh="1">)</span></span></p>
+    </div>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/eval.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

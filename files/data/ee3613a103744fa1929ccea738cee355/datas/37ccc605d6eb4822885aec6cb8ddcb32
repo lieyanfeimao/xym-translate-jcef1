@@ -1,0 +1,1 @@
+[{"id":"t_299a0830e37e4dcea3c8261bc5f6c722","oldText":"Interface to define how a record can indicate it cares about what its parent is, and how it wants to be told which record is its parent.","tlText":"定义记录如何表明它关心其父记录是什么以及它希望如何被告知哪个记录是其父记录的接口。","version":0}]

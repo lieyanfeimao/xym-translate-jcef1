@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-HSMF - Java API To Access Microsoft Outlook MSG Files</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_616bb8c43cc5464086ed475a1b3e46dc">POI-HSMF - Java API To Access Microsoft Outlook MSG Files</span><span class="tscolor" lg_zh="t_616bb8c43cc5464086ed475a1b3e46dc"><span lg_kh="1">(</span>POI-HSMF - 访问 Microsoft Outlook MSG 文件的 Java API<span lg_kh="1">)</span></span></h1>
+    <h3><span lg_en="t_2fa730a657cf49bca5f427e4f406cb87">Overview</span><span class="tscolor" lg_zh="t_2fa730a657cf49bca5f427e4f406cb87"><span lg_kh="1">(</span><span style="color:black;">概述</span><span lg_kh="1">)</span></span></h3>
+    <div id="front-matter"></div>
+    <a name="Overview"></a>
+    <h2 class="boxed"><span lg_en="t_2c84e5d18f6349b39cfa060fa8421ccb">Overview</span><span class="tscolor" lg_zh="t_2c84e5d18f6349b39cfa060fa8421ccb"><span lg_kh="1">(</span><span style="color:black;">概述</span><span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_85678915212a4dbbabdfc771c793e9a4">HSMF is the POI Project's pure Java implementation of the Outlook MSG format.</span><span class="tscolor" lg_zh="t_85678915212a4dbbabdfc771c793e9a4"><span lg_kh="1">(</span>HSMF 是 POI 项目的 Outlook MSG 格式的纯 Java 实现。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4fff6db4b20c41a380b2290d8b89a782">At this time, it provides low-level read access to all of the file, along with a user-facing way to get at the common textual content of MSG files. to all</span><span class="tscolor" lg_zh="t_4fff6db4b20c41a380b2290d8b89a782"><span lg_kh="1">(</span>目前，它向所有人提供了对所有文件的低级读取访问权限，以及一种面向用户的方式来获取 MSG 文件的常见文本内容。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4eacaffcd9e44289867e7d7aa9569d89">There is an example MSG textual renderer, which shows how to access the common parts such as sender, subject, message body and examples. This is in the <a href="http://svn.apache.org/viewvc/poi/trunk/src/examples/src/org/apache/poi/examples/hsmf/">HSMF examples area</a> of SVN. You may also wish to look at the unit tests for more use guides.</span><span class="tscolor" lg_zh="t_4eacaffcd9e44289867e7d7aa9569d89"><span lg_kh="1">(</span>有一个示例 MSG 文本渲染器，它展示了如何访问常见部分，例如发送者、主题、消息正文和示例。这是在 SVN 的 HSMF 示例区域。您可能还希望查看单元测试以获取更多使用指南。<span lg_kh="1">)</span></span></p>
+     <div class="note">
+      <div class="label">
+       <span lg_en="t_9731ee73027e43098767fee40b1e3bba">Note</span><span class="tscolor" lg_zh="t_9731ee73027e43098767fee40b1e3bba"><span lg_kh="1">(</span>笔记<span lg_kh="1">)</span></span>
+      </div>
+      <div class="content">
+       <span lg_en="t_b7e4eb92d82c470bbfe8ebdbf665032f">This code currently lives the <a href="http://svn.apache.org/viewvc/poi/trunk/src/scratchpad/">scratchpad area</a> of the POI SVN repository. To use this component, ensure you have the Scratchpad Jar on your classpath, or a dependency defined on the <em>poi-scratchpad</em> artifact - the main POI jar is not enough! See the <a href="../../components/">POI Components Map</a> for more details.</span><span class="tscolor" lg_zh="t_b7e4eb92d82c470bbfe8ebdbf665032f"><span lg_kh="1">(</span>此代码当前位于 POI SVN 存储库的暂存区。要使用这个组件，请确保您的类路径中有 Scratchpad Jar，或者在 poi-scratchpad 工件上定义了依赖项 - 主 POI jar 是不够的！有关详细信息，请参阅 POI 组件图。<span lg_kh="1">)</span></span>
+      </div>
+     </div>
+     <div class="note">
+      <div class="label">
+       <span lg_en="t_cb108218802843f189e0b3dc9594abde">Note</span><span class="tscolor" lg_zh="t_cb108218802843f189e0b3dc9594abde"><span lg_kh="1">(</span>笔记<span lg_kh="1">)</span></span>
+      </div>
+      <div class="content">
+       <span lg_en="t_d18a6f5c541a4061b13f35bd9fa5f0c5">This code is subject to change between versions, and being "scratchpad", doesn't maintain the usual Apache POI backwards compatibility guarantees. In particular, the way that property values are fetched is expected to change soon, as part of the work to improve fixed-length property support.</span><span class="tscolor" lg_zh="t_d18a6f5c541a4061b13f35bd9fa5f0c5"><span lg_kh="1">(</span>此代码可能会在版本之间发生变化，并且作为“暂存器”，不保持通常的 Apache POI 向后兼容性保证。特别是，作为改进固定长度属性支持工作的一部分，预计获取属性值的方式将很快改变。<span lg_kh="1">)</span></span>
+      </div>
+     </div>
+    </div>
+    <p align="right"><span lg_en="t_e137390ee00640d4835f9e06044505c4"><font size="-2">by&nbsp;Nick Burch,&nbsp;Travis Ferguson</font></span><span class="tscolor" lg_zh="t_e137390ee00640d4835f9e06044505c4"><span lg_kh="1">(</span>作者：尼克·伯奇、特拉维斯·弗格森<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hsmf/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

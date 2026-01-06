@@ -1,0 +1,1 @@
+[{"id":"t_5ca99a1f5c1a4c9a8ffc4c0fc40b02bc","oldText":"Used to detect if a chain has a loop in it, so we can bail out with an error rather than spinning away for ever...","tlText":"用于检测链中是否有循环，这样我们就可以通过错误摆脱，而不是永远旋转.","version":0}]

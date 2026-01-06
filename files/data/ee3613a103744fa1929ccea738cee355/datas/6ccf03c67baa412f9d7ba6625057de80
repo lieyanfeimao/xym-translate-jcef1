@@ -1,0 +1,1 @@
+[{"id":"t_b0d4fac6a76444398476618d6dd30c69","oldText":"The EMR_POLYBEZIERTO16 record specifies one or more Bezier curves based on the current position.","tlText":"EMR_POYBEZIERTO 16记录根据当前位置指定一条或多条贝塞尔曲线。","version":0},{"id":"t_d5b8aeb4db7a4ba2bebd021b9f063a0b","oldText":"getEmfRecordType in interface HemfRecord","tlText":"HemfRecord界面中的getEmfRecordType","version":0}]

@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-HMEF - Java API To Access Microsoft Transport Neutral Encoding Files (TNEF)</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>POI-HMEF - Java API To Access Microsoft Transport Neutral Encoding Files (TNEF)
+     <div name="tsUpdate" data-id="t_84e022e78d364833b983d556c10c3d87" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_02e3c503fd16489f956fdf7ea73b03ca" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <a name="Overview"></a>
+    <h2 class="boxed">Overview
+     <div name="tsUpdate" data-id="t_16ec4be2b9f74e6dae56d52a9fed2a0d" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>HMEF is the POI Project's pure Java implementation of Microsoft's TNEF (Transport Neutral Encoding Format), aka winmail.dat, which is used by Outlook and Exchange in some situations.
+      <div name="tsUpdate" data-id="t_724189cf259241c99539e81f72c815e7" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Currently, HMEF provides a read-only api for accessing common message and attachment attributes, including the message body and attachment files. In addition, it's possible to have read-only access to all of the underlying TNEF and MAPI attributes of the message and attachments.
+      <div name="tsUpdate" data-id="t_04829c2c286849e587b646d6031c8930" data-tpl="0" data-txt-color="green"></div></p>
+     <p>HMEF also provides a command line tool for extracting out the message body and attachment files from a TNEF (winmail.dat) file.
+      <div name="tsUpdate" data-id="t_02bd2015d33d4fbd921c4aff4b10f24f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Write support, both for saving changes and for creating new files, is currently unavailable. Anyone interested in working on these areas is advised to read the <a href="../../devel/guidelines.html">Contribution Guidelines</a> then <a href="../../help/index.html">join the dev list</a>!
+      <div name="tsUpdate" data-id="t_67bb8103b7a149be9850de6ed5ec0835" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_def33047f58c466e89c099ecdcf49763" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This code currently lives the <a href="http://svn.apache.org/viewvc/poi/trunk/src/scratchpad/">scratchpad area</a> of the POI SVN repository. To use this component, ensure you have the Scratchpad Jar on your classpath, or a dependency defined on the <em>poi-scratchpad</em> artifact - the main POI jar is not enough! See the <a href="../../components/">POI Components Map</a> for more details.
+       <div name="tsUpdate" data-id="t_a5a144f44ffe4d31a6c0628ccdc9545d" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+    </div>
+    <a name="Using+HMEF+to+access+TNEF+%28winmail.dat%29+files"></a>
+    <h2 class="boxed">Using HMEF to access TNEF (winmail.dat) files
+     <div name="tsUpdate" data-id="t_c43ba43eb0c8468581619af762f1c0e6" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="Easy+extraction+of+message+body+and+attachment+files"></a>
+     <h3 class="boxed">Easy extraction of message body and attachment files
+      <div name="tsUpdate" data-id="t_6615270116f045d198bf16cde0e2001d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The class <em>org.apache.poi.hmef.extractor.HMEFContentsExtractor</em> provides both command line and Java extraction. It allows the saving of the message body (an RTF file), and all of the attachment files, to a single directory as specified.
+      <div name="tsUpdate" data-id="t_aeb10a475fe14850b1a1edc89a3b88d6" data-tpl="0" data-txt-color="green"></div></p>
+     <p>From the command line, simply call the class specifying the TNEF file to extract, and the directory to place the extracted files into, eg:
+      <div name="tsUpdate" data-id="t_8ebdbabddb014cf29b04e5b589a39f83" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">java -classpath poi-3.14.jar:poi-scratchpad-3.14.jar org.apache.poi.hmef.extractor.HMEFContentsExtractor winmail.dat /tmp/extracted/</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>From Java, there are two method calls on the class, one to extract the message body RTF to a file, and the other to extract all the attachments to a directory. A typical use would be:
+      <div name="tsUpdate" data-id="t_a1b2dd7897f14db894f1cfc4ff4d83e7" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public void extract(String winmailFilename, String directoryName) throws Exception {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> HMEFContentsExtractor ext = new HMEFContentsExtractor(new File(winmailFilename));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File dir = new File(directoryName);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File rtf = new File(dir, "message.rtf");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(! dir.exists()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throw new FileNotFoundException("Output directory " + dir.getName() + " not found");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Extracting...");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ext.extractMessageBody(rtf);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ext.extractAttachments(dir);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Extraction completed");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="Attachment+attributes+and+contents"></a>
+     <h3 class="boxed">Attachment attributes and contents
+      <div name="tsUpdate" data-id="t_585419cf99ab48d987ffbc3d766a4ee4" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>To get at your attachments, simply call the <em>getAttachments()</em> method on a <em>HMEFMessage</em> instance, and you'll receive a list of all the attachments.
+      <div name="tsUpdate" data-id="t_2bafc18ef1d04e148d99e35537573deb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>When you have a <em>org.apache.poi.hmef.Attachment</em> object, there are several helper methods available. These will all return the value of the appropriate underlying attachment attributes, or null if for some reason the attribute isn't present in your file.
+      <div name="tsUpdate" data-id="t_f0df2bfe48734feb9b0cca02c1dc376c" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><em>getFilename()</em> - returns the name of the attachment file, possibly in 8.3 format
+       <div name="tsUpdate" data-id="t_d08746223cd1405aaf91c87633512e91" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getLongFilename()</em> - returns the full name of the attachment file
+       <div name="tsUpdate" data-id="t_b43718acbb2a4bfcb5a357fe8d68861e" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getExtension()</em> - returns the extension of the attachment file, including the "."
+       <div name="tsUpdate" data-id="t_6138677c66544ecaa0b51a2f0e95eab3" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getModifiedDate()</em> - returns the date that the attachment file was last edited on
+       <div name="tsUpdate" data-id="t_5426515a834f435bb90dd610cba0b03d" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getContents()</em> - returns a byte array of the contents of the attached file
+       <div name="tsUpdate" data-id="t_9e5d4907516b4aba87b00ddd93e9cd17" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getRenderedMetaFile()</em> - returns a byte array of a windows meta file representation of the attached file
+       <div name="tsUpdate" data-id="t_05a7455ca34d48fca641693fe72709b0" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="Message+attributes+and+message+body"></a>
+     <h3 class="boxed">Message attributes and message body
+      <div name="tsUpdate" data-id="t_ee10376a7dd544df9b7ecbc613505e0f" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>A <em>org.apache.poi.hmef.HMEFMessage</em> instance is created from an <em>InputStream</em> of the underlying TNEF (winmail.dat) file.
+      <div name="tsUpdate" data-id="t_5a963488cca247969c638fbe27eb9635" data-tpl="0" data-txt-color="green"></div></p>
+     <p>From a <em>HMEFMessage</em>, there are three main methods of interest to call:
+      <div name="tsUpdate" data-id="t_af7c7216f9f24d67b99dbba90f99e3a6" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><em>getBody()</em> - returns a String containing the RTF contents of the message body.
+       <div name="tsUpdate" data-id="t_9cbbce7285254fe6a883820c4e16c49f" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getSubject()</em> - returns the message subject
+       <div name="tsUpdate" data-id="t_a7a8ea9b154549a383112badee78855a" data-tpl="0" data-txt-color="green"></div></li>
+      <li><em>getAttachments()</em> - returns the list of <em>Attachment</em> objects for the message
+       <div name="tsUpdate" data-id="t_f23ba612abf04473895663b3f8dc7970" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="Low+level+attribute+access"></a>
+     <h3 class="boxed">Low level attribute access
+      <div name="tsUpdate" data-id="t_b6bd1de0e97f4aa19eb9dbfb5297d4f9" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Both Messages and Attachments contain two kinds of attributes. These are <em>TNEFAttribute</em> and <em>MAPIAttribute</em>.
+      <div name="tsUpdate" data-id="t_d601d964d624423ba9e568aedb19b080" data-tpl="0" data-txt-color="green"></div></p>
+     <p>TNEFAttribute is specific to TNEF files in terms of the available types and properties. In general, Attachments have a few more useful ones of these then Messages.
+      <div name="tsUpdate" data-id="t_b7793ad4727b444f8d3025fdfea033a9" data-tpl="0" data-txt-color="green"></div></p>
+     <p>MAPIAttributes hold standard MAPI properties and values, and work in a similar way to <a href="../hsmf/">HSMF (Outlook)</a> does. There are typically many of these on both Messages and Attachments. <em>Note - see limitations</em>
+      <div name="tsUpdate" data-id="t_e16d5628459b489ca25a4d282547f816" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Both <em>HMEFMessage</em> and <em>Attachment</em> supports support two different ways of getting to attributes of interest. Firstly, they support list getters, to return all attributes (either TNEF or MAPI). Secondly, they support specific getters by TNEF or MAPI property.
+      <div name="tsUpdate" data-id="t_3c012bb844aa46e79c0a94b71cecb977" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">HMEFMessage msg = new HMEFMessage(new FileInputStream(file));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(TNEFAttribute attr : msg.getMessageAttributes()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("TNEF : " + attr);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(MAPIAttribute attr : msg.getMessageMAPIAttributes()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("MAPI : " + attr);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">System.out.println("Subject is " + msg.getMessageMAPIAttribute(MAPIProperty.CONVERSATION_TOPIC));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for(Attachment attach : msg.getAttachments()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(TNEFAttribute attr : attach.getAttributes()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("A.TNEF : " + attr);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(MAPIAttribute attr : attach.getMAPIAttributes()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("A.MAPI : " + attr);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Filename is " + attach.getAttribute(TNEFProperty.ID_ATTACHTITLE));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Extension is " + attach.getMAPIAttribute(MAPIProperty.ATTACH_EXTENSION));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <a name="Investigating+a+TNEF+file"></a>
+    <h2 class="boxed">Investigating a TNEF file
+     <div name="tsUpdate" data-id="t_8dc4a77155474baea59bee89804c6ed5" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>To get a feel for the contents of a file, and to track down where data of interest is stored, HMEF comes with <a href="http://svn.apache.org/repos/asf/poi/trunk/src/scratchpad/src/org/apache/poi/hmef/dev/">HMEFDumper</a> to print out the contents of the file.
+      <div name="tsUpdate" data-id="t_85ba849abf564a0981b092d7483dd5af" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Limitations"></a>
+    <h2 class="boxed">Limitations
+     <div name="tsUpdate" data-id="t_eb9602879c934c87ad694c040bd658e1" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>HMEF is currently a work-in-progress, and not everything works yet. The current limitations are:
+      <div name="tsUpdate" data-id="t_d77fcb1fd12d439b91a550d797cc123a" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Non-standard MAPI properties from the range 0x8000 to 0x8fff may not be being quite correctly turned into attributes. The values show up, but the name and type may not always be correct.
+       <div name="tsUpdate" data-id="t_9bb8ccb7c0044719b0b540a81439eb77" data-tpl="0" data-txt-color="green"></div></li>
+      <li>All testing so far has been performed on a small number of English documents. We think we're correctly turning bytes into Java unicode strings, but we need a few non-English sample files in the test suite to verify this!
+       <div name="tsUpdate" data-id="t_b080a0de3eb7498bafad5d4a95c93d4f" data-tpl="0" data-txt-color="green"></div></li>
+      <li>There is no support for saving changes, nor for creating new files
+       <div name="tsUpdate" data-id="t_363df23498764113b55d4ca363e9c854" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Nick Burch</font>
+     <div name="tsUpdate" data-id="t_8efe0b4480524984b6dcfc6cbc549e53" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hmef/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='38e8bc15282a4a76af0d5a30279bae3b';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

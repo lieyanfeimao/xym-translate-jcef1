@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - HDGF and XDGF - Java API To Access Microsoft Visio Format Files</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>Apache POI - HDGF and XDGF - Java API To Access Microsoft Visio Format Files
+     <div name="tsUpdate" data-id="t_6cd0e0343679474aafab9a826c2d5f2b" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_d18d6443d6e44fa8add3aa169b0af0d0" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <a name="Overview"></a>
+    <h2 class="boxed">Overview
+     <div name="tsUpdate" data-id="t_81ad79971f1f4ae28cead0db32d6b84f" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>HDGF is the POI Project's pure Java implementation of the Visio binary (VSD) file format. XDGF is the POI Project's pure Java implementation of the Visio XML (VSDX) file format.
+      <div name="tsUpdate" data-id="t_0896ad8af227480c8daf3ca2fa07587a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Currently, HDGF provides a low-level, read-only api for accessing Visio documents. It also provides a <a href="http://svn.apache.org/repos/asf/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/extractor/">way</a> to extract the textual content from a file.
+      <div name="tsUpdate" data-id="t_caabb33814294a71a6a84cd4a3ad9367" data-tpl="0" data-txt-color="green"></div></p>
+     <p>At this time, there is no <em>usermodel</em> api or similar, only low level access to the streams, chunks and chunk commands. Users are advised to check the unit tests to see how everything works. They are also well advised to read the documentation supplied with <a href="http://web.archive.org/web/20071212220759/http://www.gnome.ru/projects/vsdump_en.html">vsdump</a> to get a feel for how Visio files are structured.
+      <div name="tsUpdate" data-id="t_c62430815b024f6986fb234324382cc5" data-tpl="0" data-txt-color="green"></div></p>
+     <p>To get a feel for the contents of a file, and to track down where data of interest is stored, HDGF comes with <a href="http://svn.apache.org/repos/asf/poi/trunk/src/scratchpad/src/org/apache/poi/hdgf/dev/">VSDDumper</a> to print out the contents of the file. Users should also make use of <a href="http://web.archive.org/web/20071212220759/http://www.gnome.ru/projects/vsdump_en.html">vsdump</a> to probe the structure of files.
+      <div name="tsUpdate" data-id="t_1c6f68da35ef47e9937034825915f800" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_7c686830eb134e529569892f66dba5ce" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       This code currently lives the <a href="http://svn.apache.org/viewvc/poi/trunk/src/scratchpad/">scratchpad area</a> of the POI SVN repository. To use this component, ensure you have the Scratchpad Jar on your classpath, or a dependency defined on the <em>poi-scratchpad</em> artifact - the main POI jar is not enough! See the <a href="../../components/">POI Components Map</a> for more details.
+       <div name="tsUpdate" data-id="t_78d09e81b6de46b88905c5865ae14e2e" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <a name="Steps+required+for+write+support"></a>
+     <h3 class="boxed">Steps required for write support
+      <div name="tsUpdate" data-id="t_09eca5ba89bf4e8dad249689ea296ae5" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Currently, HDGF is only able to read visio files, it is not able to write them back out again. We believe the following are the steps that would need to be taken to implement it.
+      <div name="tsUpdate" data-id="t_8c4175b1f7af4ad98db0fabc994f4626" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>Re-write the decompression support in LZW4HDGF as HDGFLZW, which will be much better documented, and also under the ASL. <strong>Completed October 2007</strong>
+       <div name="tsUpdate" data-id="t_7e034e80f88242268af1fc77e05d0c79" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Add compression support to HDGFLZW. <strong>In progress - works for small streams but encoding goes wrong on larger ones</strong>
+       <div name="tsUpdate" data-id="t_b80316fea1cd443a8c652488e79d52cd" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Have HDGF just write back the raw bytes it read in, and have a test to ensure the file is un-changed.
+       <div name="tsUpdate" data-id="t_98fc9a06a2d64a879f90f687dce9dff1" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Have HDGF generate the bytes to write out from the Stream stores, using the compressed data as appropriate, without re-compressing. Plus test to ensure file is un-changed.
+       <div name="tsUpdate" data-id="t_8db584f9a992476b888f3a56a4afb7ff" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Have HDGF generate the bytes to write out from the Stream stores, re-compressing any streams that were decompressed. Plus test to ensure file is un-changed.
+       <div name="tsUpdate" data-id="t_f97d646393eb41238d56434ebef8ff65" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Have HDGF re-generate the offsets in pointers for the locations of the streams. Plus test to ensure file is un-changed.
+       <div name="tsUpdate" data-id="t_9045fc2305a7417899388b4b0ff7c595" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Have HDGF re-generate the bytes for all the chunks, from the chunk commands. Tests to ensure the chunks are serialized properly, and then that the file is un-changed
+       <div name="tsUpdate" data-id="t_18e6507b6bcd415486c41607762ce4cc" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Alter the data of one command, but keep it the same length, and check visio can open the file when written out.
+       <div name="tsUpdate" data-id="t_3e589a6a56584dddae026c9593f22023" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Alter the data of one command, to a new length, and check that visio can open the file when written out.
+       <div name="tsUpdate" data-id="t_7102bc7e1d564495be2eb37c08573127" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;POI Developers</font>
+     <div name="tsUpdate" data-id="t_1d1df1c823ac4653b1c665615859b8a6" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/diagram/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='46dc6dfc47af4c138c40ebc4c9561acf';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

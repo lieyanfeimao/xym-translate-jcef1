@@ -1,0 +1,1 @@
+[{"id":"t_a501ee6c57514a8f9619d970359f37b4","oldText":"This exception is thrown when we try to open a file that doesn\u0027t seem to actually be an OOXML (Office Open XML) file after all","tlText":"当我们尝试打开一个看起来实际上不是OOML（Office Open ML）文件的文件时，会引发此异常","version":0}]

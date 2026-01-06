@@ -1,0 +1,1 @@
+[{"id":"t_aadde6cab85d4e1197248b21ddf8980b","oldText":"A complex type that specifies data used to verify whether the encrypted data passes an integrity check. It MUST be generated using the method specified in section 2.3.4.14","tlText":"一种复杂类型，指定用于验证加密数据是否通过完整性检查的数据。必须使用2.3.4.14部分中指定的方法生成它","version":0}]

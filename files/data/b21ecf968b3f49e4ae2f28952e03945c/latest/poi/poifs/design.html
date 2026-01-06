@@ -1,0 +1,624 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - POIFS - Design Document</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_61e470ae598843f58ee753e12f57600a">Apache POI - POIFS - Design Document</span><span class="tscolor" lg_zh="t_61e470ae598843f58ee753e12f57600a"><span lg_kh="1">(</span>Apache POI - POIFS - 设计文档<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="POIFS+Design+Document"></a>
+    <h2 class="boxed"><span lg_en="t_6a146b5a76a34f5f87f3db65b8fcc261">POIFS Design Document</span><span class="tscolor" lg_zh="t_6a146b5a76a34f5f87f3db65b8fcc261"><span lg_kh="1">(</span>POIFS 设计文件<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_f6254cc732e04c7ab24a178bfe51c4f7">This document describes the design of the POIFS system. It is organized as follows:</span><span class="tscolor" lg_zh="t_f6254cc732e04c7ab24a178bfe51c4f7"><span lg_kh="1">(</span>本文档描述了 POIFS 系统的设计。它的组织如下：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_0c943f07b6464669b802591bc5386a85"><a href="#Scope">Scope:</a> A description of the limitations of this document.</span><span class="tscolor" lg_zh="t_0c943f07b6464669b802591bc5386a85"><span lg_kh="1">(</span>范围：对本文档限制的描述。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_35493498163c48a486cfdb9b02ebf45d"><a href="#Assumptions">Assumptions:</a> The assumptions on which this design is based.</span><span class="tscolor" lg_zh="t_35493498163c48a486cfdb9b02ebf45d"><span lg_kh="1">(</span>假设：此设计所基于的假设。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_a01d012bdafa4726815203cc529cd443"><a href="#Considerations">Design Considerations:</a> The constraints and goals applied to the design.</span><span class="tscolor" lg_zh="t_a01d012bdafa4726815203cc529cd443"><span lg_kh="1">(</span>设计注意事项：应用于设计的约束和目标。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_ff70755690c24086afed011b50a174d3"><a href="#Design">Design:</a> The design of the POIFS system.</span><span class="tscolor" lg_zh="t_ff70755690c24086afed011b50a174d3"><span lg_kh="1">(</span>设计：POIFS 系统的设计。<span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Scope"></a>
+    <h2 class="boxed"><span lg_en="t_f1449e95dbee4fc38f53173b6a98e32c">Scope</span><span class="tscolor" lg_zh="t_f1449e95dbee4fc38f53173b6a98e32c"><span lg_kh="1">(</span>范围<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_662def6c70244862ad7f6c1d8d4346e9">This document is written as part of an iterative process. As that process is not yet complete, neither is this document.</span><span class="tscolor" lg_zh="t_662def6c70244862ad7f6c1d8d4346e9"><span lg_kh="1">(</span>本文档是作为迭代过程的一部分编写的。由于该过程尚未完成，因此本文档也未完成。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Assumptions"></a>
+    <h2 class="boxed"><span lg_en="t_305226187f314b9faf756dabc35afe33">Assumptions</span><span class="tscolor" lg_zh="t_305226187f314b9faf756dabc35afe33"><span lg_kh="1">(</span>假设<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_db28703695824ad4a3da8a5e4ed8e7ad">The design of POIFS is not dependent on the code written for the proof-of-concept prototype POIFS package.</span><span class="tscolor" lg_zh="t_db28703695824ad4a3da8a5e4ed8e7ad"><span lg_kh="1">(</span>POIFS 的设计不依赖于为概念验证原型 POIFS 包编写的代码。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Considerations"></a>
+    <h2 class="boxed"><span lg_en="t_e79e953b7c4e43448d9f0d987886a0e3">Design Considerations</span><span class="tscolor" lg_zh="t_e79e953b7c4e43448d9f0d987886a0e3"><span lg_kh="1">(</span>设计注意事项<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_813af7250ca44547b88531affea9dbf0">As usual, the primary considerations in the design of the POIFS assumption involve the classic space-time tradeoff. In this case, the main consideration has to involve minimizing the memory footprint of POIFS. POIFS may be called upon to create relatively large documents, and in web application server, it may be called upon to create several documents simultaneously, and it will likely co-exist with other Serializer systems, competing with those other systems for space on the server.</span><span class="tscolor" lg_zh="t_813af7250ca44547b88531affea9dbf0"><span lg_kh="1">(</span>像往常一样，POIFS 假设设计中的主要考虑因素涉及经典的时空权衡。在这种情况下，主要考虑必须涉及最小化 POIFS 的内存占用。 POIFS 可能会被调用来创建比较大的文档，而在 Web 应用服务器中，它可能会被调用同时创建多个文档，并且它可能会与其他 Serializer 系统共存，与其他系统竞争服务器上的空间.<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_e83a03cf51044865b141672117ba97c5">We've addressed the risk of being too slow through a proof-of-concept prototype. This prototype for POIFS involved reading an existing file, decomposing it into its constituent documents, composing a new POIFS from the constituent documents, and writing the POIFS file back to disk and verifying that the output file, while not necessarily a byte-for-byte image of the input file, could be read by the application that generated the input file. This prototype proved to be quite fast, reading, decomposing, and re-generating a large (300K) file in 2 to 2.5 seconds.</span><span class="tscolor" lg_zh="t_e83a03cf51044865b141672117ba97c5"><span lg_kh="1">(</span>我们已经通过概念验证原型解决了速度过慢的风险。 POIFS 的这个原型涉及读取现有文件，将其分解为其组成文档，从组成文档组成新的 POIFS，并将 POIFS 文件写回磁盘并验证输出文件，虽然不一定是逐字节输入文件的图像，可以由生成输入文件的应用程序读取。这个原型被证明是相当快的，在 2 到 2.5 秒内读取、分解和重新生成一个大 (300K) 文件。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_064eb524a28e45be9a08288b4d0acb7f">While the POIFS format allows great flexibility in laying out the documents and the other internal data structures, the layout of the filesystem will be kept as simple as possible.</span><span class="tscolor" lg_zh="t_064eb524a28e45be9a08288b4d0acb7f"><span lg_kh="1">(</span>虽然 POIFS 格式在布局文档和其他内部数据结构方面具有很大的灵活性，但文件系统的布局将尽可能简单。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Design"></a>
+    <h2 class="boxed"><span lg_en="t_ba2f83d48f44436e935f51fc30118df9">Design</span><span class="tscolor" lg_zh="t_ba2f83d48f44436e935f51fc30118df9"><span lg_kh="1">(</span>设计<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_cfcf02180be34a8897419392fecc9744">The design of the POIFS is broken down into two parts: <a href="#Classes">discussion of the classes and interfaces</a>, and <a href="#Scenarios">discussion of how these classes and interfaces will be used to convert an appropriate Java InputStream (such as an XML stream) to a POIFS output stream containing an HSSF document</a>.</span><span class="tscolor" lg_zh="t_cfcf02180be34a8897419392fecc9744"><span lg_kh="1">(</span>POIFS 的设计分为两部分：讨论类和接口，以及讨论如何使用这些类和接口将适当的 Java InputStream（例如 XML 流）转换为包含HSSF 文件。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_cb834601a2e54ad0b7d943a4c80c4edc"><a name="Classes"></a><strong id="Classes">Classes and Interfaces</strong></span><span class="tscolor" lg_zh="t_cb834601a2e54ad0b7d943a4c80c4edc"><span lg_kh="1">(</span>类和接口<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_96006ee21dea45cdbaef85f1e9fca872">The classes and interfaces used in the POIFS are broken down as follows:</span><span class="tscolor" lg_zh="t_96006ee21dea45cdbaef85f1e9fca872"><span lg_kh="1">(</span>POIFS 中使用的类和接口细分如下：<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_66a66b7b543947699633ff3c7e9713b8">Package</span><span class="tscolor" lg_zh="t_66a66b7b543947699633ff3c7e9713b8"><span lg_kh="1">(</span>包裹<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_278b88f1fac54aefbd553f82cf00bf54">Contents</span><span class="tscolor" lg_zh="t_278b88f1fac54aefbd553f82cf00bf54"><span lg_kh="1">(</span>内容<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_588dcf5eebf249d3bc9349070399a803"><a href="#BlockClasses">net.sourceforge.poi.poifs.storage</a></span><span class="tscolor" lg_zh="t_588dcf5eebf249d3bc9349070399a803"><span lg_kh="1">(</span>net.sourceforge.poi.poifs.storage<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_3c253cf40e7947c48c796e88d01b08ba">Block classes and interfaces</span><span class="tscolor" lg_zh="t_3c253cf40e7947c48c796e88d01b08ba"><span lg_kh="1">(</span>块类和接口<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_21ea6c77c0ee4a12b5d0c1ae89bedd51"><a href="#PropertyClasses">net.sourceforge.poi.poifs.property</a></span><span class="tscolor" lg_zh="t_21ea6c77c0ee4a12b5d0c1ae89bedd51"><span lg_kh="1">(</span>net.sourceforge.poi.poifs.property<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_5bae4afd38df4ec6989560cf34f8121b">Property classes and interfaces</span><span class="tscolor" lg_zh="t_5bae4afd38df4ec6989560cf34f8121b"><span lg_kh="1">(</span>属性类和接口<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_869b4fb02e894e4b9f34a35815af7007"><a href="#FilesystemClasses">net.sourceforge.poi.poifs.filesystem</a></span><span class="tscolor" lg_zh="t_869b4fb02e894e4b9f34a35815af7007"><span lg_kh="1">(</span>net.sourceforge.poi.poifs.filesystem<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_608e8a39febc45ed8dff5b0e8b77b739">Filesystem classes and interfaces</span><span class="tscolor" lg_zh="t_608e8a39febc45ed8dff5b0e8b77b739"><span lg_kh="1">(</span>文件系统类和接口<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_dfcb5949181e4167bde636abfbc8c8e1"><a href="#UtilityClasses">net.sourceforge.poi.util</a></span><span class="tscolor" lg_zh="t_dfcb5949181e4167bde636abfbc8c8e1"><span lg_kh="1">(</span>net.sourceforge.poi.util<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_0660f2b6e4c64f6facef217e41d89dca">Utility classes and interfaces</span><span class="tscolor" lg_zh="t_0660f2b6e4c64f6facef217e41d89dca"><span lg_kh="1">(</span>实用程序类和接口<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="BlockClasses"></a>
+     <h3 class="boxed"><span lg_en="t_896beaa5dd71415cad2682dc9ea5e86c">Block Classes and Interfaces</span><span class="tscolor" lg_zh="t_896beaa5dd71415cad2682dc9ea5e86c"><span lg_kh="1">(</span>块类和接口<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_606e4b4a6c184cd4b32e81b5c3cc936e">The block classes and interfaces are shownin the following class diagram.</span><span class="tscolor" lg_zh="t_606e4b4a6c184cd4b32e81b5c3cc936e"><span lg_kh="1">(</span>块类和接口如下图所示。<span lg_kh="1">)</span></span></p>
+     <p><img alt="Block Classes and Interfaces" src="images/BlockClassDiagram.gif"></p>
+     <a name="BATBlock"></a><a name="BigBlock"></a><a name="BlockWritable"></a><a name="DocumentBlock"></a><a name="HeaderBlock"></a><a name="PropertyBlock"></a>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_90b5bf6630504cb59486728777ca0d33">Class/Interface</span><span class="tscolor" lg_zh="t_90b5bf6630504cb59486728777ca0d33"><span lg_kh="1">(</span>类/接口<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_b8f2a6de00e44b62ac31829620ea989d">Description</span><span class="tscolor" lg_zh="t_b8f2a6de00e44b62ac31829620ea989d"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BATBlock"><span lg_en="t_09b1714efa5f4200bc5ddeef5a540635">BATBlock</span><span class="tscolor" lg_zh="t_09b1714efa5f4200bc5ddeef5a540635"><span lg_kh="1">(</span>BAT块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_d7093ebba0344549bd957b1aed9ea7d8">The <strong>BATBlock</strong> class represents a single big block containing 128 <a href="fileformat.html#BAT">BAT entries</a>. 
+          <br> Its <span class="codefrag">_fields</span> array is used to read and write the BAT entries into the <span class="codefrag">_data</span> array. 
+          <br> Its <span class="codefrag">createBATBlocks</span> method is used to create an array of BATBlock instances from an array of int BAT entries. 
+          <br> Its <span class="codefrag">calculateStorageRequirements</span> method calculates the number of BAT blocks necessary to hold the specified number of BAT entries.</span><span class="tscolor" lg_zh="t_d7093ebba0344549bd957b1aed9ea7d8"><span lg_kh="1">(</span>BATBlock 类代表一个包含 128 个 BAT 条目的大块。它的 _fields 数组用于读取 BAT 条目并将其写入 _data 数组。它的 createBATBlocks 方法用于从 int BAT 条目数组创建 BATBlock 实例数组。它的 calculateStorageRequirements 方法计算保存指定数量的 BAT 条目所需的 BAT 块数。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BigBlock"><span lg_en="t_98e40db807824db68451606901489004">BigBlock</span><span class="tscolor" lg_zh="t_98e40db807824db68451606901489004"><span lg_kh="1">(</span>大块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_86d32ec880404d54bd3064d38d8064b8">The <strong>BigBlock</strong> class is an abstract class representing the common big block of 512 bytes. It implements <a href="#BlockWritable">BlockWritable</a>, trivially delegating the <span class="codefrag">writeBlocks</span> method of BlockWritable to its own abstract <span class="codefrag">writeData </span> method.</span><span class="tscolor" lg_zh="t_86d32ec880404d54bd3064d38d8064b8"><span lg_kh="1">(</span>BigBlock 类是一个抽象类，代表 512 字节的公共大块。它实现了 BlockWritable，将 BlockWritable 的 writeBlocks 方法委派给它自己的抽象 writeData 方法。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BlockWritable"><span lg_en="t_9722c037dd0648bbb8e247a34bfa958b">BlockWritable</span><span class="tscolor" lg_zh="t_9722c037dd0648bbb8e247a34bfa958b"><span lg_kh="1">(</span>块可写<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_2fe1f87df8ea4c7799bf666affb3c872">The <strong>BlockWritable</strong> interface defines a single method, <span class="codefrag">writeBlocks</span>, that is used to write an implementation's block data to an <span class="codefrag"> OutputStream</span>.</span><span class="tscolor" lg_zh="t_2fe1f87df8ea4c7799bf666affb3c872"><span lg_kh="1">(</span>BlockWritable 接口定义了一个方法 writeBlocks，用于将实现的块数据写入 OutputStream。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="DocumentBlock"><span lg_en="t_f870e6b79e3b4fd98ed6a5895fc1a395">DocumentBlock</span><span class="tscolor" lg_zh="t_f870e6b79e3b4fd98ed6a5895fc1a395"><span lg_kh="1">(</span>文档块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_d91d0c96df7942b8a014cb40bb2459cb">The <strong>DocumentBlock</strong> class is used by a <a href="#Document"> Document </a> to holds its raw data. It also retains the number of bytes read, as this is used by the Document class to determine the total size of the data, and is also used internally to determine whether the block was filled by the <span class="codefrag">InputStream</span> or not. 
+          <br> The <span class="codefrag">DocumentBlock</span> constructor is passed an <span class="codefrag">InputStream</span> from which to fill its <span class="codefrag">_data</span> array. 
+          <br> The <span class="codefrag">size</span> method returns the number of bytes read (<span class="codefrag">_bytes_read</span>) when the instance was constructed. 
+          <br> The <span class="codefrag">partiallyRead</span> method returns true if the <span class="codefrag">_data</span> array was not completely filled, which may be interpreted by the Document as having reached the end of file point. 
+          <br> Typical use of the DocumentBlock class is like this: 
+          <br> 
+          <div class="code">
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"></span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">while (true) {</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> DocumentBlock block = new DocumentBlock(stream);</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> blocks.add(block);</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> size += block.size();</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> if (block.partiallyRead()) {</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> break;</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> }</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">}</span>
+           </div>
+          </div></span><span class="tscolor" lg_zh="t_d91d0c96df7942b8a014cb40bb2459cb"><span lg_kh="1">(</span>DocumentBlock 类被 Document 用来保存其原始数据。它还保留读取的字节数，因为 Document 类使用它来确定数据的总大小，并且在内部也用于确定块是否由 InputStream 填充。 DocumentBlock 构造函数被传递一个 InputStream 来填充它的 _data 数组。 size 方法返回构造实例时读取的字节数（_bytes_read）。如果 _data 数组未完全填充，partialRead 方法返回 true，这可能被 Document 解释为已到达文件末尾点。 DocumentBlock 类的典型用法是这样的： while (true) { DocumentBlock block = new DocumentBlock(stream);块。添加（块）；大小 += 块大小（）； if (block.partiallyRead()) { break; } }<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="HeaderBlock"><span lg_en="t_d58023cf36cd4cb9a9a1a1e9667c8ff3">HeaderBlock</span><span class="tscolor" lg_zh="t_d58023cf36cd4cb9a9a1a1e9667c8ff3"><span lg_kh="1">(</span>标题块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_89f726e691aa4475b9e20171dad7e027">The <strong>HeaderBlock</strong> class is used to contain the data found in a POIFS header. 
+          <br> Its <a href="#IntegerField">IntegerField</a> members are used to read and write the appropriate entries into the <span class="codefrag">_data</span> array. 
+          <br> Its <span class="codefrag">setBATBlocks</span> , <span class="codefrag">setPropertyStart</span> , and <span class="codefrag">setXBATStart</span> methods are used to set the appropriate fields in the <span class="codefrag">_data</span> array. 
+          <br> The <span class="codefrag">calculateXBATStorageRequirements</span> method is used to determine how many XBAT blocks are necessary to accommodate the specified number of BAT blocks.</span><span class="tscolor" lg_zh="t_89f726e691aa4475b9e20171dad7e027"><span lg_kh="1">(</span>HeaderBlock 类用于包含在 POIFS 标头中找到的数据。它的 IntegerField 成员用于在 _data 数组中读取和写入适当的条目。它的 setBATBlocks 、 setPropertyStart 和 setXBATStart 方法用于设置 _data 数组中的相应字段。 calculateXBATStorageRequirements 方法用于确定需要多少 XBAT 块才能容纳指定数量的 BAT 块。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="PropertyBlock"><span lg_en="t_3a7731502d8143de9f3eedab4f656d70">PropertyBlock</span><span class="tscolor" lg_zh="t_3a7731502d8143de9f3eedab4f656d70"><span lg_kh="1">(</span>属性块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_1d0a8ccc8b884d77924240624be6d6b9">The <strong>PropertyBlock</strong> class is used to contain <a href="#Property">Property</a> instances for the <a href="#PropertyTable">PropertyTable</a> class. 
+          <br> It contains an array, <span class="codefrag">_properties</span> of 4 Property instances, which together comprise the 512 bytes of a <a href="#BigBlock">BigBlock</a>. 
+          <br> The <span class="codefrag">createPropertyBlockArray</span> method is used to convert a <span class="codefrag">List</span> of Property instances into an array of PropertyBlock instances. The number of Property instances is rounded up to a multiple of 4 by creating empty anonymous inner class extensions of Property.</span><span class="tscolor" lg_zh="t_1d0a8ccc8b884d77924240624be6d6b9"><span lg_kh="1">(</span>PropertyBlock 类用于包含 PropertyTable 类的属性实例。它包含一个数组，4 个 Property 实例的 _properties，它们共同构成了 BigBlock 的 512 个字节。 createPropertyBlockArray 方法用于将 Property 实例列表转换为 PropertyBlock 实例数组。通过创建 Property 的空匿名内部类扩展，Property 实例的数量向上舍入为 4 的倍数。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="PropertyClasses"></a>
+     <h3 class="boxed"><span lg_en="t_1d2d0afee34f418bb8c8fc294689f5ee">Property Classes and Interfaces</span><span class="tscolor" lg_zh="t_1d2d0afee34f418bb8c8fc294689f5ee"><span lg_kh="1">(</span>属性类和接口<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_e2b8bfcc6d6246b891690850f6039cdf">The property classes and interfaces are shown in the following class diagram.</span><span class="tscolor" lg_zh="t_e2b8bfcc6d6246b891690850f6039cdf"><span lg_kh="1">(</span>下面的类图中显示了属性类和接口。<span lg_kh="1">)</span></span></p>
+     <p><img alt="Property Classes and Interfaces" src="images/PropertyTableClassDiagram.gif"></p>
+     <a name="Directory"></a><a name="DocumentProperty"></a><a name="File"></a><a name="Property"></a><a name="PropertyTable"></a><a name="RootProperty"></a>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_2e6113909621480e8262ca003d86cc9b">Class/Interface</span><span class="tscolor" lg_zh="t_2e6113909621480e8262ca003d86cc9b"><span lg_kh="1">(</span>类/接口<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_7b61fff0091a4c65ab1d4565ea1b2777">Description</span><span class="tscolor" lg_zh="t_7b61fff0091a4c65ab1d4565ea1b2777"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="Directory"><span lg_en="t_7125da3eda5e477d8357d63fb620c1e3">Directory</span><span class="tscolor" lg_zh="t_7125da3eda5e477d8357d63fb620c1e3"><span lg_kh="1">(</span>目录<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_d70d900834d04aeb8d13ba25bae9fa2f">The <strong>Directory</strong> interface is implemented by the <a href="#RootProperty">RootProperty</a> class. It is not strictly necessary for the initial POIFS implementation, but when the POIFS supports <a href="fileformat.html#directoryEntry">directory elements</a>, this interface will be more widely implemented, and so is included in the design at this point to ease the eventual support of directory elements. 
+          <br> Its methods are a getter/setter pair, <span class="codefrag">getChildren</span> , returning an <span class="codefrag">Iterator</span> of <a href="#Property">Property</a> instances; and <span class="codefrag">addChild</span> , which will allow the caller to add another Property instance to the Directory's children.</span><span class="tscolor" lg_zh="t_d70d900834d04aeb8d13ba25bae9fa2f"><span lg_kh="1">(</span>Directory 接口由 RootProperty 类实现。最初的 POIFS 实现并不是绝对必要的，但是当 POIFS 支持目录元素时，该接口将得到更广泛的实现，因此此时将其包含在设计中，以简化对目录元素的最终支持。它的方法是一个 getter/setter 对 getChildren ，返回一个 Property 实例的 Iterator；和 addChild ，这将允许调用者将另一个 Property 实例添加到 Directory 的子级。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="DocumentProperty"><span lg_en="t_5f249c2a0fea4f9aa21a3fdfbebdcbde">DocumentProperty</span><span class="tscolor" lg_zh="t_5f249c2a0fea4f9aa21a3fdfbebdcbde"><span lg_kh="1">(</span>文档属性<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_4f838e944abd457a939e6e4ea5ea6353">The <strong>DocumentProperty</strong> class is a trivial extension of <a href="#Property"> Property </a> and is used by <a href="#Document">Document</a> to keep track of its associated entry in the <a href="#PropertyTable">PropertyTable</a>. 
+          <br> Its constructor takes a name and the document size, on the assumption that the Document will not create a DocumentProperty until after it has created the storage for the document data and therefore knows how much data there is.</span><span class="tscolor" lg_zh="t_4f838e944abd457a939e6e4ea5ea6353"><span lg_kh="1">(</span>DocumentProperty 类是 Property 的一个简单扩展，Document 使用它来跟踪其在 PropertyTable 中的关联条目。它的构造函数采用名称和文档大小，假设 Document 在为文档数据创建存储并因此知道有多少数据之前不会创建 DocumentProperty。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="File"><span lg_en="t_4888a5e88b4e4911b961c2e8dddfebeb">File</span><span class="tscolor" lg_zh="t_4888a5e88b4e4911b961c2e8dddfebeb"><span lg_kh="1">(</span>文件<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_a036a58280a240d0bc5cf53266f6b1d5">The <strong>File</strong> interface specifies the behavior of reading and writing the next and previous child fields of a <a href="#Property">Property</a>.</span><span class="tscolor" lg_zh="t_a036a58280a240d0bc5cf53266f6b1d5"><span lg_kh="1">(</span>File 接口指定读取和写入属性的下一个和上一个子字段的行为。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="Property"><span lg_en="t_308d1edcf9ad4b67a27d3e39d81a8677">Property</span><span class="tscolor" lg_zh="t_308d1edcf9ad4b67a27d3e39d81a8677"><span lg_kh="1">(</span>财产<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_3211e6d2c7074ee790f3b25634a9ffba">The <strong>Property</strong> class is an abstract class that defines the basic data structure of an element of the <a href="fileformat.html#PropertyTable"> Property Table</a>. 
+          <br> Its <a href="#ByteField">ByteField</a>, <a href="#ShortField"> ShortField</a>, and <a href="#IntegerField">IntegerField</a> members are used to read and write data into the appropriate locations in the <span class="codefrag">_raw_data</span> array. 
+          <br> The <span class="codefrag">_index</span> member is used to hold a Propery instance's index in the <span class="codefrag">List</span> of Property instances maintained by <a href="#PropertyTable">PropertyTable</a>, which is used to populate the child property of parent <a href="#Directory">Directory</a> properties and the next property and previous property of sibling <a href="#File">File</a> properties. 
+          <br> The <span class="codefrag">_name</span> , <span class="codefrag">_next_file</span> , and <span class="codefrag">_previous_file</span> members are used to help fill the appropriate fields of the _raw_data array. 
+          <br> Setters are provided for some of the fields (name, property type, node color, child property, size, index, start block), as well as a few getters (index, child property). 
+          <br> The <span class="codefrag">preWrite</span> method is abstract and is used by the owning PropertyTable to iterate through its Property instances and prepare each for writing. 
+          <br> The <span class="codefrag">shouldUseSmallBlocks</span> method returns true if the Property's size is sufficiently small - how small is none of the caller's business.</span><span class="tscolor" lg_zh="t_3211e6d2c7074ee790f3b25634a9ffba"><span lg_kh="1">(</span>Property 类是一个抽象类，它定义了 Property Table 元素的基本数据结构。它的 ByteField、ShortField 和 IntegerField 成员用于读取和写入数据到 _raw_data 数组中的适当位置。 _index成员用于保存Propery实例在PropertyTable维护的Property实例列表中的索引，用于填充父目录属性的子属性以及兄弟文件属性的下一个属性和上一个属性。 _name 、 _next_file 和 _previous_file 成员用于帮助填充 _raw_data 数组的相应字段。为某些字段（名称、属性类型、节点颜色、子属性、大小、索引、开始块）以及一些 getter（索引、子属性）提供了设置器。 preWrite 方法是抽象的，由拥有的 PropertyTable 使用来遍历其 Property 实例并准备每个实例以进行写入。如果属性的大小足够小，shouldUseSmallBlocks 方法将返回 true - 调用者的业务有多小无关紧要。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_ad2dd3a156d44f19a0fc8df2e1c61fa1">PropertyBlock</span><span class="tscolor" lg_zh="t_ad2dd3a156d44f19a0fc8df2e1c61fa1"><span lg_kh="1">(</span>属性块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_361b299897c443a788b4a37a006cf122">See the description in <a href="#PropertyBlock">PropertyBlock</a>.</span><span class="tscolor" lg_zh="t_361b299897c443a788b4a37a006cf122"><span lg_kh="1">(</span>请参阅 PropertyBlock 中的说明。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="PropertyTable"><span lg_en="t_ac3c6441c1f14895aa6f402f8429129f">PropertyTable</span><span class="tscolor" lg_zh="t_ac3c6441c1f14895aa6f402f8429129f"><span lg_kh="1">(</span>属性表<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_8e24fbd3511c405580821dc160098cb5">The <strong>PropertyTable</strong> class holds all of the <a href="#DocumentProperty">DocumentProperty</a> instances and the <a href="#RootProperty">RootProperty</a> instance for a <a href="#Filesystem">Filesystem</a> instance. 
+          <br> It maintains a <span class="codefrag">List</span> of its <a href="#Property">Property</a> instances ( <span class="codefrag">_properties</span> ), and when prepared to write its data by a call to <span class="codefrag">preWrite</span> , it gets and holds an array of <a href="#PropertyBlock">PropertyBlock</a> instances ( <span class="codefrag">_blocks</span>) . 
+          <br> It also maintains its start block in its <span class="codefrag">_start_block</span> member. 
+          <br> It has a method, <span class="codefrag">getRoot</span> , to get the RootProperty, returning it as an implementation of <a href="#Directory"> Directory</a>, and a method to add a Property, <span class="codefrag">addProperty</span> , and a method to get its start block, <span class="codefrag">getStartBlock</span> .</span><span class="tscolor" lg_zh="t_8e24fbd3511c405580821dc160098cb5"><span lg_kh="1">(</span>PropertyTable 类包含所有 DocumentProperty 实例和 Filesystem 实例的 RootProperty 实例。它维护其 Property 实例 (_properties) 的列表，当准备通过调用 preWrite 写入其数据时，它获取并保存 PropertyBlock 实例 (_blocks) 的数组。它还在其 _start_block 成员中维护其起始块。它有一个方法 getRoot 来获取 RootProperty，将其作为 Directory 的实现返回，还有一个添加属性的方法 addProperty 和一个获取其起始块的方法 getStartBlock 。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="RootProperty"><span lg_en="t_97e59cf7cd7f4d09bae95009758c26d3">RootProperty</span><span class="tscolor" lg_zh="t_97e59cf7cd7f4d09bae95009758c26d3"><span lg_kh="1">(</span>根属性<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_fda2601ad5a2479cb677b1688cd42148">The <strong>RootProperty</strong> class acts as the <a href="#Directory">Directory</a> for all of the <a href="#DocumentProperty">DocumentProperty</a> instance. As such, it is more of a pure <a href="fileformat.html#directoryEntry">directory entry </a> than a proper <a href="fileformat.html#RootEntry">root entry </a> in the <a href="fileformat.html#PropertyTable">Property Table</a>, but the initial POIFS implementation does not warrant the additional complexity of a full-blown root entry, and so it is not modeled in this design. 
+          <br> It maintains a <span class="codefrag">List</span> of its children, <span class="codefrag">_children</span> , in order to perform its directory-oriented duties.</span><span class="tscolor" lg_zh="t_fda2601ad5a2479cb677b1688cd42148"><span lg_kh="1">(</span>RootProperty 类充当所有 DocumentProperty 实例的目录。因此，它更像是一个纯粹的目录条目，而不是属性表中的正确根条目，但最初的 POIFS 实现并不保证完整的根条目的额外复杂性，因此在此设计中没有对其进行建模。它维护其子项的列表 _children ，以执行其面向目录的职责。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="FilesystemClasses"></a>
+     <h3 class="boxed"><span lg_en="t_80c46d1982d64bceb5b6af32055e1344">Filesystem Classes and Interfaces</span><span class="tscolor" lg_zh="t_80c46d1982d64bceb5b6af32055e1344"><span lg_kh="1">(</span>文件系统类和接口<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_602a835eb666482ab53bbe1391bfe41d">The property classes and interfaces are shown in the following class diagram.</span><span class="tscolor" lg_zh="t_602a835eb666482ab53bbe1391bfe41d"><span lg_kh="1">(</span>下面的类图中显示了属性类和接口。<span lg_kh="1">)</span></span></p>
+     <p><img alt="Filesystem Classes and Interfaces" src="images/POIFSClassDiagram.gif"></p>
+     <a name="Filesystem"></a><a name="BATManaged"></a><a name="BlockAllocationTable"></a><a name="Document"></a>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_151eed6a2c584989817cef497c16d1cc">Class/Interface</span><span class="tscolor" lg_zh="t_151eed6a2c584989817cef497c16d1cc"><span lg_kh="1">(</span>类/接口<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_0a797cd686a64817ae6892ba1947bc26">Description</span><span class="tscolor" lg_zh="t_0a797cd686a64817ae6892ba1947bc26"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="Filesystem"><span lg_en="t_d253ac9534b348da9b5d5785eb192a02">Filesystem</span><span class="tscolor" lg_zh="t_d253ac9534b348da9b5d5785eb192a02"><span lg_kh="1">(</span>文件系统<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_9bd8e924692a42f6bc9e6511c32c987a">The <strong>Filesystem</strong> class is the top-level class that manages the creation of a POIFS document. 
+          <br> It maintains a <a href="#PropertyTable">PropertyTable</a> instance in its <span class="codefrag">_property_table</span> member, a <a href="#HeaderBlock">HeaderBlock</a> instance in its <span class="codefrag">_header_block</span> member, and a <span class="codefrag">List</span> of its <a href="#Document">Document</a> instances in its <span class="codefrag">_documents</span> member. 
+          <br> It provides methods for a client to create a document ( <span class="codefrag">createDocument</span> ), and a method to write the Filesystem to an <span class="codefrag">OutputStream</span> ( <span class="codefrag">writeFilesystem</span> ).</span><span class="tscolor" lg_zh="t_9bd8e924692a42f6bc9e6511c32c987a"><span lg_kh="1">(</span>Filesystem 类是管理 POIFS 文档创建的顶级类。它在其 _property_table 成员中维护一个 PropertyTable 实例，在其 _header_block 成员中维护一个 HeaderBlock 实例，并在其 _documents 成员中维护其 Document 实例的列表。它为客户端提供创建文档的方法（createDocument），以及将文件系统写入输出流（writeFilesystem）的方法。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_99ae1d7b44fa4603bcd69029620919ab">BATBlock</span><span class="tscolor" lg_zh="t_99ae1d7b44fa4603bcd69029620919ab"><span lg_kh="1">(</span>BAT块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_ca47a4b33cf54f889ec2dcdd2a9eae2a">See the description in <a href="#BATBlock">BATBlock</a></span><span class="tscolor" lg_zh="t_ca47a4b33cf54f889ec2dcdd2a9eae2a"><span lg_kh="1">(</span>见BATBlock中的描述<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BATManaged"><span lg_en="t_0d9fd656d6074a24b05880c5b2195aa9">BATManaged</span><span class="tscolor" lg_zh="t_0d9fd656d6074a24b05880c5b2195aa9"><span lg_kh="1">(</span>BAT托管<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_5bd3ac60689a42aebd84f99bc89d3f70">The <strong>BATManaged</strong> interface defines common behavior for objects whose location in the written file is managed by the <a href="fileformat.html#BAT">Block Allocation Table</a>. 
+          <br> It defines methods to get a count of the implementation's <a href="#BigBlock">BigBlock</a> instances ( <span class="codefrag">countBlocks</span> ), and to set an implementation's start block ( <span class="codefrag">setStartBlock</span> ).</span><span class="tscolor" lg_zh="t_5bd3ac60689a42aebd84f99bc89d3f70"><span lg_kh="1">(</span>BATManaged 接口定义了对象在写入文件中的位置由块分配表管理的常见行为。它定义了获取实现的 BigBlock 实例计数 (countBlocks) 和设置实现的开始块 (setStartBlock) 的方法。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BlockAllocationTable"><span lg_en="t_a1613f8bb6d64bfe87eb2dd5998079d5">BlockAllocationTable</span><span class="tscolor" lg_zh="t_a1613f8bb6d64bfe87eb2dd5998079d5"><span lg_kh="1">(</span>块分配表<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_34df9c7a6cb14d109e6673e8f78bd57e">The <strong>BlockAllocationTable</strong> is an implementation of the POIFS <a href="fileformat.html#BAT">Block Allocation Table</a>. It is only created when the <a href="#Filesystem"> Filesystem </a> is about to be written to an <span class="codefrag">OutputStream</span>. 
+          <br> It contains an <a href="#IntList">IntList</a> of block numbers for all of the <a href="#BATManaged">BATManaged</a> implementations owned by the Filesystem, <span class="codefrag">_entries</span> , which is filled by calls to <span class="codefrag">allocateSpace</span> . 
+          <br> It fills its array, <span class="codefrag">_blocks</span> , of <a href="#BATBlock">BATBlock</a> instances when its <span class="codefrag">createBATBlocks</span> method is called. This method has to take into account its own storage requirements, as well as those of the XBAT blocks, and so calls <span class="codefrag">BATBlock.calculateStorageRequirements</span> and <span class="codefrag">HeaderBlock.calculateXBATStorageRequirements</span> repeatedly until the counts returned by those methods stabilize. 
+          <br> The <span class="codefrag">countBlocks</span> method returns the number of BATBlock instances created by the preceding call to createBlocks.</span><span class="tscolor" lg_zh="t_34df9c7a6cb14d109e6673e8f78bd57e"><span lg_kh="1">(</span>BlockAllocationTable 是 POIFS 块分配表的实现。它仅在文件系统即将写入 OutputStream 时创建。它包含由文件系统 _entries 拥有的所有 BATManaged 实现的块编号的 IntList，它由对 allocateSpace 的调用填充。当调用它的 createBATBlocks 方法时，它会填充 _blocks 的 BATBlock 实例数组。此方法必须考虑其自身的存储需求以及 XBAT 块的存储需求，因此会重复调用 BATBlock.calculateStorageRequirements 和 HeaderBlock.calculateXBATStorageRequirements，直到这些方法返回的计数稳定。 countBlocks 方法返回由前面调用 createBlocks 创建的 BATBlock 实例的数量。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_1a96a41409d1442ead3e8e1ba9ee48dd">BlockWritable</span><span class="tscolor" lg_zh="t_1a96a41409d1442ead3e8e1ba9ee48dd"><span lg_kh="1">(</span>块可写<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_5fde6d8a4aa744a08a3658a04e513a6f">See the description in <a href="#BlockWritable">BlockWritable</a></span><span class="tscolor" lg_zh="t_5fde6d8a4aa744a08a3658a04e513a6f"><span lg_kh="1">(</span>参见 BlockWritable 中的描述<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="Document"><span lg_en="t_c0bca8f72d4747a2a17d2b030086dbaa">Document</span><span class="tscolor" lg_zh="t_c0bca8f72d4747a2a17d2b030086dbaa"><span lg_kh="1">(</span>文档<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_af3e7efab94843f186029227bbe28cb2">The <strong>Document</strong> class is used to contain a document, such as an HSSF workbook. 
+          <br> It has its own <a href="#DocumentProperty">DocumentProperty</a> ( <span class="codefrag">_property</span> ) and stores its data in a collection of <a href="#DocumentBlock">DocumentBlock</a> instances ( <span class="codefrag">_blocks</span> ). 
+          <br> It has a method, <span class="codefrag">getDocumentProperty</span> , to get its DocumentProperty.</span><span class="tscolor" lg_zh="t_af3e7efab94843f186029227bbe28cb2"><span lg_kh="1">(</span>Document 类用于包含文档，例如 HSSF 工作簿。它有自己的 DocumentProperty (_property)，并将其数据存储在 DocumentBlock 实例 (_blocks) 的集合中。它有一个方法 getDocumentProperty 来获取它的 DocumentProperty。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_5f702157a122447f9d4d1de3e401570a">DocumentBlock</span><span class="tscolor" lg_zh="t_5f702157a122447f9d4d1de3e401570a"><span lg_kh="1">(</span>文档块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_5d4d8c97338c4f2eb52cca9ae6079fef">See the description in <a href="#DocumentBlock">DocumentBlock</a></span><span class="tscolor" lg_zh="t_5d4d8c97338c4f2eb52cca9ae6079fef"><span lg_kh="1">(</span>请参阅 DocumentBlock 中的说明<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_a7a862012ced46dfbd9ecdd6cd93b244">DocumentProperty</span><span class="tscolor" lg_zh="t_a7a862012ced46dfbd9ecdd6cd93b244"><span lg_kh="1">(</span>文档属性<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_c885238163554e38b2de55e8a374b90d">See the description in <a href="#DocumentProperty">DocumentProperty</a></span><span class="tscolor" lg_zh="t_c885238163554e38b2de55e8a374b90d"><span lg_kh="1">(</span>请参阅 DocumentProperty 中的说明<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_bfe9bad5d39e44ca8208e0a1398b5c28">HeaderBlock</span><span class="tscolor" lg_zh="t_bfe9bad5d39e44ca8208e0a1398b5c28"><span lg_kh="1">(</span>标题块<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_1d838a6c86d94e3c869f0840b62e43c3">See the description in <a href="#HeaderBlock">HeaderBlock</a></span><span class="tscolor" lg_zh="t_1d838a6c86d94e3c869f0840b62e43c3"><span lg_kh="1">(</span>见 HeaderBlock 中的描述<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_2dfdafd7289640c5a32faf228df518a2">PropertyTable</span><span class="tscolor" lg_zh="t_2dfdafd7289640c5a32faf228df518a2"><span lg_kh="1">(</span>属性表<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_3d81c9d5e6704510a04a3315a8a5ef8b">See the description in <a href="#PropertyTable">PropertyTable</a></span><span class="tscolor" lg_zh="t_3d81c9d5e6704510a04a3315a8a5ef8b"><span lg_kh="1">(</span>参见 PropertyTable 中的描述<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="UtilityClasses"></a>
+     <h3 class="boxed"><span lg_en="t_476aff8975774ae08d4fac6bd3392515">Utility Classes and Interfaces</span><span class="tscolor" lg_zh="t_476aff8975774ae08d4fac6bd3392515"><span lg_kh="1">(</span>实用程序类和接口<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_e07ece6d65da421fbf8326416b2e5e13">The utility classes and interfaces are shown in the following class diagram.</span><span class="tscolor" lg_zh="t_e07ece6d65da421fbf8326416b2e5e13"><span lg_kh="1">(</span>实用程序类和接口显示在下面的类图中。<span lg_kh="1">)</span></span></p>
+     <p><img alt="Utility Classes and Interfaces" src="images/utilClasses.gif"></p>
+     <a name="BitField"></a><a name="ByteField"></a><a name="FixedField"></a><a name="HexDump"></a><a name="IntegerField"></a><a name="IntList"></a><a name="LittleEndian"></a><a name="LittleEndianConsts"></a><a name="LongField"></a><a name="ShortField"></a><a name="ShortList"></a><a name="StringUtil"></a>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3d85f12f5d404ca2b927038ae07272ca">Class/Interface</span><span class="tscolor" lg_zh="t_3d85f12f5d404ca2b927038ae07272ca"><span lg_kh="1">(</span>类/接口<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_382b994594c04abc999bc5ae7da20f09">Description</span><span class="tscolor" lg_zh="t_382b994594c04abc999bc5ae7da20f09"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="BitField"><span lg_en="t_a897f739c48841e78cee9699b90a7eb7">BitField</span><span class="tscolor" lg_zh="t_a897f739c48841e78cee9699b90a7eb7"><span lg_kh="1">(</span>位域<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_e807d9e865f947e9b668830c4d3ecb6f">The <strong>BitField</strong> class is used primarily by HSSF code to manage bit-mapped fields of HSSF records. It is not likely to be used in the POIFS code itself and is only included here for the sake of complete documentation of the POI utility classes.</span><span class="tscolor" lg_zh="t_e807d9e865f947e9b668830c4d3ecb6f"><span lg_kh="1">(</span>BitField 类主要由 HSSF 代码用于管理 HSSF 记录的位映射字段。它不太可能在 POIFS 代码本身中使用，并且只是为了 POI 实用程序类的完整文档而包含在此处。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="ByteField"><span lg_en="t_fd7fbb1aa7a244418b404c78792d374f">ByteField</span><span class="tscolor" lg_zh="t_fd7fbb1aa7a244418b404c78792d374f"><span lg_kh="1">(</span>字节字段<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_7396f883a51747f88d1dd328724a34ba">The <strong>ByteField</strong> class is an implementation of <a href="#FixedField"> FixedField </a> for the purpose of managing reading and writing to a byte-wide field in an array of <span class="codefrag"> bytes</span>.</span><span class="tscolor" lg_zh="t_7396f883a51747f88d1dd328724a34ba"><span lg_kh="1">(</span>ByteField 类是 FixedField 的实现，用于管理对字节数组中字节范围字段的读取和写入。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="FixedField"><span lg_en="t_37b2af8766fe4330a82d02202e7b7771">FixedField</span><span class="tscolor" lg_zh="t_37b2af8766fe4330a82d02202e7b7771"><span lg_kh="1">(</span>固定场<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_652b2ffec37d46e780b247bf95b56fcd">The <strong>FixedField</strong> interface defines a set of methods for reading a field from an array of <span class="codefrag">bytes</span> or from an <span class="codefrag">InputStream</span>, and for writing a field to an array of <span class="codefrag">bytes</span>. Implementations typically require an offset in their constructors that, for the purposes of reading and writing to an array of <span class="codefrag">bytes</span>, makes sure that the correct <span class="codefrag">bytes</span> in the array are read or written.</span><span class="tscolor" lg_zh="t_652b2ffec37d46e780b247bf95b56fcd"><span lg_kh="1">(</span>FixedField 接口定义了一组方法，用于从字节数组或 InputStream 中读取字段，以及将字段写入字节数组。实现通常在其构造函数中需要一个偏移量，为了读取和写入字节数组，确保读取或写入数组中的正确字节。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="HexDump"><span lg_en="t_f516e33afad347968d1a7ec173d303c1">HexDump</span><span class="tscolor" lg_zh="t_f516e33afad347968d1a7ec173d303c1"><span lg_kh="1">(</span>十六进制转储<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_7c3f2ee5bf8a4cc283198a82cf2aaf89">The <strong>HexDump</strong> class is a debugging class that can be used to dump an array of <span class="codefrag"> bytes </span> to an <span class="codefrag">OutputStream</span>. The static method <span class="codefrag">dump</span> takes an array of <span class="codefrag">bytes</span>, a <span class="codefrag">long</span> offset that is used to label the output, an open <span class="codefrag">OutputStream</span>, and an <span class="codefrag">int</span> index that specifies the starting index within the array of <span class="codefrag">bytes</span>. 
+          <br> The data is displayed 16 bytes per line, with each byte displayed in hexadecimal format and again in printable form, if possible (a byte is considered printable if its value is in the range of 32 ... 126). 
+          <br> Here is an example of a small array of <span class="codefrag">bytes</span> with an offset of 0x110: 
+          <br> 
+          <div class="code">
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"></span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">00000110 C8 00 00 00 FF 7F 90 01 00 00 00 00 00 00 05 01 ................</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">00000120 41 00 72 00 69 00 61 00 6C 00 A.r.i.a.l.</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"> </span>
+           </div>
+          </div></span><span class="tscolor" lg_zh="t_7c3f2ee5bf8a4cc283198a82cf2aaf89"><span lg_kh="1">(</span>HexDump 类是一个调试类，可用于将字节数组转储到 OutputStream。静态方法 dump 需要一个字节数组、一个用于标记输出的长偏移量、一个打开的 OutputStream 和一个 int 索引，该索引指定字节数组中的起始索引。数据以每行 16 个字节显示，每个字节以十六进制格式显示，如果可能，再以可打印形式显示（如果一个字节的值在 32 ... 126 范围内，则认为它是可打印的）。下面是一个偏移量为 0x110 的小字节数组的示例： 00000110 C8 00 00 00 FF 7F 90 01 00 00 00 00 00 00 05 01 ...... 00000120 41 00 72 00 69 00 61 00 6C 00 宋体<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="IntegerField"><span lg_en="t_018d2d22c9fa48149e0dee0e69e2477c">IntegerField</span><span class="tscolor" lg_zh="t_018d2d22c9fa48149e0dee0e69e2477c"><span lg_kh="1">(</span>整数字段<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_1dedc56376ce478ab342cc945f97e4d4">The <strong>IntegerField</strong> class is an implementation of <a href="#FixedField"> FixedField </a> for the purpose of managing reading and writing to an integer-wide field in an array of <span class="codefrag">bytes</span>.</span><span class="tscolor" lg_zh="t_1dedc56376ce478ab342cc945f97e4d4"><span lg_kh="1">(</span>IntegerField 类是 FixedField 的实现，用于管理对字节数组中整数范围字段的读取和写入。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="IntList"><span lg_en="t_41aa91b06e6d4f379be7a88f277cdb9a">IntList</span><span class="tscolor" lg_zh="t_41aa91b06e6d4f379be7a88f277cdb9a"><span lg_kh="1">(</span>整数列表<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_01b6245a9a42498e828b99599eb3f1d6">The <strong>IntList</strong> class is a work-around for functionality missing in Java (see <a href="http://developer.java.sun.com/developer/bugParade/bugs/4487555.html"> http://developer.java.sun.com/developer/bugParade/bugs/4487555.html </a> for details); it is a simple growable array of <span class="codefrag">ints</span> that gets around the requirement of wrapping and unwrapping <span class="codefrag">ints</span> in <span class="codefrag">Integer</span> instances in order to use the <span class="codefrag">java.util.List</span> interface. 
+          <br> 
+          <strong>IntList</strong> mimics the functionality of the <span class="codefrag">java.util.List</span> interface as much as possible.</span><span class="tscolor" lg_zh="t_01b6245a9a42498e828b99599eb3f1d6"><span lg_kh="1">(</span>IntList 类是 Java 中缺少的功能的解决方法（有关详细信息，请参见 http://developer.java.sun.com/developer/bugParade/bugs/4487555.html）；它是一个简单的可增长整数数组，它绕过了在 Integer 实例中包装和展开整数的要求，以便使用 java.util.List 接口。 IntList 尽可能地模仿 java.util.List 接口的功能。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="LittleEndian"><span lg_en="t_2a44f07c4afe4215a5e36fecbe923f73">LittleEndian</span><span class="tscolor" lg_zh="t_2a44f07c4afe4215a5e36fecbe923f73"><span lg_kh="1">(</span>小端<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_f53d3351397a4cbb9c98b188e11ce45b">The <strong>LittleEndian</strong> class provides a set of static methods for reading and writing <span class="codefrag">shorts</span>, <span class="codefrag">ints</span>, <span class="codefrag">longs</span>, and <span class="codefrag">doubles</span> in and out of <span class="codefrag">byte</span> arrays, and out of <span class="codefrag">InputStreams</span>, preserving the Intel byte ordering and encoding of these values.</span><span class="tscolor" lg_zh="t_f53d3351397a4cbb9c98b188e11ce45b"><span lg_kh="1">(</span>LittleEndian 类提供了一组静态方法，用于在字节数组和 InputStream 之外读取和写入 short、int、long 和 double，保留这些值的 Intel 字节顺序和编码。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="LittleEndianConsts"><span lg_en="t_a3ec843547904d4da8a6e853fa5ede7b">LittleEndianConsts</span><span class="tscolor" lg_zh="t_a3ec843547904d4da8a6e853fa5ede7b"><span lg_kh="1">(</span>LittleEndian 常量<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_e02d3cab6c7e4226beea4fc6edb5a83d">The <strong>LittleEndianConsts</strong> interface defines the width of a <span class="codefrag">short</span>, <span class="codefrag">int</span>, <span class="codefrag">long</span>, and <span class="codefrag">double</span> as stored by Intel processors.</span><span class="tscolor" lg_zh="t_e02d3cab6c7e4226beea4fc6edb5a83d"><span lg_kh="1">(</span>LittleEndianConsts 接口定义了 Intel 处理器存储的 short、int、long 和 double 的宽度。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="LongField"><span lg_en="t_9d4bccee55884de68d9bea14d40d068d">LongField</span><span class="tscolor" lg_zh="t_9d4bccee55884de68d9bea14d40d068d"><span lg_kh="1">(</span>长场<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_65dfa608708b498ab6e3e0f3670f0e33">The <strong>LongField</strong> class is an implementation of <a href="#FixedField"> FixedField </a> for the purpose of managing reading and writing to a long-wide field in an array of <span class="codefrag"> bytes</span>.</span><span class="tscolor" lg_zh="t_65dfa608708b498ab6e3e0f3670f0e33"><span lg_kh="1">(</span>LongField 类是 FixedField 的实现，用于管理对字节数组中长宽字段的读取和写入。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="ShortField"><span lg_en="t_d3db46ff8c1c4fbabd84fa0684aab070">ShortField</span><span class="tscolor" lg_zh="t_d3db46ff8c1c4fbabd84fa0684aab070"><span lg_kh="1">(</span>短场<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_cc9c01861dc147c09cfffc7acc359a64">The <strong>ShortField</strong> class is an implementation of <a href="#FixedField"> FixedField </a> for the purpose of managing reading and writing to a short-wide field in an array of <span class="codefrag"> bytes</span>.</span><span class="tscolor" lg_zh="t_cc9c01861dc147c09cfffc7acc359a64"><span lg_kh="1">(</span>ShortField 类是 FixedField 的实现，用于管理对字节数组中的短宽字段的读取和写入。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="ShortList"><span lg_en="t_263e9b1db4c747b49c087d20a3f6fb06">ShortList</span><span class="tscolor" lg_zh="t_263e9b1db4c747b49c087d20a3f6fb06"><span lg_kh="1">(</span>入围名单<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_d739f2141c0e471d947d12fe854f0f4e">The <strong>ShortList</strong> class is a work-around for functionality missing in Java (see <a href="http://developer.java.sun.com/developer/bugParade/bugs/4487555.html"> http://developer.java.sun.com/developer/bugParade/bugs/4487555.html </a> for details); it is a simple growable array of <span class="codefrag">shorts</span> that gets around the requirement of wrapping and unwrapping <span class="codefrag">shorts</span> in <span class="codefrag">Short</span> instances in order to use the <span class="codefrag">java.util.List</span> interface. 
+          <br> 
+          <strong>ShortList</strong> mimics the functionality of the <span class="codefrag">java.util.List</span> interface as much as possible.</span><span class="tscolor" lg_zh="t_d739f2141c0e471d947d12fe854f0f4e"><span lg_kh="1">(</span>ShortList 类是 Java 中缺少的功能的解决方法（有关详细信息，请参见 http://developer.java.sun.com/developer/bugParade/bugs/4487555.html）；它是一个简单的可增长的短裤数组，它绕过了在 Short 实例中包装和展开短裤的要求，以便使用 java.util.List 接口。 ShortList 尽可能地模仿 java.util.List 接口的功能。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1" id="StringUtil"><span lg_en="t_269031193910496a8d2f07a27b43cd40">StringUtil</span><span class="tscolor" lg_zh="t_269031193910496a8d2f07a27b43cd40"><span lg_kh="1">(</span>字符串工具<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_3ad970d878384e1e9bc2bf77eaf2affd">The <strong>StringUtil</strong> class manages the processing of Unicode strings.</span><span class="tscolor" lg_zh="t_3ad970d878384e1e9bc2bf77eaf2affd"><span lg_kh="1">(</span>StringUtil 类管理 Unicode 字符串的处理。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <a name="Scenarios"></a>
+    <h2 class="boxed"><span lg_en="t_c68dc018e8814adb832730dffee70ad7">Scenarios</span><span class="tscolor" lg_zh="t_c68dc018e8814adb832730dffee70ad7"><span lg_kh="1">(</span>场景<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_025ef5265778488d9c8fe775e81a11c7">This section describes the scenarios of how the POIFS classes and interfaces will be used to convert an appropriate XML stream to a POIFS output stream containing an HSSF document.</span><span class="tscolor" lg_zh="t_025ef5265778488d9c8fe775e81a11c7"><span lg_kh="1">(</span>本节描述如何使用 POIFS 类和接口将适当的 XML 流转换为包含 HSSF 文档的 POIFS 输出流的场景。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_59548d56fdb1434da1581461d0ba2593">It is broken down as suggested by the following scenario diagram:</span><span class="tscolor" lg_zh="t_59548d56fdb1434da1581461d0ba2593"><span lg_kh="1">(</span>它按照以下场景图的建议进行细分：<span lg_kh="1">)</span></span></p>
+     <p><img alt="POIFS LifeCycle" src="images/POIFSLifeCycle.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_a673b01cb5214fe8af0d9fcd042c3e53">Step</span><span class="tscolor" lg_zh="t_a673b01cb5214fe8af0d9fcd042c3e53"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_30e71c3fc7fe4a44af156331743ace88">Description</span><span class="tscolor" lg_zh="t_30e71c3fc7fe4a44af156331743ace88"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_2bd1fa5fa566428e95a2ce87758cab7f">1</span><span class="tscolor" lg_zh="t_2bd1fa5fa566428e95a2ce87758cab7f"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_e31a967d616348daabd9c9d2eb444224"><a href="#Initialization">The Filesystem is created by the client application. </a></span><span class="tscolor" lg_zh="t_e31a967d616348daabd9c9d2eb444224"><span lg_kh="1">(</span>文件系统由客户端应用程序创建。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_553707282ada4063baf1fa4b6ea89157">2</span><span class="tscolor" lg_zh="t_553707282ada4063baf1fa4b6ea89157"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_5b78b5abdaf44c0c90e31b6efb48c9ee"><a href="#CreateDocument">The client application tells the Filesystem to create a document</a>, providing an <span class="codefrag">InputStream</span> and the name of the document. This may be repeated several times.</span><span class="tscolor" lg_zh="t_5b78b5abdaf44c0c90e31b6efb48c9ee"><span lg_kh="1">(</span>客户端应用程序告诉文件系统创建一个文档，提供一个 InputStream 和文档的名称。这可以重复几次。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_e0bb58ae6baa4194aa880d28ae2c9833">3</span><span class="tscolor" lg_zh="t_e0bb58ae6baa4194aa880d28ae2c9833"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_fd0daeb269c0473f9198f6226ce65a82"><a href="#Initialization">The client application asks the Filesystem to write its data to an <span class="codefrag">OutputStream</span>. </a></span><span class="tscolor" lg_zh="t_fd0daeb269c0473f9198f6226ce65a82"><span lg_kh="1">(</span>客户端应用程序要求文件系统将其数据写入输出流。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Initialization"></a>
+     <h3 class="boxed"><span lg_en="t_dd824d97fa514783907aec6854d8e4e2">Initialization</span><span class="tscolor" lg_zh="t_dd824d97fa514783907aec6854d8e4e2"><span lg_kh="1">(</span>初始化<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_2ef1b086d670413897adc9692e503e26">Initialization of the POIFS system is shown in the following scenario diagram:</span><span class="tscolor" lg_zh="t_2ef1b086d670413897adc9692e503e26"><span lg_kh="1">(</span>POIFS系统的初始化如下图所示：<span lg_kh="1">)</span></span></p>
+     <p><img alt="Initialization" src="images/POIFSInitialization.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_9b8c49c46b7942e0aa769268ff8454eb">Step</span><span class="tscolor" lg_zh="t_9b8c49c46b7942e0aa769268ff8454eb"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_7dce8278fde14fe2b62a0f1e827899a9">Description</span><span class="tscolor" lg_zh="t_7dce8278fde14fe2b62a0f1e827899a9"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_228faa89f0dd45889cdbbfddb2ef07de">1</span><span class="tscolor" lg_zh="t_228faa89f0dd45889cdbbfddb2ef07de"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_657a9ebbe7cb4b1f99a6dcc48094cd1b">The <a href="#Filesystem">Filesystem</a> object, which is created for each request to convert an appropriate XML stream to a POIFS output stream containing an HSSF document, creates its <a href="#PropertyTable"> PropertyTable</a>.</span><span class="tscolor" lg_zh="t_657a9ebbe7cb4b1f99a6dcc48094cd1b"><span lg_kh="1">(</span>Filesystem 对象是为每个请求创建的，用于将适当的 XML 流转换为包含 HSSF 文档的 POIFS 输出流，并创建其 PropertyTable。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_abab1c7681f741bf8348822b6b8552f4">2</span><span class="tscolor" lg_zh="t_abab1c7681f741bf8348822b6b8552f4"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_a483c191719a4ba3889ef8b8193885d5">The <a href="#PropertyTable">PropertyTable</a> creates its <a href="#RootProperty">RootProperty</a> instance, making the RootProperty the first <a href="#Property">Property</a> in its <span class="codefrag">List</span> of Property instances.</span><span class="tscolor" lg_zh="t_a483c191719a4ba3889ef8b8193885d5"><span lg_kh="1">(</span>PropertyTable 创建其 RootProperty 实例，使 RootProperty 成为其 Property 实例列表中的第一个 Property。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_cea55b10e47349bf88b466b8fc3abef8">3</span><span class="tscolor" lg_zh="t_cea55b10e47349bf88b466b8fc3abef8"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_2eb168ade66b493f9d09bbc46ceb651f">The <a href="#Filesystem">Filesystem</a> creates its <a href="#HeaderBlock">HeaderBlock</a> instance. It should be noted that the decision to create the HeaderBlock at Filesystem initialization is arbitrary; creation of the HeaderBlock could easily and harmlessly be postponed to the appropriate moment in <a href="#WriteFilesystem">writing the filesystem</a>.</span><span class="tscolor" lg_zh="t_2eb168ade66b493f9d09bbc46ceb651f"><span lg_kh="1">(</span>文件系统创建它的 HeaderBlock 实例。应该注意的是，在文件系统初始化时创建 HeaderBlock 的决定是任意的； HeaderBlock 的创建可以轻松且无害地推迟到写入文件系统的适当时刻。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="CreateDocument"></a>
+     <h3 class="boxed"><span lg_en="t_66f1c6bc869641a9a9b492d72dcc4f34">Creating a Document</span><span class="tscolor" lg_zh="t_66f1c6bc869641a9a9b492d72dcc4f34"><span lg_kh="1">(</span>创建文档<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_a8c0d27d077f48a9b650780ae678767f">Creating and adding a document to a POIFS system is shown in the following scenario diagram:</span><span class="tscolor" lg_zh="t_a8c0d27d077f48a9b650780ae678767f"><span lg_kh="1">(</span>在以下场景图中显示了创建文档并将其添加到 POIFS 系统：<span lg_kh="1">)</span></span></p>
+     <p><img alt="Add Document" src="images/POIFSAddDocument.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_b915b7669f0943cc8c46a683bdb9d7d4">Step</span><span class="tscolor" lg_zh="t_b915b7669f0943cc8c46a683bdb9d7d4"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_916b30c6a6404be7abaf4662cd1a0f8c">Description</span><span class="tscolor" lg_zh="t_916b30c6a6404be7abaf4662cd1a0f8c"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_a6df170ae19946fc9697d6dda084c2a2">1</span><span class="tscolor" lg_zh="t_a6df170ae19946fc9697d6dda084c2a2"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_82a513d565e7462cb553dd48adb0723d">The <a href="#Filesystem">Filesystem</a> instance creates a new <a href="#Document">Document</a> instance. It will store the newly created Document in a <span class="codefrag">List</span> of <a href="#BATManaged">BATManaged</a> instances.</span><span class="tscolor" lg_zh="t_82a513d565e7462cb553dd48adb0723d"><span lg_kh="1">(</span>Filesystem 实例创建一个新的 Document 实例。它将新创建的文档存储在 BATManaged 实例列表中。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_63609e39cd044d04819b77596ce1faa2">2</span><span class="tscolor" lg_zh="t_63609e39cd044d04819b77596ce1faa2"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_a49e1ead88e4489da84dc706f2c030e9">The <a href="#Document">Document</a> reads data from the provided <span class="codefrag">InputStream</span>, storing the data in <a href="#DocumentBlock">DocumentBlock</a> instances. It keeps track of the byte count as it reads the data.</span><span class="tscolor" lg_zh="t_a49e1ead88e4489da84dc706f2c030e9"><span lg_kh="1">(</span>Document 从提供的 InputStream 读取数据，将数据存储在 DocumentBlock 实例中。它在读取数据时跟踪字节数。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_c935373697134ac3aa2b56dccaf0ee09">3</span><span class="tscolor" lg_zh="t_c935373697134ac3aa2b56dccaf0ee09"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_dfde676fdd754b8a8dce5513dd4cae41">The <a href="#Document">Document</a> creates a <a href="#DocumentProperty">DocumentProperty</a> to keep track of its property data. The byte count is stored in the newly created DocumentProperty instance.</span><span class="tscolor" lg_zh="t_dfde676fdd754b8a8dce5513dd4cae41"><span lg_kh="1">(</span>Document 创建一个 DocumentProperty 来跟踪其属性数据。字节数存储在新创建的 DocumentProperty 实例中。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_43c944bbfb704c3c8c5e656e99de1a7b">4</span><span class="tscolor" lg_zh="t_43c944bbfb704c3c8c5e656e99de1a7b"><span lg_kh="1">(</span>4<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_6b2e6f596eac446fb2e6c42e68ae316d">The <a href="#Filesystem">Filesystem</a> requests the newly created <a href="#DocumentProperty">DocumentProperty</a> from the newly created <a href="#Document">Document</a> instance.</span><span class="tscolor" lg_zh="t_6b2e6f596eac446fb2e6c42e68ae316d"><span lg_kh="1">(</span>文件系统从新创建的 Document 实例请求新创建的 DocumentProperty。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_ef3b2fa322e44676b1c10c3ea2682ff4">5</span><span class="tscolor" lg_zh="t_ef3b2fa322e44676b1c10c3ea2682ff4"><span lg_kh="1">(</span>5<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_f1cd5ad506b740729428dade63cd313b">The <a href="#Filesystem">Filesystem</a> sends the newly created <a href="#DocumentProperty">DocumentProperty</a> to the Filesystem's <a href="#PropertyTable">PropertyTable</a> so that the PropertyTable can add the DocumentProperty to its <span class="codefrag">List</span> of <a href="#Property">Property</a> instances.</span><span class="tscolor" lg_zh="t_f1cd5ad506b740729428dade63cd313b"><span lg_kh="1">(</span>文件系统将新创建的 DocumentProperty 发送到文件系统的 PropertyTable，以便 PropertyTable 可以将 DocumentProperty 添加到其属性实例列表中。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_e8cedfbf58e54a669c05553340518167">6</span><span class="tscolor" lg_zh="t_e8cedfbf58e54a669c05553340518167"><span lg_kh="1">(</span>6<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_55bccd0a2c944d3b8fe3199462dc92d6">The <a href="#Filesystem">Filesystem</a> gets the <a href="#RootProperty">RootProperty</a> from its <a href="#PropertyTable">PropertyTable</a>.</span><span class="tscolor" lg_zh="t_55bccd0a2c944d3b8fe3199462dc92d6"><span lg_kh="1">(</span>文件系统从其 PropertyTable 中获取 RootProperty。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_fec927f60c6547f3acacfa3e6d46db07">7</span><span class="tscolor" lg_zh="t_fec927f60c6547f3acacfa3e6d46db07"><span lg_kh="1">(</span>7<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_87609ca56a8041a18763f606b0393832">The <a href="#Filesystem">Filesystem</a> adds the newly created <a href="#DocumentProperty">DocumentProperty</a> to the <a href="#RootProperty">RootProperty</a>.</span><span class="tscolor" lg_zh="t_87609ca56a8041a18763f606b0393832"><span lg_kh="1">(</span>文件系统将新创建的 DocumentProperty 添加到 RootProperty。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <p><span lg_en="t_3ed5dce93efb4d5b80c0508dbab1173e">Although typical deployment of the POIFS system will only entail adding a single <a href="#Document"> Document </a> (the workbook) to the <a href="#Filesystem">Filesystem</a>, there is nothing in the design to prevent multiple Documents from being added to the Filesystem. This flexibility can be employed to write summary information document(s) in addition to the workbook.</span><span class="tscolor" lg_zh="t_3ed5dce93efb4d5b80c0508dbab1173e"><span lg_kh="1">(</span>虽然 POIFS 系统的典型部署只需要将单个文档（工作簿）添加到文件系统，但设计中没有任何内容可以防止将多个文档添加到文件系统。除了工作簿之外，这种灵活性还可用于编写摘要信息文档。<span lg_kh="1">)</span></span></p>
+     <a name="WriteFilesystem"></a>
+     <h3 class="boxed"><span lg_en="t_3642bbcbb1d5480cba0c56ed1090d340">Writing the Filesystem</span><span class="tscolor" lg_zh="t_3642bbcbb1d5480cba0c56ed1090d340"><span lg_kh="1">(</span>编写文件系统<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_1eb18cfc27e449359b2b067a37c9e6ee">Writing the filesystem is shown in the following scenario diagram:</span><span class="tscolor" lg_zh="t_1eb18cfc27e449359b2b067a37c9e6ee"><span lg_kh="1">(</span>编写文件系统如下图所示：<span lg_kh="1">)</span></span></p>
+     <p><img alt="Writing the Filesystem" src="images/POIFSWriteFilesystem.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_36d7df4f21c74e679e81ae1bc78e1bb4">Step</span><span class="tscolor" lg_zh="t_36d7df4f21c74e679e81ae1bc78e1bb4"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="2" rowspan="1"><span lg_en="t_12d5e9ee94ec465194f752d3bf490d89">Description</span><span class="tscolor" lg_zh="t_12d5e9ee94ec465194f752d3bf490d89"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_b74fb58299c5439cb38d64efd4f11b01">1</span><span class="tscolor" lg_zh="t_b74fb58299c5439cb38d64efd4f11b01"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_716a5f066af346dba6a9b23f9b850a47">The <a href="#Filesystem">Filesystem</a> adds the <a href="#PropertyTable">PropertyTable</a> to its <span class="codefrag">List</span> of <a href="#BATManaged">BATManaged</a> instances and calls the PropertyTable's <span class="codefrag">preWrite</span> method. The action taken by the PropertyTable is shown in the <a href="#PropertyTablePreWrite">PropertyTable preWrite scenario diagram</a>.</span><span class="tscolor" lg_zh="t_716a5f066af346dba6a9b23f9b850a47"><span lg_kh="1">(</span>文件系统将 PropertyTable 添加到其 BATManaged 实例列表中并调用 PropertyTable 的 preWrite 方法。 PropertyTable 采取的操作显示在 PropertyTable preWrite 场景图中。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_fbed144e98b04c83bc554a3a7ed516a9">2</span><span class="tscolor" lg_zh="t_fbed144e98b04c83bc554a3a7ed516a9"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_24d767e7a58d48269bfe3fe63f97a7a8">The <a href="#Filesystem">Filesystem</a> creates the <a href="#BlockAllocationTable">BlockAllocationTable</a>.</span><span class="tscolor" lg_zh="t_24d767e7a58d48269bfe3fe63f97a7a8"><span lg_kh="1">(</span>文件系统创建 BlockAllocationTable。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_5bfa2f01098d40679148cb2eb1a28791">3</span><span class="tscolor" lg_zh="t_5bfa2f01098d40679148cb2eb1a28791"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_0df1fd4ca62940c5a70d9e541d452f7f">The <a href="#Filesystem">Filesystem</a> gets the block count from the <a href="#BATManaged">BATManaged</a> instance.</span><span class="tscolor" lg_zh="t_0df1fd4ca62940c5a70d9e541d452f7f"><span lg_kh="1">(</span>文件系统从 BATManaged 实例获取块计数。<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="3"><span lg_en="t_df3dc9b878c042d99beded69569111f6">These three steps are repeated for each <a href="#BATManaged">BATManaged</a> instance in the <a href="#Filesystem">Filesystem</a>'s <span class="codefrag">List</span> of BATManaged instances (i.e., the <a href="#Document">Documents</a>, in order of their addition to the Filesystem, followed by the <a href="#PropertyTable">PropertyTable</a>).</span><span class="tscolor" lg_zh="t_df3dc9b878c042d99beded69569111f6"><span lg_kh="1">(</span>这三个步骤针对文件系统的 BATManaged 实例列表中的每个 BATManaged 实例（即文档，按照它们添加到文件系统的顺序，然后是 PropertyTable）重复。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_5491550cd26644e1be738799347d0b75">4</span><span class="tscolor" lg_zh="t_5491550cd26644e1be738799347d0b75"><span lg_kh="1">(</span>4<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_8a440205b7a44a52bf963cf49db090a9">The <a href="#Filesystem">Filesystem</a> sends the block count to the <a href="#BlockAllocationTable"> BlockAllocationTable</a>, which adds the appropriate entries to is <a href="#IntList"> IntList </a> of entries, returning the starting block for the newly added entries.</span><span class="tscolor" lg_zh="t_8a440205b7a44a52bf963cf49db090a9"><span lg_kh="1">(</span>文件系统将块计数发送到 BlockAllocationTable，它将适当的条目添加到条目的 IntList 中，返回新添加条目的起始块。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_b7b16926763d40f5acbb3a0fbddcd9dc">5</span><span class="tscolor" lg_zh="t_b7b16926763d40f5acbb3a0fbddcd9dc"><span lg_kh="1">(</span>5<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_5e6f9a5a70cc472dab9c1990bc839570">The <a href="#Filesystem">Filesystem</a> gives the start block number to the <a href="#BATManaged">BATManaged</a> instance. If the BATManaged instance is a <a href="#Document">Document</a>, it sets the start block field in its <a href="#DocumentProperty">DocumentProperty</a>.</span><span class="tscolor" lg_zh="t_5e6f9a5a70cc472dab9c1990bc839570"><span lg_kh="1">(</span>文件系统将起始块编号提供给 BATManaged 实例。如果 BATManaged 实例是 Document，它会在其 DocumentProperty 中设置起始块字段。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_5cdb20db8cda4304ac1f6dfa7f003d17">6</span><span class="tscolor" lg_zh="t_5cdb20db8cda4304ac1f6dfa7f003d17"><span lg_kh="1">(</span>6<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_2d385910e1ac4f5685c9696f3a6ed5ed">The <a href="#Filesystem">Filesystem</a> tells the <a href="#BlockAllocationTable">BlockAllocationTable</a> to create its <a href="#BATBlock">BatBlocks</a>.</span><span class="tscolor" lg_zh="t_2d385910e1ac4f5685c9696f3a6ed5ed"><span lg_kh="1">(</span>文件系统告诉 BlockAllocationTable 创建它的 BatBlocks。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_e05f6bc70100447fa5b5ce8318c8cd2b">7</span><span class="tscolor" lg_zh="t_e05f6bc70100447fa5b5ce8318c8cd2b"><span lg_kh="1">(</span>7<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_65a44cbccfbd424386d6c736bc6780b4">The <a href="#Filesystem">Filesystem</a> gives the BAT information to the <a href="#HeaderBlock">HeaderBlock</a> so that it can set its BAT fields and, if necessary, create XBAT blocks.</span><span class="tscolor" lg_zh="t_65a44cbccfbd424386d6c736bc6780b4"><span lg_kh="1">(</span>文件系统将 BAT 信息提供给 HeaderBlock，以便它可以设置其 BAT 字段，并在必要时创建 XBAT 块。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3e31714b31364ae39a9e5a03187d68a1">8</span><span class="tscolor" lg_zh="t_3e31714b31364ae39a9e5a03187d68a1"><span lg_kh="1">(</span>8<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_98c4a2cacbe940d2baa8130803bc5a0e">If the filesystem is unusually large (over <strong>7MB</strong>), the <a href="#HeaderBlock">HeaderBlock</a> will create XBAT blocks to contain the BAT data that it cannot hold directly. In this case, the <a href="#Filesystem">Filesystem</a> tells the HeaderBlock where those additional blocks will be stored.</span><span class="tscolor" lg_zh="t_98c4a2cacbe940d2baa8130803bc5a0e"><span lg_kh="1">(</span>如果文件系统异常大（超过 7MB），HeaderBlock 将创建 XBAT 块来包含它无法直接保存的 BAT 数据。在这种情况下，文件系统告诉 HeaderBlock 这些额外的块将被存储在哪里。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_8e8586055a5743e1a8d1175e96f85a27">9</span><span class="tscolor" lg_zh="t_8e8586055a5743e1a8d1175e96f85a27"><span lg_kh="1">(</span>9<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_9f3c0daff65a4a06928d3b33084d438f">The <a href="#Filesystem">Filesystem</a> gives the <a href="#PropertyTable">PropertyTable</a> start block to the <a href="#HeaderBlock">HeaderBlock</a>.</span><span class="tscolor" lg_zh="t_9f3c0daff65a4a06928d3b33084d438f"><span lg_kh="1">(</span>文件系统将 PropertyTable 起始块提供给 HeaderBlock。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3dc5dda630ff46d99bff9686a300c448">10</span><span class="tscolor" lg_zh="t_3dc5dda630ff46d99bff9686a300c448"><span lg_kh="1">(</span>10<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_e1d542986a6c4596b65a8e1d69de32c5">The <a href="#Filesystem">Filesystem</a> tells the <a href="#BlockWritable">BlockWritable</a> instance to write its blocks to the provided <span class="codefrag">OutputStream</span>. 
+          <br> This step is repeated for each BlockWritable instance, in this order: 
+          <br> 
+          <ol>
+           <li><span lg_en="t_abf6e2bfe77640389715b36a3cb70f74">The <a href="#HeaderBlock">HeaderBlock</a>.</span><span class="tscolor" lg_zh="t_abf6e2bfe77640389715b36a3cb70f74"><span lg_kh="1">(</span>页眉块。<span lg_kh="1">)</span></span></li>
+           <li><span lg_en="t_b429f2f414724ab3beda27fd24967f18">Each <a href="#Document">Document</a>, in the order in which it was added to the <a href="#Filesystem">Filesystem</a>.</span><span class="tscolor" lg_zh="t_b429f2f414724ab3beda27fd24967f18"><span lg_kh="1">(</span>每个文档，按照它添加到文件系统的顺序。<span lg_kh="1">)</span></span></li>
+           <li><span lg_en="t_b4ba28ec78f846d38a5acc35f93305b2">The <a href="#PropertyTable">PropertyTable</a>.</span><span class="tscolor" lg_zh="t_b4ba28ec78f846d38a5acc35f93305b2"><span lg_kh="1">(</span>属性表。<span lg_kh="1">)</span></span></li>
+           <li><span lg_en="t_a824ebb2d5f94e9284b66ab899ca5494">The <a href="#BlockAllocationTable">BlockAllocationTable</a></span><span class="tscolor" lg_zh="t_a824ebb2d5f94e9284b66ab899ca5494"><span lg_kh="1">(</span>块分配表<span lg_kh="1">)</span></span></li>
+           <li><span lg_en="t_fec55bfe9591481092f96b1ede6d399f">The XBAT blocks created by the <a href="#HeaderBlock">HeaderBlock</a>, if any.</span><span class="tscolor" lg_zh="t_fec55bfe9591481092f96b1ede6d399f"><span lg_kh="1">(</span>由 HeaderBlock 创建的 XBAT 块（如果有）。<span lg_kh="1">)</span></span></li>
+          </ol></span><span class="tscolor" lg_zh="t_e1d542986a6c4596b65a8e1d69de32c5"><span lg_kh="1">(</span>Filesystem 告诉 BlockWritable 实例将其块写入提供的 OutputStream。对每个 BlockWritable 实例重复此步骤，顺序如下：HeaderBlock。每个文档，按照它添加到文件系统的顺序。属性表。 BlockAllocationTable 由 HeaderBlock 创建的 XBAT 块（如果有）。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="PropertyTablePreWrite"></a>
+     <h3 class="boxed"><span lg_en="t_1c1d94aa8b6f4d2dab576e9c1573c1e9">PropertyTable preWrite scenario diagram</span><span class="tscolor" lg_zh="t_1c1d94aa8b6f4d2dab576e9c1573c1e9"><span lg_kh="1">(</span>PropertyTable preWrite 场景图<span lg_kh="1">)</span></span></h3>
+     <p><img alt="PropertyTable preWrite scenario diagram" src="images/POIFSPropertyTablePreWrite.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_e66824b09b7441b58c6dbed25559f78a">Step</span><span class="tscolor" lg_zh="t_e66824b09b7441b58c6dbed25559f78a"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_b505fb926c4844f9ad20a206477ce597">Description</span><span class="tscolor" lg_zh="t_b505fb926c4844f9ad20a206477ce597"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_09467a03391e40468dc59889e46d78f9">1</span><span class="tscolor" lg_zh="t_09467a03391e40468dc59889e46d78f9"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_8722b9a832f44580894e390f0ffdcc98">The <a href="#PropertyTable">PropertyTable</a> calls <span class="codefrag">setIndex</span> for each of its <a href="#Property">Property</a> instances, so that each Property now knows its index within the PropertyTable's <span class="codefrag">List </span> of Property instances.</span><span class="tscolor" lg_zh="t_8722b9a832f44580894e390f0ffdcc98"><span lg_kh="1">(</span>PropertyTable 为其每个 Property 实例调用 setIndex，以便每个 Property 现在都知道它在 PropertyTable 的 Property 实例列表中的索引。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_6995c4b41d9d4420a8259de0fdc886c5">2</span><span class="tscolor" lg_zh="t_6995c4b41d9d4420a8259de0fdc886c5"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_0e6b9c42600b4196b553a321c21fac4a">The <a href="#PropertyTable">PropertyTable</a> requests the <a href="#PropertyBlock">PropertyBlock</a> class to create an array of <a href="#PropertyBlock">PropertyBlock</a> instances.</span><span class="tscolor" lg_zh="t_0e6b9c42600b4196b553a321c21fac4a"><span lg_kh="1">(</span>PropertyTable 请求 PropertyBlock 类创建一个 PropertyBlock 实例数组。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_fcfe14b3e1ff482f8faf2991c4ccf2ab">3</span><span class="tscolor" lg_zh="t_fcfe14b3e1ff482f8faf2991c4ccf2ab"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_8888c8c8cbab4bab9ff3586a8e22665f">The <a href="#PropertyBlock">PropertyBlock</a> calculates the number of empty <a href="#Property">Property</a> instances it needs to create and creates them. The algorithm for the number to create is: 
+          <br> 
+          <div class="code">
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody"></span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">block_count = (properties.size() + 3) / 4;</span>
+           </div>
+           <div class="codeline">
+            <span class="lineno"></span><span class="codebody">emptyPropertiesNeeded = (block_count * 4) - properties.size();</span>
+           </div>
+          </div></span><span class="tscolor" lg_zh="t_8888c8c8cbab4bab9ff3586a8e22665f"><span lg_kh="1">(</span>PropertyBlock 计算它需要创建的空 Property 实例的数量并创建它们。创建数字的算法是：block_count = (properties.size() + 3) / 4; emptyPropertiesNeeded = (block_count * 4) - properties.size();<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_cb16179a14ec4385afc51104998d0a7f">4</span><span class="tscolor" lg_zh="t_cb16179a14ec4385afc51104998d0a7f"><span lg_kh="1">(</span>4<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_83138487cd2449e4a17971967b6bd33a">The <a href="#PropertyBlock">PropertyBlock</a> creates the required number of <a href="#PropertyBlock">PropertyBlock</a> instances from the <span class="codefrag">List</span> of <a href="#Property">Property</a> instances, including the newly created empty <a href="#Property">Property</a> instances.</span><span class="tscolor" lg_zh="t_83138487cd2449e4a17971967b6bd33a"><span lg_kh="1">(</span>PropertyBlock 从 Property 实例列表中创建所需数量的 PropertyBlock 实例，包括新创建的空 Property 实例。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_37091f3947664803852d8508704cfb4d">5</span><span class="tscolor" lg_zh="t_37091f3947664803852d8508704cfb4d"><span lg_kh="1">(</span>5<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_c3975a3e5eea4ff9a571609f99d45897">The <a href="#PropertyTable">PropertyTable</a> calls <span class="codefrag">preWrite</span> on each of its <a href="#Property">Property</a> instances. For <a href="#DocumentProperty">DocumentProperty</a> instances, this call is a no-op. For the <a href="#RootProperty">RootProperty</a>, the action taken is shown in the <a href="#RootPropertyPreWrite">RootProperty preWrite scenario diagram</a>.</span><span class="tscolor" lg_zh="t_c3975a3e5eea4ff9a571609f99d45897"><span lg_kh="1">(</span>PropertyTable 在其每个 Property 实例上调用 preWrite。对于 DocumentProperty 实例，此调用是无操作的。对于 RootProperty，所采取的操作显示在 RootProperty preWrite 场景图中。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="RootPropertyPreWrite"></a>
+     <h3 class="boxed"><span lg_en="t_5db4d84ae0744c8a93f0fdde338c91f9">RootProperty preWrite scenario diagram</span><span class="tscolor" lg_zh="t_5db4d84ae0744c8a93f0fdde338c91f9"><span lg_kh="1">(</span>RootProperty preWrite 场景图<span lg_kh="1">)</span></span></h3>
+     <p><img alt="RootProperty preWrite scenario diagram" src="images/POIFSRootPropertyPreWrite.gif"></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_367caef376bd4b63b9b9524de6fbe590">Step</span><span class="tscolor" lg_zh="t_367caef376bd4b63b9b9524de6fbe590"><span lg_kh="1">(</span>步<span lg_kh="1">)</span></span></th>
+        <th colspan="2" rowspan="1"><span lg_en="t_28fa4e154b524869a066f2b44cbc8c95">Description</span><span class="tscolor" lg_zh="t_28fa4e154b524869a066f2b44cbc8c95"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_addac81a278946609d2d4b9b0245e7af">1</span><span class="tscolor" lg_zh="t_addac81a278946609d2d4b9b0245e7af"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></th>
+        <td colspan="2" rowspan="1"><span lg_en="t_5233e6d3cf1447e4b7a74ec749af7da5">The <a href="#RootProperty">RootProperty</a> sets its child property with the index of the child <a href="#Property">Property</a> that is first in its <span class="codefrag">List</span> of children.</span><span class="tscolor" lg_zh="t_5233e6d3cf1447e4b7a74ec749af7da5"><span lg_kh="1">(</span>RootProperty 将其子属性设置为其子属性列表中第一个的子属性的索引。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_1e551f3e061e4e90b2c1d0f3d8fd10e3">2</span><span class="tscolor" lg_zh="t_1e551f3e061e4e90b2c1d0f3d8fd10e3"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_a689ba687f634bd582acb45999f21113">The <a href="#RootProperty">RootProperty</a> sets its child's next property field with the index of the child's next sibling in the RootProperty's <span class="codefrag">List</span> of children. If the child is the last in the <span class="codefrag">List</span>, its next property field is set to <span class="codefrag">-1</span>.</span><span class="tscolor" lg_zh="t_a689ba687f634bd582acb45999f21113"><span lg_kh="1">(</span>RootProperty 使用 RootProperty 的子项列表中子项的下一个兄弟的索引来设置其子项的下一个属性字段。如果孩子是列表中的最后一个，则其下一个属性字段设置为 -1。<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="2"><span lg_en="t_ee284abdc5f6436ca6511964810f3361">These two steps are repeated for each <a href="#File">File</a> in the <a href="#RootProperty"> RootProperty</a>'s <span class="codefrag">List</span> of children.</span><span class="tscolor" lg_zh="t_ee284abdc5f6436ca6511964810f3361"><span lg_kh="1">(</span>对 RootProperty 的子项列表中的每个文件重复这两个步骤。<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_3a3a954a9b0d4a278f9d971ec5c54a47">3</span><span class="tscolor" lg_zh="t_3a3a954a9b0d4a278f9d971ec5c54a47"><span lg_kh="1">(</span>3<span lg_kh="1">)</span></span></th>
+        <td colspan="1" rowspan="1"><span lg_en="t_bfed156c1dbe476a91cefdd445eb41dc">The <a href="#RootProperty">RootProperty</a> sets its child's previous property field with a value of <span class="codefrag">-1</span>.</span><span class="tscolor" lg_zh="t_bfed156c1dbe476a91cefdd445eb41dc"><span lg_kh="1">(</span>RootProperty 将其子项的先前属性字段设置为 -1。<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/poifs/design.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

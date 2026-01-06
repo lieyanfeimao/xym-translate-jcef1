@@ -1,0 +1,317 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>POI5.0.0帮助文档</title>
+<meta charset="UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+<style>
+html {
+	height:100%;
+}
+body {
+	padding:5px;
+	height:100%;
+}
+.container-fluid {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	height:100%;
+}
+
+ul {
+	margin:0px;font-size:13px;list-style:none;padding-left:15px;
+}
+.ulbox {
+	padding:5px;
+}
+.ir {
+	margin-right:3px;
+	color:#337ab7;
+	cursor:pointer;
+}
+.isel {
+	color:red;
+}
+</style>
+
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row" style="height:100%;">
+			<div class="col-sm-3 col-xs-3">
+				<input type="text" class="form-control" id="search" placeholder="搜索文章,支持正则" style="width:90%;margin-bottom:10px;" autocomplete="off" />
+				
+				<div id="ulbox">
+				
+				</div>
+				<!--
+				<ul class="ulbox">
+					<li><i class="glyphicon glyphicon-minus ir"></i><a href="#">MySQL 5.7 Reference Manual</a><span style="color:green;">(MySQL 5.7 开发手册)</span></li>
+					<li><a href="#"><i class="glyphicon glyphicon-minus ir"></i>Preface and Legal Notices</a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-minus ir"></i>1 General Information</a>
+						<ul>
+							<li><a href="#"><i class="glyphicon glyphicon-minus ir"></i>1.1 About This Manual</a></li>
+							<li><a href="#"><i class="glyphicon glyphicon-minus ir"></i>1.2 Overview of the MySQL Database Management System</a>
+								<ul>
+									<li><a href="#"><i class="glyphicon glyphicon-plus ir"></i>1.2.1 What is MySQL?</a></li>
+									<li><a href="#"><i class="glyphicon glyphicon-plus ir"></i>1.2.2 The Main Features of MySQL</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				-->
+			</div>
+			<div class="col-sm-9 col-xs-9" style="height:100%;">
+				<iframe src="poi/index.html" style="border:0;width:100%;height:100%;" id="dociframe"></iframe>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+	var treeData=[
+		{en:'POI5.0.0 Component APIs',zh:'POI5.0.0组件API',mainPath:'',path:'poi/index.html',open:true,childs:[
+			{en:'Overview',zh:'总览',mainPath:'',path:'poi/index.html',open:true},
+			{en:'Javadocs',zh:'Java API文档',mainPath:'',path:'../api/index.html',open:false},
+			{en:'Excel (HSSF/XSSF)',zh:'Excel (HSSF/XSSF)',mainPath:'',path:'poi/spreadsheet/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/spreadsheet/index.html',open:true},
+				{en:'Quick Guide',zh:'快速指南',mainPath:'',path:'poi/spreadsheet/quick-guide.html',open:true},
+				{en:'HOWTO',zh:'怎样去做',mainPath:'',path:'poi/spreadsheet/how-to.html',open:true},
+				{en:'HSSF to SS Converting',zh:'HSSF到SS的转换',mainPath:'',path:'poi/spreadsheet/converting.html',open:true},
+				{en:'Formula Support',zh:'公式支持',mainPath:'',path:'poi/spreadsheet/formula.html',open:true},
+				{en:'Formula Evaluation',zh:'配方评估',mainPath:'',path:'poi/spreadsheet/eval.html',open:true},
+				{en:'Eval Dev Guide',zh:'评估开发指南',mainPath:'',path:'poi/spreadsheet/eval-devguide.html',open:true},
+				{en:'Examples',zh:'例子',mainPath:'',path:'poi/spreadsheet/examples.html',open:true},
+				{en:'Use Case',zh:'用例',mainPath:'',path:'poi/spreadsheet/use-case.html',open:true},
+				{en:'Pictorial Docs',zh:'画图文档',mainPath:'',path:'poi/spreadsheet/diagrams.html',open:true},
+				{en:'Limitations',zh:'局限性',mainPath:'',path:'poi/spreadsheet/limitations.html',open:true},
+				{en:'User Defined Functions',zh:'用户定义功能',mainPath:'',path:'poi/spreadsheet/user-defined-functions.html',open:true},
+				{en:'ExcelAnt Tests',zh:'ExcelAnt测试',mainPath:'',path:'poi/spreadsheet/excelant.html',open:true},
+				{en:'Hacking HSSF',zh:'入侵HSSF',mainPath:'',path:'poi/spreadsheet/hacking-hssf.html',open:true},
+				{en:'Record Generator',zh:'记录生成器',mainPath:'',path:'poi/spreadsheet/record-generator.html',open:true},
+				{en:'Charts',zh:'图表',mainPath:'',path:'poi/spreadsheet/chart.html',open:true}
+			]},
+			{en:'PowerPoint (HSLF/XSLF)',zh:'PowerPoint (HSLF/XSLF)',mainPath:'',path:'poi/slideshow/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/slideshow/index.html',open:true},
+				{en:'Quick Guide',zh:'快速指南',mainPath:'',path:'poi/slideshow/quick-guide.html',open:true},
+				{en:'HSLF Cookbook',zh:'HSLF Cookbook',mainPath:'',path:'poi/slideshow/how-to-shapes.html',open:true},
+				{en:'XSLF Cookbook',zh:'XSLF Cookbook',mainPath:'',path:'poi/slideshow/xslf-cookbook.html',open:true},
+				{en:'Render SL/WMF/EMF',zh:'渲染SL/WMF/EMF',mainPath:'',path:'poi/slideshow/ppt-wmf-emf-renderer.html',open:true},
+				{en:'PPT File Format',zh:'PPT文件格式',mainPath:'',path:'poi/slideshow/ppt-file-format.html',open:true}
+			]},
+			{en:'Word (HWPF/XWPF)',zh:'Word (HWPF/XWPF)',mainPath:'',path:'poi/document/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/document/index.html',open:true},
+				{en:'HWPF Quick Guide',zh:'HWPF快速指南',mainPath:'',path:'poi/document/quick-guide.html',open:true},
+				{en:'XWPF Quick Guide',zh:'XWPF快速指南',mainPath:'',path:'poi/document/quick-guide-xwpf.html',open:true},
+				{en:'HWPF Format',zh:'HWPF格式',mainPath:'',path:'poi/document/docoverview.html',open:true},
+				{en:'HWPF Project plan',zh:'HWPF项目计划',mainPath:'',path:'poi/document/projectplan.html',open:true}
+			]},
+			{en:'Outlook (HSMF)',zh:'Outlook (HSMF)',mainPath:'',path:'poi/hsmf/index.html',open:true},
+			{en:'Visio (HDGF+XDGF)',zh:'Visio (HDGF+XDGF)',mainPath:'',path:'poi/diagram/index.html',open:true},
+			
+			{en:'Publisher (HPBF)',zh:'Publisher (HPBF)',mainPath:'',path:'poi/hpbf/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/hpbf/index.html',open:true},
+				{en:'File Format',zh:'文件格式',mainPath:'',path:'poi/hpbf/file-format.html',open:true}
+			]},
+			{en:'OLE2 Filesystem (POIFS)',zh:'OLE2 Filesystem (POIFS)',mainPath:'',path:'poi/poifs/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/poifs/index.html',open:true},
+				{en:'HOWTO',zh:'怎样去做',mainPath:'',path:'poi/poifs/how-to.html',open:true},
+				{en:'Embedded Documents',zh:'嵌入式文件',mainPath:'',path:'poi/poifs/embeded.html',open:true},
+				{en:'File System Documentation',zh:'文件系统文档',mainPath:'',path:'poi/poifs/fileformat.html',open:true},
+				{en:'Use Cases',zh:'用例',mainPath:'',path:'poi/poifs/usecases.html',open:true},
+				{en:'Design',zh:'设计',mainPath:'',path:'poi/poifs/design.html',open:true}
+			]},
+			{en:'OLE2 Document Props (HPSF)',zh:'OLE2 Document Props (HPSF)',mainPath:'',path:'poi/hpsf/index.html',open:false,childs:[
+				{en:'Overview',zh:'总览',mainPath:'',path:'poi/hpsf/index.html',open:true},
+				{en:'HOWTO',zh:'怎样去做',mainPath:'',path:'poi/hpsf/how-to.html',open:true},
+				{en:'Thumbnails',zh:'缩略图',mainPath:'',path:'poi/hpsf/thumbnails.html',open:true},
+				{en:'Internals',zh:'内部构造',mainPath:'',path:'poi/hpsf/internals.html',open:true},
+				{en:'To Do',zh:'去做',mainPath:'',path:'poi/hpsf/todo.html',open:true}
+			]},
+			{en:'TNEF (HMEF) for winmail.dat',zh:'TNEF (HMEF) for winmail.dat',mainPath:'',path:'poi/hmef/index.html',open:true},
+			{en:'OpenXML4J (OOXML)',zh:'OpenXML4J (OOXML)',mainPath:'',path:'poi/oxml4j/index.html',open:true},
+			{en:'Logging framework',zh:'Logging framework',mainPath:'',path:'poi/logging.html',open:true}
+		]}
+	];
+	var ntreeData;
+	//data  数据    lev  当前层级   dp  是否展示   name  ul元素的名
+	function createTreeList(data,lev,dp,name){
+		var $str='<ul id="'+name+'" style="display:'+(dp?'block':'none')+';">';
+		if(lev==0){
+			$str='<ul id="'+name+'" class="ulbox">';
+		}
+		
+		for(let i=0;i<data.length;i++){
+			$str+='<li>';
+			
+			if(data[i].open || !data[i].childs || data[i].childs.length==0){
+				$str+='<i class="glyphicon glyphicon-minus ir" uid="'+name+'_'+i+'"></i>';
+			}else{
+				$str+='<i class="glyphicon glyphicon-plus ir" uid="'+name+'_'+i+'"></i>';
+			}
+			
+			$str+='<a href="javascript:void(0)" onclick="openUrl(\''+data[i].mainPath+data[i].path+'\',this,\''+name+'_'+i+'\')">';
+			
+			$str+=data[i].en?data[i].en:"";
+			$str+=data[i].zh?"<span style=\"color:green;\">("+data[i].zh+")</span>":"";
+			
+			$str+='</a>';
+			
+			if(data[i].childs && data[i].childs.length>0){
+				$str+=createTreeList(data[i].childs,lev+1,data[i].open,name+"_"+i);
+			}
+			
+			$str+='</li>';
+		}
+		$str+='</ul>';
+		return $str;
+	}
+	
+	function initTree(){
+		ntreeData=treeData;
+		$("#ulbox").html(createTreeList(treeData,0,true,"t"));
+		initExpandIcon();
+	}
+	
+	function initExpandIcon(){
+		$("i").click(function(e){
+			var uid=$(this).attr("uid");
+			var strs=uid.split("_");
+			
+			var data=ntreeData;
+			
+			for(var i=1;i<strs.length;i++){
+				if(i==1){
+					data=data[strs[i]];
+				}else{
+					data=data.childs[strs[i]];
+				}
+				if(!data){
+					break;
+				}
+				if(i==strs.length-1){
+					if(!data.childs || data.childs.length==0){
+						break;
+					}
+					if(data.open){//如果是展开状态
+						$("#"+uid).hide();
+						data.open=false;
+						$(this).removeClass("glyphicon-minus").addClass("glyphicon-plus");
+					}else{
+						$("#"+uid).show();
+						data.open=true;
+						$(this).removeClass("glyphicon-plus").addClass("glyphicon-minus");
+					}
+				}
+			}
+		});
+	}
+
+function showOrHideList(uid){
+	var strs=uid.split("_");
+	var data=ntreeData;
+	for(var i=1;i<strs.length;i++){
+		if(i==1){
+			data=data[strs[i]];
+		}else{
+			data=data.childs[strs[i]];
+		}
+		if(!data){
+			break;
+		}
+		if(i==strs.length-1){
+			if(!data.childs || data.childs.length==0){
+				break;
+			}
+			if(data.open){
+				$("#"+uid).hide();
+				data.open=false;
+				$("[uid="+uid+"]").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+			}else{
+				$("#"+uid).show();
+				data.open=true;
+				$("[uid="+uid+"]").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+			}
+		}
+	}
+}
+
+function openUrl(url,obj,uid){
+	$("a").removeClass("isel");
+	$(obj).addClass("isel");
+	if(url!="../api/index.html"){
+		$("#dociframe").attr("src",url);
+	}else{
+		window.open("../api/index.html");
+	}
+	showOrHideList(uid);
+}
+
+function findTreeList(val){
+	var nlist=new Array();
+	if(val===""){
+		ntreeData=treeData;
+		$("#ulbox").html(createTreeList(treeData,0,true,"t"));
+		initExpandIcon();
+	}else{
+		dgfindTreeList(treeData,nlist,val);
+		ntreeData=nlist;
+		$("#ulbox").html(createTreeList(nlist,0,true,"t"));
+		initExpandIcon();
+	}
+}
+
+//递归遍历
+function dgfindTreeList(data,nlist,val){
+	var STR_RGX=eval("/("+val+")/gi");
+	for(let s of data){
+		var msen=s.en.match(STR_RGX);
+		var mszh=s.zh.match(STR_RGX);
+		var mstr=s.en;			
+		if(msen!=null){
+			mstr=markStr(mstr,msen[0]);
+		}
+		
+		var zmstr=s.zh;			
+		if(mszh!=null){
+			zmstr=markStr(zmstr,mszh[0]);
+		}
+		
+		var cnlist=new Array();
+		if(s.childs && s.childs.length>0){
+			dgfindTreeList(s.childs,cnlist,val);
+		}
+		if(msen!=null || mszh!=null || cnlist.length>0){
+			nlist[nlist.length]={en:mstr,zh:zmstr,mainPath:s.mainPath,path:s.path,open:s.open,childs:cnlist};
+		}
+		
+	}
+}
+
+/**
+* 替换字符串
+* con 内容，rstr 匹配的字符串
+*/
+function markStr(con,rstr){
+	var nstr='<span style="color:red;">'+rstr+'</span>';
+	var rgx1=eval("/("+rstr+")/");
+	return con.replace(rgx1,nstr);
+}
+
+$(function(){
+	initTree();
+	
+    $("#search").bind('input propertychange',function(event) {  
+		findTreeList($(this).val());
+    });
+});
+
+</script>

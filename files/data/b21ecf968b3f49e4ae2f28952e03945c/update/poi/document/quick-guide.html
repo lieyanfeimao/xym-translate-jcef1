@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>POI-HWPF - A Quick Guide</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>POI-HWPF - A Quick Guide
+     <div name="tsUpdate" data-id="t_768a9c7273514928be21e4c05065e301" data-tpl="0" data-txt-color="green"></div></h1>
+    <h3>Overview
+     <div name="tsUpdate" data-id="t_48843926d4bd48f693002481a78c3b78" data-tpl="0" data-txt-color="orange"></div></h3>
+    <div id="front-matter"></div>
+    <p>HWPF is still in early development. It is in the <a href="http://svn.apache.org/viewvc/poi/trunk/src/scratchpad/"> scratchpad section of the SVN.</a> You will need to ensure you either have a recent SVN checkout, or a recent SVN nightly build (including the scratchpad jar!)
+     <div name="tsUpdate" data-id="t_1340d80ca25e4aa480fc0641ff598db5" data-tpl="0" data-txt-color="green"></div></p>
+    <a name="Basic+Text+Extraction"></a>
+    <h2 class="boxed">Basic Text Extraction
+     <div name="tsUpdate" data-id="t_753801cac11d4498b55e7421a410edaf" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>For basic text extraction, make use of <span class="codefrag">org.apache.poi.hwpf.extractor.WordExtractor</span>. It accepts an input stream or a <span class="codefrag">HWPFDocument</span>. The <span class="codefrag">getText()</span> method can be used to get the text from all the paragraphs, or <span class="codefrag">getParagraphText()</span> can be used to fetch the text from each paragraph in turn. The other option is <span class="codefrag">getTextFromPieces()</span>, which is very fast, but tends to return things that aren't text from the page. YMMV.
+      <div name="tsUpdate" data-id="t_d40a9bbbf685421a83d17043dc1a683d" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Specific+Text+Extraction"></a>
+    <h2 class="boxed">Specific Text Extraction
+     <div name="tsUpdate" data-id="t_ed3fb41758ff4b3c9f5e72b338b21515" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>To get specific bits of text, first create a <span class="codefrag">org.apache.poi.hwpf.HWPFDocument</span>. Fetch the range with <span class="codefrag">getRange()</span>, then get paragraphs from that. You can then get text and other properties.
+      <div name="tsUpdate" data-id="t_40f9c9533b8947f3bc72b680ff4fb07e" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Headers+and+Footers"></a>
+    <h2 class="boxed">Headers and Footers
+     <div name="tsUpdate" data-id="t_0a98e3ecfdba47128fe0e69ebb162c4e" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>To get at the headers and footers of a word document, first create a <span class="codefrag">org.apache.poi.hwpf.HWPFDocument</span>. Next, you need to create a <span class="codefrag">org.apache.poi.hwpf.usermodel.HeaderStores</span>, passing it your HWPFDocument. Finally, the HeaderStores gives you access to the headers and footers, including first / even / odd page ones if defined in your document. Additionally, HeaderStores provides a method for removing any macros in the text, which is helpful as many headers and footers do end up with macros in them.
+      <div name="tsUpdate" data-id="t_7de969c43cfe44f3b2c7049b158c19a2" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Changing+Text"></a>
+    <h2 class="boxed">Changing Text
+     <div name="tsUpdate" data-id="t_c69e55cde29f486e986ba5ff361c0faf" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>It is possible to change the text via <span class="codefrag">insertBefore()</span> and <span class="codefrag">insertAfter()</span> on a <span class="codefrag">Range</span> object (either a <span class="codefrag">Range</span>, <span class="codefrag">Paragraph</span> or <span class="codefrag">CharacterRun</span>). It is also possible to delete a <span class="codefrag">Range</span>. This code will work in many, but not all cases, and patches to improve it are gratefully received!
+      <div name="tsUpdate" data-id="t_3ac0f97342c941fab41705d68960dc55" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Further+Examples"></a>
+    <h2 class="boxed">Further Examples
+     <div name="tsUpdate" data-id="t_13250d762f3946d288f93c2ffe4862fa" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>For now, the best source of additional examples is in the unit tests. <a href="http://svn.apache.org/viewvc/poi/trunk/src/scratchpad/testcases/org/apache/poi/hwpf/"> Browse the HWPF unit tests.</a>
+      <div name="tsUpdate" data-id="t_b5df0f945e324021905d8b3ac695faa8" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Nick Burch</font>
+     <div name="tsUpdate" data-id="t_144137e3da544c4c8c222352a664f9aa" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/document/quick-guide.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='8b735e2634214790b6918a46113eccca';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

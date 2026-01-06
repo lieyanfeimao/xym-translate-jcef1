@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Record Generator HOWTO</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_dcafa3c01c3a4c9fac2ee545f9557566">Record Generator HOWTO</span><span class="tscolor" lg_zh="t_dcafa3c01c3a4c9fac2ee545f9557566"><span lg_kh="1">(</span>记录生成器 HOWTO<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="How+to+Use+the+Record+Generator"></a>
+    <h2 class="boxed"><span lg_en="t_72118ba0e9b84dc8bd2362e0a96fe49b">How to Use the Record Generator</span><span class="tscolor" lg_zh="t_72118ba0e9b84dc8bd2362e0a96fe49b"><span lg_kh="1">(</span>如何使用记录生成器<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="History"></a>
+     <h3 class="boxed"><span lg_en="t_23d87a60b5f3456da4d94127e1423b72">History</span><span class="tscolor" lg_zh="t_23d87a60b5f3456da4d94127e1423b72"><span lg_kh="1">(</span>历史<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_f6c30423f1f54c64a3ee8c82d06ec65e">The record generator was born from frustration with translating the Excel records to Java classes. Doing this manually is a time consuming process. It's also very easy to make mistakes.</span><span class="tscolor" lg_zh="t_f6c30423f1f54c64a3ee8c82d06ec65e"><span lg_kh="1">(</span>记录生成器是在将 Excel 记录转换为 Java 类的过程中产生的。手动执行此操作是一个耗时的过程。也很容易出错。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_aa4ce49228ae404cbb51d317a487152c">A utility was needed to take the definition of what a record looked like and do all the boring and repetitive work.</span><span class="tscolor" lg_zh="t_aa4ce49228ae404cbb51d317a487152c"><span lg_kh="1">(</span>需要一个实用程序来定义记录的样子并完成所有无聊和重复的工作。<span lg_kh="1">)</span></span></p>
+     <a name="Capabilities"></a>
+     <h3 class="boxed"><span lg_en="t_7fff282a8f604742b324f1fa77100538">Capabilities</span><span class="tscolor" lg_zh="t_7fff282a8f604742b324f1fa77100538"><span lg_kh="1">(</span>能力<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_962cba1c7d55497e99a5a8691ca5305d">The record generator takes XML as input and produces the following output:</span><span class="tscolor" lg_zh="t_962cba1c7d55497e99a5a8691ca5305d"><span lg_kh="1">(</span>记录生成器将 XML 作为输入并产生以下输出：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_e141e85f66bf4f1fbd7248f06a8718f8">A Java file capable of decoding and encoding the record.</span><span class="tscolor" lg_zh="t_e141e85f66bf4f1fbd7248f06a8718f8"><span lg_kh="1">(</span>能够对记录进行解码和编码的 Java 文件。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_feaa0809d0da486baad7d4298915ccd3">A test class that provides a fill-in-the-blanks implementation of a test case for ensuring the record operates as designed.</span><span class="tscolor" lg_zh="t_feaa0809d0da486baad7d4298915ccd3"><span lg_kh="1">(</span>一个测试类，它提供测试用例的填空实现，以确保记录按设计运行。<span lg_kh="1">)</span></span></li>
+     </ul>
+     <a name="Usage"></a>
+     <h3 class="boxed"><span lg_en="t_204acd0d8ba54a358846a283e630b953">Usage</span><span class="tscolor" lg_zh="t_204acd0d8ba54a358846a283e630b953"><span lg_kh="1">(</span>用法<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_518f8ee66fcc4745ae4784ed2ccebbab">The record generator is invoked as an Ant target (generate-records). It goes through looking for all files in <span class="codefrag">src/records/definitions</span> ending with _record.xml. It then creates two files; the Java record definition and the Java test case template.</span><span class="tscolor" lg_zh="t_518f8ee66fcc4745ae4784ed2ccebbab"><span lg_kh="1">(</span>记录生成器作为 Ant 目标调用（生成记录）。它会在 src/records/definitions 中查找以 _record.xml 结尾的所有文件。然后它创建两个文件； Java 记录定义和 Java 测试用例模板。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_a318d52569ef493e9ae29c2b47e4eb56">The records themselves have the following general layout:</span><span class="tscolor" lg_zh="t_a318d52569ef493e9ae29c2b47e4eb56"><span lg_kh="1">(</span>记录本身具有以下总体布局：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">record id="0x1032" name="Frame" package="org.apache.poi.hssf.record"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> excel-record-id="FRAME"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;description&gt;The frame record indicates whether there is a border</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> around the displayed text of a chart.&lt;/description&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;author&gt;Glen Stampoultzis (glens at apache.org)&lt;/author&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;fields&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;field type="int" size="2" name="border type"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;const name="regular" value="0" description="regular rectangle or no border"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;const name="shadow" value="1" description="rectangle with shadow"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/field&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;field type="int" size="2" name="options"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;bit number="0" name="auto size"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> description="excel calculates the size automatically if true"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;bit number="1" name="auto position"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> description="excel calculates the position automatically"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/field&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/fields&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/record&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_bf1dd56eb5ca4973bce854c6bccc8f8b">The following table details the allowable types and sizes for the fields.</span><span class="tscolor" lg_zh="t_bf1dd56eb5ca4973bce854c6bccc8f8b"><span lg_kh="1">(</span>下表详细说明了字段的允许类型和大小。<span lg_kh="1">)</span></span></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1"><span lg_en="t_36cd00be2cb1499891aeb4a38aed03fb">Type</span><span class="tscolor" lg_zh="t_36cd00be2cb1499891aeb4a38aed03fb"><span lg_kh="1">(</span>类型<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_f438101919814d02941d8103dcdb4823">Size</span><span class="tscolor" lg_zh="t_f438101919814d02941d8103dcdb4823"><span lg_kh="1">(</span>尺寸<span lg_kh="1">)</span></span></th>
+        <th colspan="1" rowspan="1"><span lg_en="t_a03a43c8852149169fd06a56822164ff">Java Type</span><span class="tscolor" lg_zh="t_a03a43c8852149169fd06a56822164ff"><span lg_kh="1">(</span>Java 类型<span lg_kh="1">)</span></span></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_12b4065d8e2540389d6049bf4a0213ca">int</span><span class="tscolor" lg_zh="t_12b4065d8e2540389d6049bf4a0213ca"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_25c2643b4f404e9982efa6f8e18cf870">1</span><span class="tscolor" lg_zh="t_25c2643b4f404e9982efa6f8e18cf870"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_921afdfeda734eafb8d6a33b9f4d02a9">byte</span><span class="tscolor" lg_zh="t_921afdfeda734eafb8d6a33b9f4d02a9"><span lg_kh="1">(</span>字节<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_e42366dbb70241269766f09bcd197661">int</span><span class="tscolor" lg_zh="t_e42366dbb70241269766f09bcd197661"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_12bcfbcd9cf24f2da44ed27d7d7835c1">2</span><span class="tscolor" lg_zh="t_12bcfbcd9cf24f2da44ed27d7d7835c1"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_fc862aec0ed84bdc9d82575e0128101b">short</span><span class="tscolor" lg_zh="t_fc862aec0ed84bdc9d82575e0128101b"><span lg_kh="1">(</span>短的<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_cad108441b484fb48be7aaf4253dab7e">int</span><span class="tscolor" lg_zh="t_cad108441b484fb48be7aaf4253dab7e"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_7a23f085add443de8dd0613353917586">4</span><span class="tscolor" lg_zh="t_7a23f085add443de8dd0613353917586"><span lg_kh="1">(</span>4<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_d79016c4c25e43c0a086cee359156845">int</span><span class="tscolor" lg_zh="t_d79016c4c25e43c0a086cee359156845"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_d4a64f3940424b17abed5c98dc33ec2e">int</span><span class="tscolor" lg_zh="t_d4a64f3940424b17abed5c98dc33ec2e"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_42154b552ed34885b2cf79a156027008">8</span><span class="tscolor" lg_zh="t_42154b552ed34885b2cf79a156027008"><span lg_kh="1">(</span>8<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_0705aef5cd0947fcb0d66938baaa15ab">long</span><span class="tscolor" lg_zh="t_0705aef5cd0947fcb0d66938baaa15ab"><span lg_kh="1">(</span>长<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_7bc5319319544f99ae7918a621c7edf7">int</span><span class="tscolor" lg_zh="t_7bc5319319544f99ae7918a621c7edf7"><span lg_kh="1">(</span>整数<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_736b389d715b4960a2491aef45754f0f">varword</span><span class="tscolor" lg_zh="t_736b389d715b4960a2491aef45754f0f"><span lg_kh="1">(</span>变量字<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_da1aebe5f9cd493f9b0c85509cad9072">array of shorts</span><span class="tscolor" lg_zh="t_da1aebe5f9cd493f9b0c85509cad9072"><span lg_kh="1">(</span>短裤阵列<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_a44d566f76104437b42e6ab2b5fb3733">bits</span><span class="tscolor" lg_zh="t_a44d566f76104437b42e6ab2b5fb3733"><span lg_kh="1">(</span>位<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_fc2f6d67659e4ec68e85a219423dbff2">1</span><span class="tscolor" lg_zh="t_fc2f6d67659e4ec68e85a219423dbff2"><span lg_kh="1">(</span>1<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_76f7dd1fd3b7460c81b89dbf18687533">A byte comprising of a bits (defined by the bit element)</span><span class="tscolor" lg_zh="t_76f7dd1fd3b7460c81b89dbf18687533"><span lg_kh="1">(</span>由位组成的字节（由位元素定义）<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_392f8a2a7acd4137ac54c38392296183">bits</span><span class="tscolor" lg_zh="t_392f8a2a7acd4137ac54c38392296183"><span lg_kh="1">(</span>位<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_9244073627734614a5d4cb7f9ea0740a">2</span><span class="tscolor" lg_zh="t_9244073627734614a5d4cb7f9ea0740a"><span lg_kh="1">(</span>2<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_99fca861491a4f4d92ff2c4c801ae72d">An short comprising of a bits</span><span class="tscolor" lg_zh="t_99fca861491a4f4d92ff2c4c801ae72d"><span lg_kh="1">(</span>一个由位组成的短<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_b33b6ac8baeb4ba5b49f0ce6776907fe">bits</span><span class="tscolor" lg_zh="t_b33b6ac8baeb4ba5b49f0ce6776907fe"><span lg_kh="1">(</span>位<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_2488d92e7f814fdcad005ab217f3155b">4</span><span class="tscolor" lg_zh="t_2488d92e7f814fdcad005ab217f3155b"><span lg_kh="1">(</span>4<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_8c2dcc15d0c647c2999c7036c81bbbb6">A int comprising of a bits</span><span class="tscolor" lg_zh="t_8c2dcc15d0c647c2999c7036c81bbbb6"><span lg_kh="1">(</span>由位组成的 int<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_a3e99f6f99e946c6b647ec28bbe6ef33">float</span><span class="tscolor" lg_zh="t_a3e99f6f99e946c6b647ec28bbe6ef33"><span lg_kh="1">(</span>漂浮<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_c7b62b0ee2d04634ae65e71ec3b132a9">8</span><span class="tscolor" lg_zh="t_c7b62b0ee2d04634ae65e71ec3b132a9"><span lg_kh="1">(</span>8<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_7423fd14489f4d978aaf1fbd0437a920">double</span><span class="tscolor" lg_zh="t_7423fd14489f4d978aaf1fbd0437a920"><span lg_kh="1">(</span>双倍的<span lg_kh="1">)</span></span></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><span lg_en="t_43d236d0efb04fa3a61981703ba6f364">hbstring</span><span class="tscolor" lg_zh="t_43d236d0efb04fa3a61981703ba6f364"><span lg_kh="1">(</span>hbstring<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_814a14358a6d42048ae97696e2cc1e07">java expression</span><span class="tscolor" lg_zh="t_814a14358a6d42048ae97696e2cc1e07"><span lg_kh="1">(</span>java表达式<span lg_kh="1">)</span></span></td>
+        <td colspan="1" rowspan="1"><span lg_en="t_be2e2b011c7848919ff8a176c81954ce">String</span><span class="tscolor" lg_zh="t_be2e2b011c7848919ff8a176c81954ce"><span lg_kh="1">(</span>细绳<span lg_kh="1">)</span></span></td>
+       </tr>
+      </tbody>
+     </table>
+     <p><span lg_en="t_a946d425dfcb4b23b7578f5f1d38be63">The Java records are regenerated each time the record generator is run, however the test stubs are only created if the test stub does not already exist. What this means is that you may change test stubs but not the generated records.</span><span class="tscolor" lg_zh="t_a946d425dfcb4b23b7578f5f1d38be63"><span lg_kh="1">(</span>每次运行记录生成器时都会重新生成 Java 记录，但是只有在测试存根不存在时才会创建测试存根。这意味着您可以更改测试存根，但不能更改生成的记录。<span lg_kh="1">)</span></span></p>
+     <a name="Custom+Field+Types"></a>
+     <h3 class="boxed"><span lg_en="t_7512d0b118ec4d3586e0bb01bdef6138">Custom Field Types</span><span class="tscolor" lg_zh="t_7512d0b118ec4d3586e0bb01bdef6138"><span lg_kh="1">(</span>自定义字段类型<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_481c30c2733f4da594edae6a9b9ff9a6">Occasionally the builtin types are not enough. More control over the encoding and decoding of the streams is required. This can be achieved using a custom type.</span><span class="tscolor" lg_zh="t_481c30c2733f4da594edae6a9b9ff9a6"><span lg_kh="1">(</span>有时内置类型是不够的。需要对流的编码和解码进行更多控制。这可以使用自定义类型来实现。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c3b6b277c83d45339c368dfe4a310211">A custom type lets you escape to java to define the way in which the field encodes and decodes. To code a custom type you declare your field like this:</span><span class="tscolor" lg_zh="t_c3b6b277c83d45339c368dfe4a310211"><span lg_kh="1">(</span>自定义类型允许您转义到 java 来定义字段编码和解码的方式。要编写自定义类型，您可以像这样声明您的字段：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">field type="custom:org.apache.poi.hssf.record.LinkedDataFormulaField"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> size="var" name="formula of link" description="formula"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_47b71bc86acf48bb8c88ee81c12546b0">Where the class name specified after <span class="codefrag">custom:</span> is a class implementing the interface <span class="codefrag">CustomField</span>.</span><span class="tscolor" lg_zh="t_47b71bc86acf48bb8c88ee81c12546b0"><span lg_kh="1">(</span>其中custom:后面指定的类名是实现接口CustomField的类。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_448d952a0dbc43548484ebdfa56d82f6">You can then implement the encoding yourself.</span><span class="tscolor" lg_zh="t_448d952a0dbc43548484ebdfa56d82f6"><span lg_kh="1">(</span>然后，您可以自己实现编码。<span lg_kh="1">)</span></span></p>
+     <a name="How+it+Works"></a>
+     <h3 class="boxed"><span lg_en="t_6d6d495b492941b7a644f6aaa50816d9">How it Works</span><span class="tscolor" lg_zh="t_6d6d495b492941b7a644f6aaa50816d9"><span lg_kh="1">(</span>如何运行？<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_839ddd25b30c4615835d7dedf8f664da">The record generation works by taking an XML file and styling it using XSLT. Given that XSLT is a little limited in some ways it was necessary to add a little Java code to the mix.</span><span class="tscolor" lg_zh="t_839ddd25b30c4615835d7dedf8f664da"><span lg_kh="1">(</span>记录生成是通过获取一个 XML 文件并使用 XSLT 对其进行样式设置的方式工作的。鉴于 XSLT 在某些方面受到了一些限制，因此有必要在其中添加一些 Java 代码。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_8761df77366d4b1cbc6b5f7891631a52">See record.xsl, record_test.xsl, FieldIterator.java, RecordUtil.java, RecordGenerator.java</span><span class="tscolor" lg_zh="t_8761df77366d4b1cbc6b5f7891631a52"><span lg_kh="1">(</span>参见record.xsl、record_test.xsl、FieldIterator.java、RecordUtil.java、RecordGenerator.java<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_25f39e7aa54b4a87b495e03c89fb776f">There is a corresponding "type" generator for HWPF. See the HWPF documentation for details.</span><span class="tscolor" lg_zh="t_25f39e7aa54b4a87b495e03c89fb776f"><span lg_kh="1">(</span>HWPF 有一个相应的“类型”生成器。有关详细信息，请参阅 HWPF 文档。<span lg_kh="1">)</span></span></p>
+     <a name="Limitations"></a>
+     <h3 class="boxed"><span lg_en="t_fa74db08784646bbac4604d1d3d16829">Limitations</span><span class="tscolor" lg_zh="t_fa74db08784646bbac4604d1d3d16829"><span lg_kh="1">(</span>局限性<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_cfa6551257dd4cd5803eb65419ec2c4e">The record generator does not handle all possible record types and goes not intend to perform this function. When dealing with a non-standard record sometimes the cost-benefit of coding the record by hand will be greater than attempting modify the generator. The main point of the record generator is to save time, so keep that in mind.</span><span class="tscolor" lg_zh="t_cfa6551257dd4cd5803eb65419ec2c4e"><span lg_kh="1">(</span>记录生成器不处理所有可能的记录类型并且不打算执行此功能。在处理非标准记录时，有时手动编码记录的成本效益将大于尝试修改生成器。记录生成器的主要目的是节省时间，所以请记住这一点。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_a9bbdce9ee3643e39ffd110e11bebcba">Currently the the XSL file that generates the record calls out to Java objects. The Java code for the record generation is currently quite messy with minimal comments.</span><span class="tscolor" lg_zh="t_a9bbdce9ee3643e39ffd110e11bebcba"><span lg_kh="1">(</span>目前，生成记录的 XSL 文件调用 Java 对象。用于记录生成的 Java 代码目前非常混乱，注释很少。<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_a221500f5fb24c148acd4c817442282a"><font size="-2">by&nbsp;Glen Stampoultzis,&nbsp;Andrew C. Oliver</font></span><span class="tscolor" lg_zh="t_a221500f5fb24c148acd4c817442282a"><span lg_kh="1">(</span>作者：Glen Stampoultzis、Andrew C. Oliver<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/record-generator.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

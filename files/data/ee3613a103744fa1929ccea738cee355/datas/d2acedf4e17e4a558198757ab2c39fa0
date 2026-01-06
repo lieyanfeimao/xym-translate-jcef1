@@ -1,0 +1,1 @@
+[{"id":"t_2faa037ef7364fe4b86b5f6c031753f5","oldText":"An exception thrown by implementors of FormulaEvaluator when attempting to evaluate a formula which requires a function that POI does not (yet) support.","tlText":"FormulaEvolator的实现者在尝试评估需要DOE（尚未）不支持的函数的公式时引发的异常。","version":0}]

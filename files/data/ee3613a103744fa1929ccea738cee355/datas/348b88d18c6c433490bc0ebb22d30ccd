@@ -1,0 +1,1 @@
+[{"id":"t_13ea7927ec3d49f8b7f2417b132a504b","oldText":"This exception is thrown when we try to open a file that\u0027s actually an Office 2007+ XML file, rather than an OLE2 file (which is what POIFS works with)","tlText":"当我们尝试打开实际上是Office 2007+ ML文件而不是MBE 2文件（POIFS使用的文件）时，会引发此异常","version":0}]

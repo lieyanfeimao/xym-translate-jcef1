@@ -1,0 +1,1 @@
+[{"id":"t_74a091f52c264958af17671ba210a8b6","oldText":"The EmfPlusRegion object specifies line and curve segments that define a nonrectilinear shape.","tlText":"EmfPlusArea对象指定定义非直线形状的直线和曲线段。","version":0},{"id":"t_bfc27b5538234f428e2902996ba9bbe2","oldText":"The EmfPlusRegionNode object specifies nodes of a graphics region.","tlText":"EmfPlusRegion节点对象指定图形区域的节点。","version":0}]

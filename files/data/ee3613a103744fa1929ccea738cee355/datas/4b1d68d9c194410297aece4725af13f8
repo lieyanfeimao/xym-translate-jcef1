@@ -1,0 +1,1 @@
+[{"id":"t_8621ee2356184ee3977454eb27200f0d","oldText":"This exception is thrown when we are given an ODF-based file (eg OpenOffice .ods) instead of an actually OOXML (Office Open XML) file","tlText":"当我们获得基于ODF的文件（例如OpenOffice .ods）而不是实际的OOML（Office Open ML）文件时，会引发此异常","version":0}]

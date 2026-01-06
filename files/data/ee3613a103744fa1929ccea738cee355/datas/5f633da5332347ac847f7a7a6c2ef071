@@ -1,0 +1,1 @@
+[{"id":"t_331f73c739e84b8d86c605eaa84c3d35","oldText":"For use in BiffViewer which may construct Records that don\u0027t completely read all available data. This exception should never be thrown otherwise.","tlText":"用于BiffViewer中，它可能会构建不完全读取所有可用数据的记录。否则永远不应抛出此异常。","version":0}]

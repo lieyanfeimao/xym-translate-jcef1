@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - Component Overview</title>
+  <link type="text/css" href="../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../skin/profile.css" rel="stylesheet">
+  <script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../layui/css/layui.css" rel="stylesheet">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>Apache POI - Component Overview
+     <div name="tsUpdate" data-id="t_8217b36b882f4318b252022ba238032b" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="Apache+POI+Project+Components"></a>
+    <h2 class="boxed">Apache POI Project Components
+     <div name="tsUpdate" data-id="t_0f678a11aef7477eb8f2b781391c8f5e" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>The Apache POI project is the master project for developing pure Java ports of file formats based on Microsoft's OLE 2 Compound Document Format. OLE 2 Compound Document Format is used by Microsoft Office Documents, as well as by programs using MFC property sets to serialize their document objects.
+      <div name="tsUpdate" data-id="t_a22a688b9894499cb9f17044c7e301bd" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Apache POI is also the master project for developing pure Java ports of file formats based on Office Open XML (ooxml). OOXML is part of an ECMA / ISO standardisation effort. This documentation is quite large, but you can normally find the bit you need without too much effort! <a href="http://www.ecma-international.org/publications/standards/Ecma-376.htm">ECMA-376 standard is here</a>, and is also under the <a href="https://msdn.microsoft.com/en-us/openspecifications/default">Microsoft OSP</a>.
+      <div name="tsUpdate" data-id="t_0a4a9573e6e84b28978cbafb262c47ac" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="POIFS+for+OLE+2+Documents"></a>
+     <h3 class="boxed">POIFS for OLE 2 Documents
+      <div name="tsUpdate" data-id="t_02fd7fe3585d4228b99f831e70552b4d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>POIFS is the oldest and most stable part of POI. It is our port of the OLE 2 Compound Document Format to pure Java. It supports both read and write functionality. All of our components for the binary (non-XML) Microsoft Office formats ultimately rely on it by definition. Please see <a href="./poifs/index.html">the POIFS project page</a> for more information.
+      <div name="tsUpdate" data-id="t_b0ff7f2aca2c452eb5e916f629870675" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HSSF+and+XSSF+for+Excel+Documents"></a>
+     <h3 class="boxed">HSSF and XSSF for Excel Documents
+      <div name="tsUpdate" data-id="t_33e2689e65454f14bf51f57ceee4e66c" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HSSF is our port of the Microsoft Excel 97 (-2003) file format (BIFF8) to pure Java. XSSF is our port of the Microsoft Excel XML (2007+) file format (OOXML) to pure Java. SS is a package that provides common support for both formats with a common API. They both support read and write capability. Please see <a href="../components/spreadsheet/">the HSSF+XSSF project page</a> for more information.
+      <div name="tsUpdate" data-id="t_1ac0c544900343d48d5238540da388d7" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HWPF+and+XWPF+for+Word+Documents"></a>
+     <h3 class="boxed">HWPF and XWPF for Word Documents
+      <div name="tsUpdate" data-id="t_3c4fd759eb5748938ac21b4f1d93cbeb" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HWPF is our port of the Microsoft Word 97 (-2003) file format to pure Java. It supports read, and limited write capabilities. It also provides simple text extraction support for the older Word 6 and Word 95 formats. Please see <a href="../components/document/">the HWPF project page for more information</a>. This component remains in early stages of development. It can already read and write simple files.
+      <div name="tsUpdate" data-id="t_b9895ac102684bd3891a8e0a85491a05" data-tpl="0" data-txt-color="green"></div></p>
+     <p>We are also working on the XWPF for the WordprocessingML (2007+) format from the OOXML specification. This provides read and write support for simpler files, along with text extraction capabilities.
+      <div name="tsUpdate" data-id="t_853ff24eec1e47b08864c54f3eceb61f" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HSLF+and+XSLF+for+PowerPoint+Documents"></a>
+     <h3 class="boxed">HSLF and XSLF for PowerPoint Documents
+      <div name="tsUpdate" data-id="t_ebd4a5d30a464ed4b3c70678ccb51c6a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HSLF is our port of the Microsoft PowerPoint 97(-2003) file format to pure Java. It supports read and write capabilities. Please see <a href="../components/slideshow/">the HSLF project page for more information</a>.
+      <div name="tsUpdate" data-id="t_3c3e08e8452944ac863b892488a132f0" data-tpl="0" data-txt-color="green"></div></p>
+     <p>We are also working on the XSLF for the PresentationML (2007+) format from the OOXML specification.
+      <div name="tsUpdate" data-id="t_43e03063b1384b36a55eada28f7055fd" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HPSF+for+OLE+2+Document+Properties"></a>
+     <h3 class="boxed">HPSF for OLE 2 Document Properties
+      <div name="tsUpdate" data-id="t_a433ecd6dc934a58958ef304ef41e7b4" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HPSF is our port of the OLE 2 property set format to pure Java. Property sets are mostly use to store a document's properties (title, author, date of last modification etc.), but they can be used for application-specific purposes as well.
+      <div name="tsUpdate" data-id="t_4010212011e345c6a35d1a2f0378a94f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>HPSF supports both reading and writing of properties.
+      <div name="tsUpdate" data-id="t_d74d09e8f6204f94926aae83fd60a9fd" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Please see <a href="./hpsf/index.html">the HPSF project page</a> for more information.
+      <div name="tsUpdate" data-id="t_71412998132c45e3a6ad763391c96ca7" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HDGF+and+XDGF+for+Visio+Documents"></a>
+     <h3 class="boxed">HDGF and XDGF for Visio Documents
+      <div name="tsUpdate" data-id="t_8d82a71e2646401fb8aa6d857d805035" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HDGF is our port of the Microsoft Visio 97(-2003) file format to pure Java. It currently only supports reading at a very low level, and simple text extraction. Please see <a href="./diagram/index.html">the HDGF / Diagram project page for more information</a>.
+      <div name="tsUpdate" data-id="t_be04fa8ce6b3464dbae922e9a248ae95" data-tpl="0" data-txt-color="green"></div></p>
+     <p>XDGF is our port of the Microsoft Visio XML (.vsdx) file format to pure Java. It has slightly more support than HDGF. Please see <a href="./diagram/index.html">the XDGF / Diagram project page for more information</a>.
+      <div name="tsUpdate" data-id="t_a488f82bda0c426e8fb188af24b1fd78" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HPBF+for+Publisher+Documents"></a>
+     <h3 class="boxed">HPBF for Publisher Documents
+      <div name="tsUpdate" data-id="t_e99c2ca5ab004c41b7d81f91ef5c270a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HPBF is our port of the Microsoft Publisher 98(-2007) file format to pure Java. It currently only supports reading at a low level for around half of the file parts, and simple text extraction. Please see <a href="./hpbf/index.html">the HPBF project page for more information</a>.
+      <div name="tsUpdate" data-id="t_cbf08c6855eb46959847aa8a60f273cf" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HMEF+for+TNEF+%28winmail.dat%29+Outlook+Attachments"></a>
+     <h3 class="boxed">HMEF for TNEF (winmail.dat) Outlook Attachments
+      <div name="tsUpdate" data-id="t_d95e61a0d3cd4e078d65618f281b83c9" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HMEF is our port of the Microsoft TNEF (Transport Neutral Encoding Format) file format to pure Java. TNEF is sometimes used by Outlook for encoding the message, and will typically come through as winmail.dat. HMEF currently only supports reading at a low level, but we hope to add text and attachment extraction. Please see <a href="./hmef/index.html">the HMEF project page for more information</a>.
+      <div name="tsUpdate" data-id="t_1875f86273cb4d789cfbc4648ef48be6" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HSMF+for+Outlook+Messages"></a>
+     <h3 class="boxed">HSMF for Outlook Messages
+      <div name="tsUpdate" data-id="t_622fbd339c344ae99bb49652a58ecdaa" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HSMF is our port of the Microsoft Outlook message file format to pure Java. It currently only some of the textual content of MSG files, and some attachments. Further support and documentation is coming in slowly. For now, users are advised to consult the unit tests for example use. Please see <a href="./hsmf/index.html">the HSMF project page for more information</a>.
+      <div name="tsUpdate" data-id="t_bca2955ab0a2436886f1f00249e565d3" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Microsoft has recently added the Outlook file format to its OSP. More information is now available making implementing this API an easier task.
+      <div name="tsUpdate" data-id="t_e0c0547c976443bb970c98b374cb25a0" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="components"></a>
+    <h2 class="boxed">Component Map
+     <div name="tsUpdate" data-id="t_3ea3d7be6b2b4e50a7d07c98bf61f0a0" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>The Apache POI distribution consists of support for many document file formats. This support is provided in several Jar files. Not all of the Jars are needed for every format. The following tables show the relationships between POI components, Maven repository tags, and the project's Jar files.
+      <div name="tsUpdate" data-id="t_1fdb0f9ba8a8464eafdd1b1c8c43e7de" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Component
+         <div name="tsUpdate" data-id="t_56a7454042394e2c8553762084dcc29f" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Application type
+         <div name="tsUpdate" data-id="t_d0ac581159be44a6b1946ec5550fc2c2" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Maven artifactId
+         <div name="tsUpdate" data-id="t_1509f00f830949baa4b9921d278b2126" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Notes
+         <div name="tsUpdate" data-id="t_fb948cb7354345a58b9a85a05720c9cc" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./poifs/index.html">POIFS</a>
+         <div name="tsUpdate" data-id="t_4e7bf4d44e1c497580b61747e0317f3d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">OLE2 Filesystem
+         <div name="tsUpdate" data-id="t_3727a9c3595441e5ac36e49b58a37d31" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi</em>
+         <div name="tsUpdate" data-id="t_5028918b4e694fcebe3216976fcd9c79" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Required to work with OLE2 / POIFS based files
+         <div name="tsUpdate" data-id="t_b4438603733c4ca48ef9ef37428096e2" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./hpsf/index.html">HPSF</a>
+         <div name="tsUpdate" data-id="t_df9c08c9411b40dbb748af421945bef2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">OLE2 Property Sets
+         <div name="tsUpdate" data-id="t_f27be42c2a2949efa221219a04865242" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi</em>
+         <div name="tsUpdate" data-id="t_61d7bef3f2204929be592b7b05a3f58a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/spreadsheet/">HSSF</a>
+         <div name="tsUpdate" data-id="t_b4cb0a4f14274cb2a03948a1de6df16b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Excel XLS
+         <div name="tsUpdate" data-id="t_e3515b0cc2b748299e1d95c219edd0e9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi</em>
+         <div name="tsUpdate" data-id="t_f3aed52780c544c59770758f2640f082" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">For HSSF only, if common SS is needed see below
+         <div name="tsUpdate" data-id="t_f698006b4b684e0890a3e829243dca06" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/slideshow/">HSLF</a>
+         <div name="tsUpdate" data-id="t_ff59ddcbf4cd4140bb89973d7080a765" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PowerPoint PPT
+         <div name="tsUpdate" data-id="t_4e26ffa0121846cfb503547513f76f18" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_37a636d1c0be4f868d503e36912ce323" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/document/">HWPF</a>
+         <div name="tsUpdate" data-id="t_fb598e0ed61a46a6ab8d1f998b7b459a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Word DOC
+         <div name="tsUpdate" data-id="t_95a02af3d1d2427984e1bd05c27248a8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_bb9a4d23870540eb8ee56322acfe6781" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./diagram/index.html">HDGF</a>
+         <div name="tsUpdate" data-id="t_bce49af035bc4fc59c23bc0181e56cc5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Visio VSD
+         <div name="tsUpdate" data-id="t_acdbf1e7245c48af9d33e02e84e21975" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_b8646b31d7794ff7992789e3c26d3af2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./hpbf/index.html">HPBF</a>
+         <div name="tsUpdate" data-id="t_85eb93d5b5524114baa74b1ab71bce2c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Publisher PUB
+         <div name="tsUpdate" data-id="t_518b187ccdb045f7a7e7a5c305c8247e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_40f4f59c6a7f4d51aab9f9ae810fb4f3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./hsmf/index.html">HSMF</a>
+         <div name="tsUpdate" data-id="t_7d3c31dbf8a64cc4aa7d251f1aff8c09" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Outlook MSG
+         <div name="tsUpdate" data-id="t_603b65cd4d054316886fcf37f211a277" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_60fc325cc60e4a7d93266b91ad98cb9f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">DDF
+         <div name="tsUpdate" data-id="t_c10cb219982d4dffb42d1479480be0a9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Escher common drawings
+         <div name="tsUpdate" data-id="t_61f7312cf4b54f359abc7db982f3e106" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi</em>
+         <div name="tsUpdate" data-id="t_89a1ca09bb2a4fd0a848fbf6ee86b414" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">HWMF
+         <div name="tsUpdate" data-id="t_429beb679d79436b9f3b209676bf885f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">WMF drawings
+         <div name="tsUpdate" data-id="t_da2bb8ce0a4041d5b81ad4b4fc763a95" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em>
+         <div name="tsUpdate" data-id="t_c4efb7156e604a9586561f32b45fdae1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./oxml4j/index.html">OpenXML4J</a>
+         <div name="tsUpdate" data-id="t_0bb5406e6ff34bb4b6b531cddaf8f401" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">OOXML
+         <div name="tsUpdate" data-id="t_f1cd249675ef402aa2e99993b2bafb61" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em> plus either <em>poi-ooxml-lite</em> or
+         <br>
+         <em>poi-ooxml-full</em>
+         <div name="tsUpdate" data-id="t_f759229e3b44417083ff55da8c7d3ded" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">See notes below for differences between these options
+         <div name="tsUpdate" data-id="t_931c1aa0db994a948c5fcfa9e60b6504" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/spreadsheet/">XSSF</a>
+         <div name="tsUpdate" data-id="t_585550109dc74c9a8d637f865eedb5d9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Excel XLSX
+         <div name="tsUpdate" data-id="t_c1f1e6a6e3314112b74fc0de470e0a70" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_9121bd5888c344fb8377b934ebf17ee9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/slideshow/">XSLF</a>
+         <div name="tsUpdate" data-id="t_3e37f53645694c66be5483e71d87ca99" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PowerPoint PPTX
+         <div name="tsUpdate" data-id="t_4ccb60267df14be688213f247c3d15eb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_ed66a71dfddc4a36bccf7c5e923d3d00" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/document/">XWPF</a>
+         <div name="tsUpdate" data-id="t_97de8be9136c456ca2be45544c26818f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Word DOCX
+         <div name="tsUpdate" data-id="t_977b52b49dca46a6ad6dd2374ea27dc2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_13823c6adc6046e5bfcc16ef132e361a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./diagram/index.html">XDGF</a>
+         <div name="tsUpdate" data-id="t_6cd6e7efafa842aea8bf3d53f78978ad" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Visio VSDX
+         <div name="tsUpdate" data-id="t_9617b5b23de3496bbd538bbcf9bef06d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_c3937625665f42668c674090b5eb5644" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">&nbsp;</td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="./slideshow/index.html">Common SL</a>
+         <div name="tsUpdate" data-id="t_e0e2d5c46e2244cc87b9aaab8be29d12" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PowerPoint PPT and PPTX
+         <div name="tsUpdate" data-id="t_0a4ad13cd67849e1a5096becf256ccee" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-scratchpad</em> and <em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_e34a9e8929c64e58a15edcc4b0693ef5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">SL code is in the core POI jar, but implementations are in poi-scratchpad and poi-ooxml.
+         <div name="tsUpdate" data-id="t_bad2ac3432174a9ca3c2292b3310a951" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><a href="../components/spreadsheet/">Common SS</a>
+         <div name="tsUpdate" data-id="t_c39146ab2cf94671b998196bc0668582" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Excel XLS and XLSX
+         <div name="tsUpdate" data-id="t_ff0655852f294ae39d55b5b9de877acb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>poi-ooxml</em>
+         <div name="tsUpdate" data-id="t_4ce1ee2e1ad847b99c0ecb40c2b18293" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">WorkbookFactory and friends all require poi-ooxml, not just core poi
+         <div name="tsUpdate" data-id="t_ed1d6091fe6c45b285fe7b94de0e699a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>
+      <br>
+     </p>
+     <p>This table maps artifacts into the jar file name. "version-yyyymmdd" is the POI version stamp. You can see what the latest stamp is on the <a href="../download.html">downloads page</a>.
+      <div name="tsUpdate" data-id="t_37ead7f2e8914ba48be0ff339a58c8cb" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Maven artifactId
+         <div name="tsUpdate" data-id="t_bf981ac842d44ebfbf90e7c32192907b" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Prerequisites
+         <div name="tsUpdate" data-id="t_f857a09b5b2c4446ab107a3e7f315926" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">JAR
+         <div name="tsUpdate" data-id="t_52246db82ff242a0bbb60fc01a666e3b" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi
+         <div name="tsUpdate" data-id="t_9b8a60c7ce944e5e8679597c8a97d7f6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#artifactdetails|org.slf4j|jcl-over-slf4j|1.7.30|jar">jcl-over-slf4j (commons-logging replacement)</a>, <a href="https://search.maven.org/#artifactdetails|commons-codec|commons-codec|1.15|jar">commons-codec</a>, <a href="https://search.maven.org/#artifactdetails|org.apache.commons|commons-collections4|4.4|jar">commons-collections</a>, <a href="https://search.maven.org/#artifactdetails|org.apache.commons|commons-math3|3.6.1|jar">commons-math</a>
+         <div name="tsUpdate" data-id="t_e0729d5b1fe04716bc381d54abec1a8c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_4bc5f2543020438c936953816b7dfe47" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi-scratchpad
+         <div name="tsUpdate" data-id="t_7e7d06106bb34972b063e929cb121fd8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi">poi</a>
+         <div name="tsUpdate" data-id="t_3d2bbebc35cf4ac49fa3e5c230b95e06" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-scratchpad-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_263d6c0d79994da2823d88c739dc6294" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi-ooxml
+         <div name="tsUpdate" data-id="t_a5c8f51765084880bddf440fb4d192bc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi">poi</a>, <a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi-ooxml-lite">poi-ooxml-lite</a>, <a href="https://search.maven.org/#artifactdetails|org.apache.commons|commons-compress|1.20|jar">commons-compress</a>, <a href="https://search.maven.org/#artifactdetails|com.zaxxer|SparseBitSet|1.2|jar">SparseBitSet</a>
+         <br>
+         For SVG support: <a href="https://search.maven.org/#search|gav|1|g:org.apache.xmlgraphics AND a:batik-all">batik-all</a>, <a href="https://search.maven.org/#search|gav|1|g:xml-apis AND a:xml-apis-ext">xml-apis-ext</a>, <a href="https://search.maven.org/#search|gav|1|g:org.apache.xmlgraphics AND a:xmlgraphics-commons">xmlgraphics-commons</a>
+         <br>
+         For PDF support: <a href="https://search.maven.org/#search|gav|1|g:org.apache.pdfbox AND a:pdfbox">pdfbox</a>, <a href="https://search.maven.org/#search|gav|1|g:org.apache.pdfbox AND a:fontbox">fontbox</a>, <a href="https://search.maven.org/#search|gav|1|g:de.rototor.pdfbox AND a:graphics2d">rototor graphics2d</a>
+         <div name="tsUpdate" data-id="t_7350f2f52d334d44843dc9b219c3fa4f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-ooxml-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_794612f36d014cad89277f31ab11a9f1" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi-ooxml-lite
+         <div name="tsUpdate" data-id="t_4cb873d564424e9c935b551c3d7089b7" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#artifactdetails|org.apache.xmlbeans|xmlbeans|4.0.0|jar">xmlbeans</a>
+         <div name="tsUpdate" data-id="t_dd89fbc63f114270b5fd5a0153e9c329" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-ooxml-lite-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_a49002a434d04f8f8bd4c6e9c6a76faa" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi-examples
+         <div name="tsUpdate" data-id="t_c088088f0b22471994d6daa9252abccb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi">poi</a>, <a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi-scratchpad">poi-scratchpad</a>, <a href="https://search.maven.org/#search|gav|1|g:org.apache.poi AND a:poi-ooxml">poi-ooxml</a>
+         <div name="tsUpdate" data-id="t_2a25325f12ec41048b3ab57091cf9557" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-examples-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_7587c40e2f6c4c4e971b7ff383eacefa" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">poi-ooxml-full (known as ooxml-schemas)
+         <div name="tsUpdate" data-id="t_6758008f740846b694da276e0907c77a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><a href="https://search.maven.org/#artifactdetails|org.apache.xmlbeans|xmlbeans|4.0.0|jar">xmlbeans</a>
+         <br>
+         For signing: <a href="https://search.maven.org/#artifactdetails|org.bouncycastle|bcpkix-jdk15on|1.67|jar">bcpkix-jdk15on</a>, <a href="https://search.maven.org/#artifactdetails|org.bouncycastle|bcprov-jdk15on|1.67|jar">bcprov-jdk15on</a>, <a href="https://search.maven.org/#artifactdetails|org.apache.santuario|xmlsec|2.2.0|bundle">xmlsec</a>, <a href="https://search.maven.org/#artifactdetails|org.slf4j|slf4j-api|1.7.30|jar">slf4j-api</a>
+         <div name="tsUpdate" data-id="t_ec94c335f60c4a08834410fbdf4cd324" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">poi-ooxml-full-version-yyyymmdd.jar
+         <div name="tsUpdate" data-id="t_0d37f068111d4dbe9c4da286ef6ebf2f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>&nbsp;</p>
+     <div class="note">
+      <div class="label">
+       Note
+       <div name="tsUpdate" data-id="t_782638d34714450e9e4e0775b443d66a" data-tpl="0" data-txt-color="orange"></div>
+      </div>
+      <div class="content">
+       Apache commons-math3 and commons-compress were added as a dependency in POI 4.0.0.
+       <br>
+       Zaxxer SparseBitSet was added as a dependency in POI 4.1.2
+       <div name="tsUpdate" data-id="t_94a1c3d1e7d6491cb9cfb4c3508dadc0" data-tpl="0" data-txt-color="green"></div>
+      </div>
+     </div>
+     <p>poi-ooxml requires poi-ooxml-lite. This is a substantially smaller version of the poi-ooxml-full jar (ooxml-schemas-1.4.jar for POI 4.0.0, ooxml-schemas-1.3.jar for POI 3.14 or to POI 3.17, ooxml-schemas-1.1.jar for POI 3.7 up to POI 3.13, ooxml-schemas-1.0.jar for POI 3.5 and 3.6). The larger ooxml-schemas jar is <a href="../help/index.html#faq-N10025">normally</a> only required for development. Similarly, the ooxml-security jar, which contains all of the classes relating to encryption and signing, is normally only required for development. A subset of its contents are in poi-ooxml-schemas. This JAR is ooxml-security-1.1.jar for POI 3.14 onwards and ooxml-security-1.0.jar prior to that.
+      <div name="tsUpdate" data-id="t_407cdce018044903b3d4ec59693731bd" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The OOXML jars require a stax implementation, but now that Apache POI requires Java 8, that dependency is provided by the JRE and no additional stax jars are required. The OOXML jars used to require DOM4J, but the code has now been changed to use JAXP and no additional dom4j jars are required. By the way, look at this <a href="../help/index.html#faq-N1017E">FAQ</a> if you have problems when using a non-Oracle JDK.
+      <div name="tsUpdate" data-id="t_eb50ff276c764b6dae8ac796d7b78ec8" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The ooxml schemas jars are compiled with <a href="https://xmlbeans.apache.org/">Apache XMLBeans</a> 2.3, and so can be used at runtime with any version of XMLBeans from 3.0.0 or newer. Wherever possible though, we recommend that you use XMLBeans 3.1.0 with Apache POI, and that is the version now shipped in the binary release packages.
+      <div name="tsUpdate" data-id="t_c8665c7a42bf4b06940f2ede09e3e526" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Examples"></a>
+    <h2 class="boxed">Examples
+     <div name="tsUpdate" data-id="t_60f878a8b960448288d490b87861215b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Small sample programs using the POI API are available in the <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples">src/examples</a> (<a href="https://svn.apache.org/viewvc/poi/trunk/src/examples/src/org/apache/poi/examples">viewvc</a>) directory of the source distribution.
+      <div name="tsUpdate" data-id="t_9ce6c25cec4b4cec8d39e29889dee91c" data-tpl="0" data-txt-color="green"></div></p>
+     <p>All of the examples are included in POI distributions as a poi-examples artifact.
+      <div name="tsUpdate" data-id="t_ccda73063b7340eab69f3cc7e8fed515" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Running+POI+on+other+JVM+languages"></a>
+    <h2 class="boxed">Running POI on other JVM languages
+     <div name="tsUpdate" data-id="t_62a9a5aa18ac4b0a9f67a1ff54a8d64c" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>POI can be run on most languages that run on the JVM. For code examples, see <a href="poi-jvm-languages.html">Running POI on other JVM languages</a>
+      <div name="tsUpdate" data-id="t_dea452543cc64b3baabafc6efa1b295b" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <a name="Contributed+Software"></a>
+    <h2 class="boxed">Contributed Software
+     <div name="tsUpdate" data-id="t_faa6e04155214350973438841fbf111c" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <p>Besides the "official" components outlined above there is some further software distributed with POI. This is called "contributed" software. It is not explicitly recommended or even maintained by the POI team, but it might still be useful to you.
+      <div name="tsUpdate" data-id="t_17807e0aafec44119f14a7645a2c83bc" data-tpl="0" data-txt-color="green"></div></p>
+     <p>See <a href="poi-ruby.html">POI Ruby Bindings</a> and other code in the <a href="https://svn.apache.org/repos/asf/poi/trunk/src/contrib/">poi-contrib module</a>
+      <div name="tsUpdate" data-id="t_9ef057e38187430a95dc09974ab9d8ee" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Andrew C. Oliver,&nbsp;Rainer Klute,&nbsp;David Fisher</font>
+     <div name="tsUpdate" data-id="t_a4c41fdc324846fca6d32af901996915" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="logos">
+    <a href="http://validator.w3.org/check/referer"><img style="height: 31px; width: 88px;" title="Valid HTML 4.01!" alt="Valid HTML 4.01!" src="../skin/images/valid-html401.png" class="logoImage"></a><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="height: 31px; width: 88px;" title="Valid CSS!" alt="Valid CSS!" src="../skin/images/vcss.png" class="logoImage"></a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/index.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='8658a90bddb04a27bdb6e64ffd480b01';</script>
+  <script src="../js/xst-update.js"></script>
+ </body>
+</html>

@@ -1,0 +1,1 @@
+[{"id":"t_de9814e3ba384a99b811703eb6bde5aa","oldText":"This exception is thrown when we are given an OLE2-based file (eg Excel .xls) instead of an actually OOXML (Office Open XML) file","tlText":"当我们获得基于MBE 2的文件（例如Excel .xls）而不是实际的OOML（Office Open ML）文件时，会引发此异常","version":0}]

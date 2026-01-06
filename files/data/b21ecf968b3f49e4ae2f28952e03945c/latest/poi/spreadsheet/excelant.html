@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>ExcelAnt - Ant Tasks for Validating Excel Spreadsheets</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_5de11b93121142ff881a6195d96b8625">ExcelAnt - Ant Tasks for Validating Excel Spreadsheets</span><span class="tscolor" lg_zh="t_5de11b93121142ff881a6195d96b8625"><span lg_kh="1">(</span>ExcelAnt - 用于验证 Excel 电子表格的 Ant 任务<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="ExcelAnt+-+Ant+Tasks+for+Validating+Excel+Spreadsheets"></a>
+    <h2 class="boxed"><span lg_en="t_48300d38f6764b61ab3a4dd35d78a103">ExcelAnt - Ant Tasks for Validating Excel Spreadsheets</span><span class="tscolor" lg_zh="t_48300d38f6764b61ab3a4dd35d78a103"><span lg_kh="1">(</span>ExcelAnt - 用于验证 Excel 电子表格的 Ant 任务<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="Introduction"></a>
+     <h3 class="boxed"><span lg_en="t_cf724a4524bc42a58e8d0d1579ede4e6">Introduction</span><span class="tscolor" lg_zh="t_cf724a4524bc42a58e8d0d1579ede4e6"><span lg_kh="1">(</span>介绍<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_a3c0072afe65480d87ef4c960d83e42e">ExcelAnt is a set of Ant tasks that make it possible to verify or test a workbook without having to write Java code. Of course, the tasks themselves are written in Java, but to use this framework you only need to know a little bit about Ant.</span><span class="tscolor" lg_zh="t_a3c0072afe65480d87ef4c960d83e42e"><span lg_kh="1">(</span>ExcelAnt 是一组 Ant 任务，无需编写 Java 代码即可验证或测试工作簿。当然，任务本身是用 Java 编写的，但是要使用这个框架，您只需要对 Ant 有一点了解。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4d3b060984b34671bc2ac03eb2564c79">This document covers the basic usage and set up of ExcelAnt.</span><span class="tscolor" lg_zh="t_4d3b060984b34671bc2ac03eb2564c79"><span lg_kh="1">(</span>本文档介绍 ExcelAnt 的基本用法和设置。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_9485bc32f4644988a11c0e809fd6d6e1">This document will assume basic familiarity with Ant and Ant build files.</span><span class="tscolor" lg_zh="t_9485bc32f4644988a11c0e809fd6d6e1"><span lg_kh="1">(</span>本文档将假定您基本熟悉 Ant 和 Ant 构建文件。<span lg_kh="1">)</span></span></p>
+     <a name="Setup"></a>
+     <h3 class="boxed"><span lg_en="t_225ce8b65ab34569a525b3a7357c24ec">Setup</span><span class="tscolor" lg_zh="t_225ce8b65ab34569a525b3a7357c24ec"><span lg_kh="1">(</span>设置<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_12e2f8b2bca94ac886dbb7cd5029e64c">To start with ExcelAnt, you'll need to have the POI 3.8 or higher jar files. If you test only .xls workbooks then you need to have the following jars in your path:</span><span class="tscolor" lg_zh="t_12e2f8b2bca94ac886dbb7cd5029e64c"><span lg_kh="1">(</span>要开始使用 ExcelAnt，您需要拥有 POI 3.8 或更高版本的 jar 文件。如果您只测试 .xls 工作簿，那么您的路径中需要有以下 jar：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_5b1689902bc648feb39de9c843f1179d">poi-excelant-$version-YYYYDDMM.jar</span><span class="tscolor" lg_zh="t_5b1689902bc648feb39de9c843f1179d"><span lg_kh="1">(</span>poi-excelant-$version-YYYYDDMM.jar<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_79347177f2ee4b80a67dea07b4c79288">poi-$version-YYYYDDMM.jar</span><span class="tscolor" lg_zh="t_79347177f2ee4b80a67dea07b4c79288"><span lg_kh="1">(</span>poi-$version-YYYYDDMM.jar<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_aa13a304c1d64e36aa222b1ee7533c63">poi-ooxml-$version-YYYYDDMM.jar</span><span class="tscolor" lg_zh="t_aa13a304c1d64e36aa222b1ee7533c63"><span lg_kh="1">(</span>poi-ooxml-$ 版本-YYYYDDMM.jar<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_0327ddf889a74830a3fec458df9b73c7">If you evaluate .xlsx workbooks then you need to add these:</span><span class="tscolor" lg_zh="t_0327ddf889a74830a3fec458df9b73c7"><span lg_kh="1">(</span>如果您评估 .xlsx 工作簿，则需要添加以下内容：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_d210560eb2364fb9940896d4f4387485">poi-ooxml-lite-$version-YYYYDDMM.jar</span><span class="tscolor" lg_zh="t_d210560eb2364fb9940896d4f4387485"><span lg_kh="1">(</span>poi-ooxml-lite-$ 版本-YYYYDDMM.jar<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_68d92bd78c9142de857909cb7ad217e4">xmlbeans.jar</span><span class="tscolor" lg_zh="t_68d92bd78c9142de857909cb7ad217e4"><span lg_kh="1">(</span>xmlbeans.jar<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_faab21cb5292495492d27d265b530036">For example, if you have these jars in a lib/ dir in your project, your build.xml might look like this:</span><span class="tscolor" lg_zh="t_faab21cb5292495492d27d265b530036"><span lg_kh="1">(</span>例如，如果您在项目的 lib/ 目录中有这些 jar，那么您的 build.xml 可能如下所示：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">property name="lib.dir" value="lib" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">path id="excelant.path"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;pathelement location="${lib.dir}/poi-excelant-3.8-beta1-20101230.jar" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;pathelement location="${lib.dir}/poi-3.8-beta1-20101230.jar" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;pathelement location="${lib.dir}/poi-ooxml-3.8-beta1-20101230.jar" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/path&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_624503178c104cfbba65085e7433e711">Next, you'll need to define the Ant tasks. There are several ways to use ExcelAnt:</span><span class="tscolor" lg_zh="t_624503178c104cfbba65085e7433e711"><span lg_kh="1">(</span>接下来，您需要定义 Ant 任务。 ExcelAnt 有多种使用方法：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_e14e53ffa31f464a928f20abb33d672c">The traditional way:</span><span class="tscolor" lg_zh="t_e14e53ffa31f464a928f20abb33d672c"><span lg_kh="1">(</span>传统方式：<span lg_kh="1">)</span></span></li>
+     </ul>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">typedef resource="org/apache/poi/ss/excelant/antlib.xml" classpathref="excelant.path" /&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_0537a30512ee48f79b38553ba098a986">Where excelant.path refers to the classpath with POI jars. Using this approach the provided extensions will live in the default namespace. Note that the default task/typenames (evaluate, test) may be too generic and should either be explicitly overridden or used with a namespace.</span><span class="tscolor" lg_zh="t_0537a30512ee48f79b38553ba098a986"><span lg_kh="1">(</span>其中 excelant.path 是指带有 POI jar 的类路径。使用这种方法，提供的扩展将存在于默认命名空间中。请注意，默认任务/类型名称（评估、测试）可能太过通用，应该显式覆盖或与命名空间一起使用。<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_0c43db87a88b4c23a8a449bd3ae6f620">Similar, but assigning a namespace URI:</span><span class="tscolor" lg_zh="t_0c43db87a88b4c23a8a449bd3ae6f620"><span lg_kh="1">(</span>类似，但分配了命名空间 URI：<span lg_kh="1">)</span></span></li>
+     </ul>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">project name="excelant-demo" xmlns:poi="antlib:org.apache.poi.ss.excelant"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;typedef resource="org/apache/poi/ss/excelant/antlib.xml"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> classpathref="excelant.classpath"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> uri="antlib:org.apache.poi.ss.excelant"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;target name="test-nofile"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;poi:excelant&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/poi:excelant&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/target&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/project&gt;</span>
+      </div>
+     </div>
+     <a name="A+Simple+Example"></a>
+     <h3 class="boxed"><span lg_en="t_3df21a7cca9246d18fa3b623a30fd243">A Simple Example</span><span class="tscolor" lg_zh="t_3df21a7cca9246d18fa3b623a30fd243"><span lg_kh="1">(</span>一个简单的例子<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_acc4214b47ee4c2094ba338750cbf7cf">The simplest example of using Excel is the ability to validate that POI is giving you back the value you expect it to. Does this mean that POI is inaccurate? Hardly. There are cases where POI is unable to evaluate cells for a variety of reasons. If you need to write code to integrate a worksheet into an app, you may want to know that it's going to work before you actually try to write that code. ExcelAnt helps with that.</span><span class="tscolor" lg_zh="t_acc4214b47ee4c2094ba338750cbf7cf"><span lg_kh="1">(</span>使用 Excel 的最简单示例是能够验证 POI 是否为您提供了您期望的价值。这是否意味着 POI 不准确？几乎不会。在某些情况下，由于各种原因 POI 无法评估单元格。如果您需要编写代码以将工作表集成到应用程序中，您可能想知道在实际尝试编写该代码之前它会不会起作用。 ExcelAnt 对此有所帮助。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_2ac32a69c2334f90af2e6da6e7f0d983">Consider the mortgage-calculation.xls file found in the Examples (/examples/src/org/apache/poi/examples/ss/excelant/simple-mortgage-calculation.xls). This sheet is shown below:</span><span class="tscolor" lg_zh="t_2ac32a69c2334f90af2e6da6e7f0d983"><span lg_kh="1">(</span>考虑示例中的mortgage-calculation.xls 文件（/examples/src/org/apache/poi/examples/ss/excelant/simple-mortgage-calculation.xls）。此表如下所示：<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_2f5489a36f294d3ebb306ffd4428d16e">This sheet calculates the principal and interest payment for a mortgage based on the amount of the loan, term and rate. To write a simple ExcelAnt test you need to tell ExcelAnt about the file like this:</span><span class="tscolor" lg_zh="t_2f5489a36f294d3ebb306ffd4428d16e"><span lg_kh="1">(</span>此表根据贷款金额、期限和利率计算抵押贷款的本金和利息支付。要编写一个简单的 ExcelAnt 测试，您需要将文件告诉 ExcelAnt，如下所示：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">property name="xls.file" value="" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">target name="simpleTest"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;excelant fileName="${xls.file}"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;test name="checkValue" showFailureDetail="true"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;evaluate showDelta="true" cell="'MortgageCalculator'!$B$4" expectedValue="790.7936" precision="1.0e-4" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/test&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/excelant&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/target&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_b896f4399fa14202a1a225d14fdebd4d">This code sets up ExcelAnt to access the file defined in the ant property xls.file. Then it creates a 'test' named 'checkValue'. Finally it tries to evaluate the B4 on the sheet named 'MortgageCalculator'. There are some assumptions here that are worth explaining. For starters, ExcelAnt is focused on the testing numerically oriented sheets. The &lt;evaluate&gt; task is actually evaluating the cell as a formula using a FormulaEvaluator instance from POI. Therefore it will fail if you point it to a cell that doesn't contain a formula or a test a plain old number.</span><span class="tscolor" lg_zh="t_b896f4399fa14202a1a225d14fdebd4d"><span lg_kh="1">(</span>此代码设置 ExcelAnt 以访问在 ant 属性 xls.file 中定义的文件。然后它创建一个名为“checkValue”的“测试”。最后，它尝试评估名为“MortgageCalculator”的工作表上的 B4。这里有一些值得解释的假设。首先，ExcelAnt 专注于测试以数字为导向的工作表。这<evaluate>任务实际上是使用 POI 中的 FormulaEvaluator 实例将单元格评估为公式。因此，如果您将其指向一个不包含公式的单元格或测试一个普通的旧数字，它将会失败。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_24fb75f8754646b7822778a9fb416257">Having said all that, here is what the output looks like:</span><span class="tscolor" lg_zh="t_24fb75f8754646b7822778a9fb416257"><span lg_kh="1">(</span>说了这么多，下面是输出的样子：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">simpleTest:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] ExcelAnt version 0.4.0 Copyright 2011</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] Using input file: resources/excelant.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] 1/1 tests passed.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BUILD SUCCESSFUL</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Total time: 391 milliseconds</span>
+      </div>
+     </div>
+     <a name="Setting+Values+into+a+Cell"></a>
+     <h3 class="boxed"><span lg_en="t_221884547dce42ba84452fb66e6eba03">Setting Values into a Cell</span><span class="tscolor" lg_zh="t_221884547dce42ba84452fb66e6eba03"><span lg_kh="1">(</span>将值设置到单元格中<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_27cc7f2d10c94f0da2fd159d72d748e3">So now we know that at a minimum POI can use our sheet to calculate the existing value. This is an important point: in many cases sheets have dependencies, i.e., cells they reference. As is often the case, these cells may have dependencies, which may have dependencies, etc. The point is that sometimes a dependent cell may get adjusted by a macro or a function and it may be that POI doesn't have the capabilities to do the same thing. This test verifies that we can rely on POI to retrieve the default value, based on the stored values of the sheet. Now we want to know if we can manipulate those dependencies and verify the output.</span><span class="tscolor" lg_zh="t_27cc7f2d10c94f0da2fd159d72d748e3"><span lg_kh="1">(</span>所以现在我们知道，至少 POI 可以使用我们的工作表来计算现有值。这一点很重要：在许多情况下，工作表之间相互依赖性，也就是它们引用的单元格。通常情况下，这些单元格可能有依赖关系，这些依赖关系可能又有依赖关系等。关键是有时依赖单元格可能会被宏或函数调整，并且可能是 POI 没有能力做一样的东西。此测试验证我们可以依赖 POI 根据工作表的存储值来检索默认值。现在我们想知道我们是否可以操纵这些依赖关系并验证输出。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_da0446f627064e8396edba7e64162558">To verify that we can manipulate cell values, we need a way in ExcelAnt to set a value. This is provided by the following task types:</span><span class="tscolor" lg_zh="t_da0446f627064e8396edba7e64162558"><span lg_kh="1">(</span>为了验证我们是否可以操作单元格值，我们需要在 ExcelAnt 中设置一个值。这是由以下任务类型提供的：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_9f582bfd02ed4ac49578b39e97ec56b5">setDouble() - sets the specified cell as a double.</span><span class="tscolor" lg_zh="t_9f582bfd02ed4ac49578b39e97ec56b5"><span lg_kh="1">(</span>setDouble() - 将指定的单元格设置为双精度。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_990800655a484d83bb44bba4ec1744f0">setFormula() - sets the specified cell as a formula.</span><span class="tscolor" lg_zh="t_990800655a484d83bb44bba4ec1744f0"><span lg_kh="1">(</span>setFormula() - 将指定单元格设置为公式。<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_e0464e7df4ec48f88f81bc86859f26cd">setString() = sets the specified cell as a String.</span><span class="tscolor" lg_zh="t_e0464e7df4ec48f88f81bc86859f26cd"><span lg_kh="1">(</span>setString() = 将指定单元格设置为字符串。<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_87332def32f94bb981e8b156778f3389">For the purposes of this example we'll use the &lt;setDouble&gt; task. Let's start with a $240,000, 30 year loan at 11% (let's pretend it's like 1984). Here is how we will set that up:</span><span class="tscolor" lg_zh="t_87332def32f94bb981e8b156778f3389"><span lg_kh="1">(</span>出于本示例的目的，我们将使用<setDouble>任务。让我们从 240,000 美元、30 年 11% 的贷款开始（让我们假设它就像 1984 年）。以下是我们将如何设置它：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">setDouble cell="'MortgageCalculator'!$B$1" value="240000"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">setDouble cell="'MortgageCalculator'!$B$2" value ="0.11"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">setDouble cell="'MortgageCalculator'!$B$3" value ="30"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">evaluate showDelta="true" cell="'MortgageCalculator'!$B$4" expectedValue="2285.576149" precision="1.0e-4" /&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_9759d10956664370acaaa21938cfa2e3">Don't forget that we're verifying the behavior so you need to put all this into the sheet. That is how I got the result of $2,285 and change. So save your changes and run it; you should get the following:</span><span class="tscolor" lg_zh="t_9759d10956664370acaaa21938cfa2e3"><span lg_kh="1">(</span>不要忘记我们正在验证行为，因此您需要将所有这些都放入工作表中。这就是我如何得到 2,285 美元和零钱的结果的方法。所以保存您的更改并运行它；你应该得到以下信息：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Buildfile: C:\opt\eclipse\workspaces\excelant\excelant.examples\build.xml</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">simpleTest:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] ExcelAnt version 0.4.0 Copyright 2011</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] Using input file: resources/excelant.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] 1/1 tests passed.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BUILD SUCCESSFUL</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Total time: 406 milliseconds</span>
+      </div>
+     </div>
+     <a name="Getting+More+Details"></a>
+     <h3 class="boxed"><span lg_en="t_2d1fc3fb7365423dac5e255dec74ee00">Getting More Details</span><span class="tscolor" lg_zh="t_2d1fc3fb7365423dac5e255dec74ee00"><span lg_kh="1">(</span>获取更多详细信息<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_3b60e6fd6dbb46fdb214fa22172a64cb">This is great, it's working! However, suppose you want to see a little more detail. The ExcelAnt tasks leverage the Ant logging so you can add the -verbose and -debug flags to the Ant command line to get more detail. Try adding -verbose. Here is what you should see:</span><span class="tscolor" lg_zh="t_3b60e6fd6dbb46fdb214fa22172a64cb"><span lg_kh="1">(</span>这很棒，它正在运行！然而，假若您想查看更多细节。 ExcelAnt 任务就会利用 Ant 日志记录，这样您可以将 -verbose 和 -debug 标志添加到 Ant 命令行以获取更多详细信息。尝试添加 -verbose。这是您应该看到的：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">simpleTest:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] ExcelAnt version 0.4.0 Copyright 2011</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] Using input file: resources/excelant.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [evaluate] test precision = 1.0E-4 global precision = 0.0</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [evaluate] Using evaluate precision of 1.0E-4</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] 1/1 tests passed.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BUILD SUCCESSFUL</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Total time: 406 milliseconds</span>
+      </div>
+     </div>
+     <p><span lg_en="t_b3119d555d774ade917dee9c6d2062fc">We see a little more detail. Notice that we see that there is a setting for global precision. Up until now we've been setting the precision on each evaluate that we call. This is obviously useful but it gets cumbersome. It would be better if there were a way that we could specify a global precision - and there is. There is a &lt;precision&gt; tag that you can specify as a child of the &lt;excelant&gt; tag. Let's go back to our original task we set up earlier and modify it:</span><span class="tscolor" lg_zh="t_b3119d555d774ade917dee9c6d2062fc"><span lg_kh="1">(</span>我们看到了更多细节。请注意，我们看到有一个全局精度设置。到目前为止，我们一直在设置我们调用的每个评估的精度。这显然很有用，但它变得很麻烦。如果有一种方法可以指定全局精度，那就更好了——而且确实存在。有一个<precision>标签您可以指定为<excelant>标签的子标签。让我们回到我们之前设置的原始任务并对其进行修改：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">property name="xls.file" value="" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">target name="simpleTest"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;excelant fileName="${xls.file}"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;precision value="1.0e-3"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;test name="checkValue" showFailureDetail="true"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;evaluate showDelta="true" cell="'MortgageCalculator'!$B$4" expectedValue="790.7936" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/test&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/excelant&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/target&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_cd815681423d435d8bec04b528d6a23a">In this example we have set the global precision to 1.0e-3. This means that in the absence of something more stringent, all tests in the task will use the global precision. We can still override this by specifying the precision attribute of all of our &lt;evaluate&gt; task. Let's first run this task with the global precision and the -verbose flag:</span><span class="tscolor" lg_zh="t_cd815681423d435d8bec04b528d6a23a"><span lg_kh="1">(</span>在此示例中，我们将全局精度设置为 1.0e-3。这意味着在缺少更严格的措施的情况下，任务中的所有测试都将使用全局精度。我们仍然可以通过指定所有评估任务的的精度属性来覆盖它<evaluate>任务。让我们首先使用全局精度和 -verbose 标志运行此任务：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">simpleTest:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[excelant] ExcelAnt version 0.4.0 Copyright 2011</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[excelant] Using input file: resources/excelant.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[excelant] setting precision for the test checkValue</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [test] setting globalPrecision to 0.0010 in the evaluator</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[evaluate] test precision = 0.0 global precision = 0.0010</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[evaluate] Using global precision of 0.0010</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">[excelant] 1/1 tests passed.</span>
+      </div>
+     </div>
+     <p><span lg_en="t_90acc637b13944a0abbd6a714413359d">As the output clearly shows, the test itself has no precision but there is the global precision. Additionally, it tells us we're going to use that more stringent global value. Now suppose that for this test we want to use a more stringent precision, say 1.0e-4. We can do that by adding the precision attribute back to the &lt;evaluate&gt; task:</span><span class="tscolor" lg_zh="t_90acc637b13944a0abbd6a714413359d"><span lg_kh="1">(</span>正如输出所清楚显示的那样，测试本身没有精度，但有全局精度。此外，它告诉我们我们将使用更严格的全球价值。现在假设对于这个测试，我们想要使用更严格的精度，比如 1.0e-4。我们可以通过将精度属性添加回<evaluate>任务：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">excelant fileName="${xls.file}"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;precision value="1.0e-3"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;test name="checkValue" showFailureDetail="true"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$1" value="240000"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$2" value ="0.11"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$3" value ="30"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;evaluate showDelta="true" cell="'MortgageCalculator'!$B$4" expectedValue="2285.576149" precision="1.0e-4" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/test&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">/excelant&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_57137e05e6c74d4daa20083d99edb973">Now when you re-run this test with the verbose flag you will see that your test ran and passed with the higher precision:</span><span class="tscolor" lg_zh="t_57137e05e6c74d4daa20083d99edb973"><span lg_kh="1">(</span>现在，当您使用详细标志重新运行此测试时，您将看到您的测试以更高的精度运行并通过：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">simpleTest:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] ExcelAnt version 0.4.0 Copyright 2011</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] Using input file: resources/excelant.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] setting precision for the test checkValue</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [test] setting globalPrecision to 0.0010 in the evaluator</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [evaluate] test precision = 1.0E-4 global precision = 0.0010</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [evaluate] Using evaluate precision of 1.0E-4 over the global precision of 0.0010</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> [excelant] 1/1 tests passed.</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">BUILD SUCCESSFUL</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Total time: 390 milliseconds</span>
+      </div>
+     </div>
+     <a name="Leveraging+User+Defined+Functions"></a>
+     <h3 class="boxed"><span lg_en="t_ade00d79e10a4a6288579f3acdc2008f">Leveraging User Defined Functions</span><span class="tscolor" lg_zh="t_ade00d79e10a4a6288579f3acdc2008f"><span lg_kh="1">(</span>利用用户定义的函数<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_918c8dd2ed8045c493bf05e787a59c26">POI has an excellent feature (besides ExcelAnt) called <a href="user-defined-functions.html">User Defined Functions</a>, that allows you to write Java code that will be used in place of custom VB code or macros is a spreadsheet. If you have read the documentation and written your own FreeRefFunction implmentations, ExcelAnt can make use of this code. For each &lt;excelant&gt; task you define you can nest a &lt;udf&gt; tag which allows you to specify the function alias and the class name.</span><span class="tscolor" lg_zh="t_918c8dd2ed8045c493bf05e787a59c26"><span lg_kh="1">(</span>POI 有一个称为用户定义函数的出色功能（除了 ExcelAnt），它允许您编写 Java 代码，用于代替自定义 VB 代码或宏是电子表格。如果您已阅读文档并编写了自己的 FreeRefFunction 实现，ExcelAnt 可以使用此代码。对于每个<excelant>您定义的任务可以嵌套一个<udf>标签允许您指定函数别名和类名。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_4ebe23ce4a2f4a0e83c6ef765518de8d">Consider the previous example of the mortgage calculator. What if, instead of being a formula in a cell, it was a function defined in a VB macro? As luck would have it, we already have an example of this in the examples from the User Defined Functions example, so let's use that. In the example spreadsheet there is a tab for MortgageCalculatorFunction, which will use. If you look in cell B4, you see that rather than a messy cell based formula, there is only the function call. Let's not get bogged down in the function/Java implementation, as these are covered in the User Defined Function documentation. Let's just add a new target and test to our existing build file:</span><span class="tscolor" lg_zh="t_4ebe23ce4a2f4a0e83c6ef765518de8d"><span lg_kh="1">(</span>考虑前面的抵押计算器示例。如果它不是单元格中的公式，而是在 VB 宏中定义的函数，该怎么办？幸运的是，我们已经在用户定义函数示例的示例中找到了一个这样的示例，所以让我们使用它。在示例电子表格中，有一个 MortgageCalculatorFunction 选项卡将被使用。如果您查看单元格 B4，您会看到不是基于单元格的凌乱公式，而是只有函数调用。让我们不要陷入函数/Java 实现中，因为这些都包含在用户定义函数文档中。让我们添加一个新目标并测试我们现有的构建文件：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">target name="functionTest"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;excelant fileName="${xls.file}"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;udf functionAlias="calculatePayment" class="org.apache.poi.ss.examples.formula.CalculateMortgage"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;precision value="1.0e-3"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;test name="checkValue" showFailureDetail="true"&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$1" value="240000"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$2" value ="0.11"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;setDouble cell="'MortgageCalculator'!$B$3" value ="30"/&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;evaluate showDelta="true" cell="'MortgageCalculatorFunction'!$B$4" expectedValue="2285.576149" precision="1.0e-4" /&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/test&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/excelant&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> &lt;/target&gt;</span>
+      </div>
+     </div>
+     <p><span lg_en="t_c1faaa48f6b742f48f85182ff0baccbe">So if you look at this carefully it looks the same as the previous examples. We still use the global precision, we're still setting values, and we still want to evaluate a cell. The only real differences are the sheet name and the addition of the function.</span><span class="tscolor" lg_zh="t_c1faaa48f6b742f48f85182ff0baccbe"><span lg_kh="1">(</span>因此，如果您仔细查看它，它看起来与前面的示例相同。我们仍然使用全局精度，我们仍然在设置值，我们仍然想要评估一个单元格。唯一真正的区别是工作表名称和添加的功能。<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_4fd0938b6b3a4b13b9ee4ab7a7d552d6"><font size="-2">by&nbsp;Jon Svede,&nbsp;Brian Bush</font></span><span class="tscolor" lg_zh="t_4fd0938b6b3a4b13b9ee4ab7a7d552d6"><span lg_kh="1">(</span>作者：乔恩·斯维德、布赖恩·布什<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/excelant.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

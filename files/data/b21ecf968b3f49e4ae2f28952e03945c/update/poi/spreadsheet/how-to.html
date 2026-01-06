@@ -1,0 +1,1676 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>The New Halloween Document</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>The New Halloween Document
+     <div name="tsUpdate" data-id="t_b67d4714234d488081876d8a6de5d72a" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="How+to+use+the+HSSF+API"></a>
+    <h2 class="boxed">How to use the HSSF API
+     <div name="tsUpdate" data-id="t_6fb66b489043446083c4eaf2db78f99b" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="Capabilities"></a>
+     <h3 class="boxed">Capabilities
+      <div name="tsUpdate" data-id="t_6749df9a78ec41d68cde170543c19a5a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>This release of the how-to outlines functionality for the current svn trunk. Those looking for information on previous releases should look in the documentation distributed with that release.
+      <div name="tsUpdate" data-id="t_19a33e84c7b1409eb5ac82e6876365ac" data-tpl="0" data-txt-color="green"></div></p>
+     <p>HSSF allows numeric, string, date or formula cell values to be written to or read from an XLS file. Also in this release is row and column sizing, cell styling (bold, italics, borders,etc), and support for both built-in and user defined data formats. Also available is an event-based API for reading XLS files. It differs greatly from the read/write API and is intended for intermediate developers who need a smaller memory footprint.
+      <div name="tsUpdate" data-id="t_24f0ad9a3524497ea443dc1e535f3abb" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Different+APIs"></a>
+     <h3 class="boxed">Different APIs
+      <div name="tsUpdate" data-id="t_d72b6baefe354d2e9ddcf721a2fa46a0" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>There are a few different ways to access the HSSF API. These have different characteristics, so you should read up on all to select the best for you.
+      <div name="tsUpdate" data-id="t_5aea60188875413baf2b42c1670ec766" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li><a href="#user_api">User API (HSSF and XSSF)</a>
+       <div name="tsUpdate" data-id="t_983b37a9184b4f918a7a3741ac9c34e0" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#event_api">Event API (HSSF Only)</a>
+       <div name="tsUpdate" data-id="t_e6464f10f82f4c82a35e048c3501c7a6" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#record_aware_event_api">Event API with extensions to be Record Aware (HSSF Only)</a>
+       <div name="tsUpdate" data-id="t_cb22f732f65840a08a42b342a57b7b2a" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#xssf_sax_api">XSSF and SAX (Event API)</a>
+       <div name="tsUpdate" data-id="t_e30d17f68f4d404d8eee6d80f8221ce1" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#sxssf">SXSSF (Streaming User API)</a>
+       <div name="tsUpdate" data-id="t_a67d4839d23b475eb8fbd06e50de81ca" data-tpl="0" data-txt-color="green"></div></li>
+      <li><a href="#low_level_api">Low Level API</a>
+       <div name="tsUpdate" data-id="t_7b9d1926bc3e490d9b59f65f19bcf57a" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+    </div>
+    <a name="General+Use"></a>
+    <h2 class="boxed">General Use
+     <div name="tsUpdate" data-id="t_dc55113e3e184dea82ead12c05d0c117" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="user_api" id="user_api"></a><a name="User+API+%28HSSF+and+XSSF%29"></a>
+     <h3 class="boxed">User API (HSSF and XSSF)
+      <div name="tsUpdate" data-id="t_ea2609baf72743ba8cdc022db10a852f" data-tpl="0" data-txt-color="orange"></div></h3>
+     <a name="Writing+a+new+file"></a>
+     <h4>Writing a new file
+      <div name="tsUpdate" data-id="t_8195459522bd4d83b8491677e9ca0438" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The high level API (package: org.apache.poi.ss.usermodel) is what most people should use. Usage is very simple.
+      <div name="tsUpdate" data-id="t_d8d9bb9116f04b0f98260cc7097bd76b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Workbooks are created by creating an instance of org.apache.poi.ss.usermodel.Workbook. Either create a concrete class directly (org.apache.poi.hssf.usermodel.HSSFWorkbook or org.apache.poi.xssf.usermodel.XSSFWorkbook), or use the handy factory class org.apache.poi.ss.usermodel.WorkbookFactory.
+      <div name="tsUpdate" data-id="t_01d48450bd0540f0a9a53ec2cedc8c0e" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Sheets are created by calling createSheet() from an existing instance of Workbook, the created sheet is automatically added in sequence to the workbook. Sheets do not in themselves have a sheet name (the tab at the bottom); you set the name associated with a sheet by calling Workbook.setSheetName(sheetindex,"SheetName",encoding). For HSSF, the name may be in 8bit format (HSSFWorkbook.ENCODING_COMPRESSED_UNICODE) or Unicode (HSSFWorkbook.ENCODING_UTF_16). Default encoding for HSSF is 8bit per char. For XSSF, the name is automatically handled as unicode.
+      <div name="tsUpdate" data-id="t_ca58ac5af624458f805b61299734329c" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Rows are created by calling createRow(rowNumber) from an existing instance of Sheet. Only rows that have cell values should be added to the sheet. To set the row's height, you just call setRowHeight(height) on the row object. The height must be given in twips, or 1/20th of a point. If you prefer, there is also a setRowHeightInPoints method.
+      <div name="tsUpdate" data-id="t_23958708958644cd9d4384460d8137cb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Cells are created by calling createCell(column, type) from an existing Row. Only cells that have values should be added to the row. Cells should have their cell type set to either Cell.CELL_TYPE_NUMERIC or Cell.CELL_TYPE_STRING depending on whether they contain a numeric or textual value. Cells must also have a value set. Set the value by calling setCellValue with either a String or double as a parameter. Individual cells do not have a width; you must call setColumnWidth(colindex, width) (use units of 1/256th of a character) on the Sheet object. (You can't do it on an individual basis in the GUI either).
+      <div name="tsUpdate" data-id="t_070e4c15bd5e44c7b28e947aedc5348f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Cells are styled with CellStyle objects which in turn contain a reference to an Font object. These are created via the Workbook object by calling createCellStyle() and createFont(). Once you create the object you must set its parameters (colors, borders, etc). To set a font for an CellStyle call setFont(fontobj).
+      <div name="tsUpdate" data-id="t_41c6a71492034d36aec089da37a71bf5" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Once you have generated your workbook, you can write it out by calling write(outputStream) from your instance of Workbook, passing it an OutputStream (for instance, a FileOutputStream or ServletOutputStream). You must close the OutputStream yourself. HSSF does not close it for you.
+      <div name="tsUpdate" data-id="t_f218133344d041ff99817b1c9b1ff8f6" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Here is some example code (excerpted and adapted from org.apache.poi.hssf.dev.HSSF test class):
+      <div name="tsUpdate" data-id="t_9db06ac16bad4fa5aef095bd8c06a225" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">short rownum;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create a new file</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_3b8910c93a0749c6ba94700504bce938" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FileOutputStream out = new FileOutputStream("workbook.xls");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create a new workbook</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_453c29dc8b3c4c469009c51e1af3caef" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Workbook wb = new HSSFWorkbook();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create a new sheet</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_25c320ee04e14f528aa26ea008c63572" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Sheet s = wb.createSheet();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// declare a row object reference</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_22558526daec43f9b5b37923c88930da" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Row r = null;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// declare a cell object reference</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_25a26737a6264641bb9b4a62fe03efb2" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Cell c = null;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create 3 cell styles</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_826caabfd48f4c99bb4583e04a1620bc" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellStyle cs = wb.createCellStyle();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellStyle cs2 = wb.createCellStyle();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellStyle cs3 = wb.createCellStyle();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DataFormat df = wb.createDataFormat();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create 2 fonts objects</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_ed8a53045fce4eb791d4c190d4f8f56b" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Font f = wb.createFont();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Font f2 = wb.createFont();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set font 1 to 12 point type</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_869ee1ea349243af99faf13640a41d05" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f.setFontHeightInPoints((short) 12);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//make it blue</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_85cd3dc0f1904c7682d2a9334308e738" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f.setColor( (short)0xc );</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// make it bold</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//arial is the default font</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_b814b9320aa042abbcd230e9ff17cd51" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f.setBoldweight(Font.BOLDWEIGHT_BOLD);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set font 2 to 10 point type</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_385ef0b569fa4de48e290b31a240a807" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f2.setFontHeightInPoints((short) 10);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//make it red</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_88c40649542f4bf39e50db569a6f7008" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f2.setColor( (short)Font.COLOR_RED );</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//make it bold</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_f95bf5b173ca45efbe5c7d9bf41c6719" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f2.setBoldweight(Font.BOLDWEIGHT_BOLD);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">f2.setStrikeout( true );</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set cell stlye</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_46fdefb00f4441498aff312bc6105280" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs.setFont(f);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set the cell format </span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_17b5c550bc0e49a2b4d3dfb2f9ee8651" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs.setDataFormat(df.getFormat("#,##0.0"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set a thin border</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_fbfbeb4d66ec4f83b1ee006cafa41f9b" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs2.setBorderBottom(cs2.BORDER_THIN);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//fill w fg fill color</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_bd5fdc79c91943f1b42c439b2fa6bdd5" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs2.setFillPattern((short) CellStyle.SOLID_FOREGROUND);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//set the cell format to text see DataFormat for a full list</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_4ddb5efea3f248258ee65605cbde8c80" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs2.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// set the font</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_cd3fa881b55c49e4ac26eb8daa477a6a" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs2.setFont(f2);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// set the sheet name in Unicode</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_2ab89d6bb3cc426e934be56018455d73" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.setSheetName(0, "\u0422\u0435\u0441\u0442\u043E\u0432\u0430\u044F " + </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "\u0421\u0442\u0440\u0430\u043D\u0438\u0447\u043A\u0430" );</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// in case of plain ascii</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// wb.setSheetName(0, "HSSF Test");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create a sheet with 30 rows (0-29)</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_aba122f7d41c40a4a473aefccca64f0e" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">int rownum;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (rownum = (short) 0; rownum &lt; 30; rownum++)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create a row</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_49a12d873d5a4271a0fb005182132173" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r = s.createRow(rownum);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // on every other row</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_9e13ea9274bf43d499b5cbe96a5297ae" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if ((rownum % 2) == 0)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // make the row height bigger (in twips - 1/20 of a point)</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a0020056eab143a0ba895556535e42c0" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.setHeight((short) 0x249);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> //r.setRowNum(( short ) rownum);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create 10 cells (0-9) (the += 2 becomes apparent later</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_c55de5b0fd5e4234b246ed7051665586" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for (short cellnum = (short) 0; cellnum &lt; 10; cellnum += 2)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create a numeric cell</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a3e69f7a2830482c8ccf2183b0211ede" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c = r.createCell(cellnum);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // do some goofy math to demonstrate decimals</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_0e0bd8dd14954335a5bd10fbf3de3032" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellValue(rownum * 10000 + cellnum</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> + (((double) rownum / 1000)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> + ((double) cellnum / 10000)));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String cellValue;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create a string cell (see why += 2 in the</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_ff42b1c1ff98433faeb4948888ec6224" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c = r.createCell((short) (cellnum + 1));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // on every other row</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_121c67651b0a4fb39131b63c289d2550" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if ((rownum % 2) == 0)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // set this cell to the first cell style we defined</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_20b623f734844d92af5b9cca37a97d04" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellStyle(cs);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // set the cell's string value to "Test"</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_b3c4393c5f804d7b9879a90bff2f1eb9" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellValue( "Test" );</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> else</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellStyle(cs2);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // set the cell's string value to "\u0422\u0435\u0441\u0442"</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_773e2f6fbca4464790930874985ac340" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellValue( "\u0422\u0435\u0441\u0442" );</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // make this column a bit wider</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_500d1d5fda5945c0a08f2d3c350bf577" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> s.setColumnWidth((short) (cellnum + 1), (short) ((50 * 8) / ((double) 1 / 20)));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//draw a thick black border on the row at the bottom using BLANKS</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// advance 2 rows</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_19fd8a5e1709422ebdb1719d8d99fc6c" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">rownum++;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">rownum++;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">r = s.createRow(rownum);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// define the third style to be the default</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// except with a thick black border at the bottom</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_bf7a46f148804ddc8e0de8bd9abbc3ed" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cs3.setBorderBottom(cs3.BORDER_THICK);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//create 50 cells</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_f8f3165b750042e09e9fcde8f90574b0" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">for (short cellnum = (short) 0; cellnum &lt; 50; cellnum++)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> //create a blank type cell (no value)</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_8f3b7b439475490c9f63ec4e0d113933" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c = r.createCell(cellnum);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // set it to the thick black border style</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_69183678b79342d6a66662933627e2f3" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellStyle(cs3);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//end draw thick black border</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_037e430e1693486d98d746aa8a8a7efc" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// demonstrate adding/naming and deleting a sheet</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// create a sheet, set its title then delete it</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_08d671d6c7284e11b09ed779284efbe8" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">s = wb.createSheet();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.setSheetName(1, "DeletedSheet");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.removeSheetAt(1);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">//end deleted sheet</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_7150532fdd544079914f91d817380ff6" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// write the workbook to the output stream</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// close our file (don't blow out our file handles</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_33f93a202e8a48bdb9f0ad9301c193a5" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">out.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="Reading+or+modifying+an+existing+file"></a>
+     <h4>Reading or modifying an existing file
+      <div name="tsUpdate" data-id="t_d11140df03cf42ec9bc4c1fc9a0ddaeb" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>Reading in a file is equally simple. To read in a file, create a new instance of org.apache.poi.poifs.Filesystem, passing in an open InputStream, such as a FileInputStream for your XLS, to the constructor. Construct a new instance of org.apache.poi.hssf.usermodel.HSSFWorkbook passing the Filesystem instance to the constructor. From there you have access to all of the high level model objects through their assessor methods (workbook.getSheet(sheetNum), sheet.getRow(rownum), etc).
+      <div name="tsUpdate" data-id="t_2deba91b8ca74d358b07abc252e40452" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Modifying the file you have read in is simple. You retrieve the object via an assessor method, remove it via a parent object's remove method (sheet.removeRow(hssfrow)) and create objects just as you would if creating a new xls. When you are done modifying cells just call workbook.write(outputstream) just as you did above.
+      <div name="tsUpdate" data-id="t_4be3f32465fb474f9eb597310a8545c5" data-tpl="0" data-txt-color="green"></div></p>
+     <p>An example of this can be seen in <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/usermodel/HSSFReadWrite.java">org.apache.poi.hssf.usermodel.examples.HSSFReadWrite</a>.
+      <div name="tsUpdate" data-id="t_3a649f740b6f4b3983ee6672aba4b8b8" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="event_api" id="event_api"></a><a name="Event+API+%28HSSF+Only%29"></a>
+     <h3 class="boxed">Event API (HSSF Only)
+      <div name="tsUpdate" data-id="t_34c7c014a7ec4991bb1d3c2421ee0087" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The event API is newer than the User API. It is intended for intermediate developers who are willing to learn a little bit of the low level API structures. Its relatively simple to use, but requires a basic understanding of the parts of an Excel file (or willingness to learn). The advantage provided is that you can read an XLS with a relatively small memory footprint.
+      <div name="tsUpdate" data-id="t_f8e79bc09a00493380e08dd14c98fb3b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>One important thing to note with the basic Event API is that it triggers events only for things actually stored within the file. With the XLS file format, it is quite common for things that have yet to be edited to simply not exist in the file. This means there may well be apparent "gaps" in the record stream, which you either need to work around, or use the <a href="#record_aware_event_api">Record Aware</a> extension to the Event API.
+      <div name="tsUpdate" data-id="t_fd21c6ec59bd4e7fb6d4482fbc3b35ff" data-tpl="0" data-txt-color="green"></div></p>
+     <p>To use this API you construct an instance of org.apache.poi.hssf.eventmodel.HSSFRequest. Register a class you create that supports the org.apache.poi.hssf.eventmodel.HSSFListener interface using the HSSFRequest.addListener(yourlistener, recordsid). The recordsid should be a static reference number (such as BOFRecord.sid) contained in the classes in org.apache.poi.hssf.record. The trick is you have to know what these records are. Alternatively you can call HSSFRequest.addListenerForAllRecords(mylistener). In order to learn about these records you can either read all of the javadoc in the org.apache.poi.hssf.record package or you can just hack up a copy of org.apache.poi.hssf.dev.EFHSSF and adapt it to your needs. TODO: better documentation on records.
+      <div name="tsUpdate" data-id="t_a555e75b0434441ba4737efba939c13f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Once you've registered your listeners in the HSSFRequest object you can construct an instance of org.apache.poi.poifs.filesystem.FileSystem (see POIFS howto) and pass it your XLS file inputstream. You can either pass this, along with the request you constructed, to an instance of HSSFEventFactory via the HSSFEventFactory.processWorkbookEvents(request, Filesystem) method, or you can get an instance of DocumentInputStream from Filesystem.createDocumentInputStream("Workbook") and pass it to HSSFEventFactory.processEvents(request, inputStream). Once you make this call, the listeners that you constructed receive calls to their processRecord(Record) methods with each Record they are registered to listen for until the file has been completely read.
+      <div name="tsUpdate" data-id="t_1a63eb2dfea9447db2df159c04b4305a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>A code excerpt from org.apache.poi.hssf.dev.EFHSSF (which is in CVS or the source distribution) is reprinted below with excessive comments:
+      <div name="tsUpdate" data-id="t_85403a5c39f44778963f945cb668bb95" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">/**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * This example shows how to use the event API for reading a file.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_15b7c58f4d3342f4aa6f8f42206ab58d" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class EventExample</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> implements HSSFListener</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private SSTRecord sstrec;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> /**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * This method listens for incoming records and handles them as required.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @param record The record that was found while reading.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_71d72b3578b64ec69046c8e09d0a2f69" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void processRecord(Record record)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> switch (record.getSid())</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // the BOFRecord can represent either the beginning of a sheet or the workbook</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_6b663767c8fc4b6a9d9dbd612be746ee" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case BOFRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> BOFRecord bof = (BOFRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (bof.getType() == bof.TYPE_WORKBOOK)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Encountered workbook");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // assigned to the class level member</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_af6478a07a924f918215c5141de82b73" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else if (bof.getType() == bof.TYPE_WORKSHEET)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Encountered sheet reference");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case BoundSheetRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> BoundSheetRecord bsr = (BoundSheetRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("New sheet named: " + bsr.getSheetname());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case RowRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> RowRecord rowrec = (RowRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Row found, first column at "</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> + rowrec.getFirstCol() + " last column at " + rowrec.getLastCol());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case NumberRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> NumberRecord numrec = (NumberRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Cell found with value " + numrec.getValue()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> + " at row " + numrec.getRow() + " and column " + numrec.getColumn());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // SSTRecords store a array of unique strings used in Excel.</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a3e1fc236dd94eef86847d784d49ae64" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case SSTRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sstrec = (SSTRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for (int k = 0; k &lt; sstrec.getNumUniqueStrings(); k++)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("String table value " + k + " = " + sstrec.getString(k));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> case LabelSSTRecord.sid:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> LabelSSTRecord lrec = (LabelSSTRecord) record;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("String cell found with value "</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> + sstrec.getString(lrec.getSSTIndex()));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> break;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> /**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * Read an excel file and spit out what we find.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> *</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @param args Expect one argument that is the file to read.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @throws IOException When there is an error processing the file.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_abdf6b13fa3e445f86722955a06874e6" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main(String[] args) throws IOException</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create a new file input stream with the input file specified</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // at the command line</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_841587a5d5e8406aac7f70f96512e044" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileInputStream fin = new FileInputStream(args[0]);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create a new org.apache.poi.poifs.filesystem.Filesystem</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_5a39e4ddfc25474cbdec73b45b1108a4" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> POIFSFileSystem poifs = new POIFSFileSystem(fin);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // get the Workbook (excel part) stream in a InputStream</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_c38cfaaaa67b49c2982f3e4b86038667" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> InputStream din = poifs.createDocumentInputStream("Workbook");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // construct out HSSFRequest object</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_f0cb588adee14ac1b324726845db86ee" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> HSSFRequest req = new HSSFRequest();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // lazy listen for ALL records with the listener shown above</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a6416f2e6e504cf3be8b217154b79e2a" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> req.addListenerForAllRecords(new EventExample());</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // create our event factory</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_2cc9d688042c41728b780d1f027ce29f" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> HSSFEventFactory factory = new HSSFEventFactory();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // process our events based on the document input stream</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_f6701e571b89443b87839e97fde4e2dc" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> factory.processEvents(req, din);</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // once all the events are processed close our file input stream</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_d385c93892bd49cdae4f5a7f5d47d8fe" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> fin.close();</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // and our document input stream (don't want to leak these!)</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_f160a750835c4d379f243a9e140858bb" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> din.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("done.");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <a name="record_aware_event_api" id="record_aware_event_api"></a><a name="Record+Aware+Event+API+%28HSSF+Only%29"></a>
+     <h3 class="boxed">Record Aware Event API (HSSF Only)
+      <div name="tsUpdate" data-id="t_672b77334b774c5ba360976e8bbcf20a" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>This is an extension to the normal <a href="#event_api">Event API</a>. With this, your listener will be called with extra, dummy records. These dummy records should alert you to records which aren't present in the file (eg cells that have yet to be edited), and allow you to handle these.
+      <div name="tsUpdate" data-id="t_63a0f48fd7504f9bb6137fc2d8a74c57" data-tpl="0" data-txt-color="green"></div></p>
+     <p>There are three dummy records that your HSSFListener will be called with:
+      <div name="tsUpdate" data-id="t_773ccd29fdb04e799bc98cb8df8cd53a" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>org.apache.poi.hssf.eventusermodel.dummyrecord.MissingRowDummyRecord
+       <br>
+       This is called during the row record phase (which typically occurs before the cell records), and indicates that the row record for the given row is not present in the file.
+       <div name="tsUpdate" data-id="t_36f5efec564144b29dee6cc4976f2ef3" data-tpl="0" data-txt-color="green"></div></li>
+      <li>org.apache.poi.hssf.eventusermodel.dummyrecord.MissingCellDummyRecord
+       <br>
+       This is called during the cell record phase. It is called when a cell record is encountered which leaves a gap between it an the previous one. You can get multiple of these, before the real cell record.
+       <div name="tsUpdate" data-id="t_1637885c7c4c4d80acfe016aed9b97e4" data-tpl="0" data-txt-color="green"></div></li>
+      <li>org.apache.poi.hssf.eventusermodel.dummyrecord.LastCellOfRowDummyRecord
+       <br>
+       This is called after the last cell of a given row. It indicates that there are no more cells for the row, and also tells you how many cells you have had. For a row with no cells, this will be the only record you get.
+       <div name="tsUpdate" data-id="t_6940a90a0a064161b619c5357e7ff2e3" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p>To use the Record Aware Event API, you should create an org.apache.poi.hssf.eventusermodel.MissingRecordAwareHSSFListener, and pass it your HSSFListener. Then, register the MissingRecordAwareHSSFListener to the event model, and start that as normal.
+      <div name="tsUpdate" data-id="t_e9d89217bd774135aa3f3db946352e33" data-tpl="0" data-txt-color="green"></div></p>
+     <p>One example use for this API is to write a CSV outputter, which always outputs a minimum number of columns, even where the file doesn't contain some of the rows or cells. It can be found at <span class="codefrag">/src/examples/src/org/apache/poi/examples/hssf/eventusermodel/XLS2CSVmra.java</span>, and may be called on the command line, or from within your own code. The latest version is always available from <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/hssf/eventusermodel/">subversion</a>.
+      <div name="tsUpdate" data-id="t_8df76f54ba414d22b934f3ed144e1c36" data-tpl="0" data-txt-color="green"></div></p>
+     <p><em>In POI versions before 3.0.3, this code lived in the scratchpad section. If you're using one of these older versions of POI, you will either need to include the scratchpad jar on your classpath, or build from a</em> <a href="../../devel/subversion.html">subversion checkout</a>.
+      <div name="tsUpdate" data-id="t_3a98d73e15d840c294a33e5dabc3dd6a" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="xssf_sax_api" id="xssf_sax_api"></a><a name="XSSF+and+SAX+%28Event+API%29"></a>
+     <h3 class="boxed">XSSF and SAX (Event API)
+      <div name="tsUpdate" data-id="t_0f941cdffa2046989ae73478abc181be" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>If memory footprint is an issue, then for XSSF, you can get at the underlying XML data, and process it yourself. This is intended for intermediate developers who are willing to learn a little bit of low level structure of .xlsx files, and who are happy processing XML in java. Its relatively simple to use, but requires a basic understanding of the file structure. The advantage provided is that you can read a XLSX file with a relatively small memory footprint.
+      <div name="tsUpdate" data-id="t_d66a15a1fa8c4c359b6cf0bd6e811433" data-tpl="0" data-txt-color="green"></div></p>
+     <p>One important thing to note with the basic Event API is that it triggers events only for things actually stored within the file. With the XLSX file format, it is quite common for things that have yet to be edited to simply not exist in the file. This means there may well be apparent "gaps" in the record stream, which you need to work around.
+      <div name="tsUpdate" data-id="t_a3d5f53263664635946f0da3db93ff5d" data-tpl="0" data-txt-color="green"></div></p>
+     <p>To use this API you construct an instance of org.apache.poi.xssf.eventmodel.XSSFReader. This will optionally provide a nice interface on the shared strings table, and the styles. It provides methods to get the raw xml data from the rest of the file, which you will then pass to SAX.
+      <div name="tsUpdate" data-id="t_c52aa874b6da41749f123101ff81a017" data-tpl="0" data-txt-color="green"></div></p>
+     <p>This example shows how to get at a single known sheet, or at all sheets in the file. It is based on the example in <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/FromHowTo.java">svn src/examples/src/org/apache/poi/examples/xssf/eventusermodel/FromHowTo.java</a>
+      <div name="tsUpdate" data-id="t_b26bef4a34ee4b8492f378f985f767a9" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.InputStream;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.util.Iterator;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.util.XMLHelper;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.openxml4j.opc.OPCPackage;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.xssf.eventusermodel.XSSFReader;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.xssf.model.SharedStringsTable;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.Attributes;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.ContentHandler;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.InputSource;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.SAXException;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.XMLReader;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.xml.sax.helpers.DefaultHandler;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import javax.xml.parsers.ParserConfigurationException;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class ExampleEventUserModel {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void processOneSheet(String filename) throws Exception {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> OPCPackage pkg = OPCPackage.open(filename);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XSSFReader r = new XSSFReader( pkg );</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> SharedStringsTable sst = r.getSharedStringsTable();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XMLReader parser = fetchSheetParser(sst);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // To look up the Sheet Name / Sheet Order / rID,</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // you need to process the core Workbook stream.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Normally it's of the form rId# or rSheet#</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a2371d0363aa4d7f89f6097ed2212988" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> InputStream sheet2 = r.getSheet("rId2");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> InputSource sheetSource = new InputSource(sheet2);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> parser.parse(sheetSource);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sheet2.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void processAllSheets(String filename) throws Exception {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> OPCPackage pkg = OPCPackage.open(filename);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XSSFReader r = new XSSFReader( pkg );</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> SharedStringsTable sst = r.getSharedStringsTable();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XMLReader parser = fetchSheetParser(sst);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Iterator&lt;InputStream&gt; sheets = r.getSheetsData();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> while(sheets.hasNext()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Processing new sheet:\n");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> InputStream sheet = sheets.next();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> InputSource sheetSource = new InputSource(sheet);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> parser.parse(sheetSource);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sheet.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public XMLReader fetchSheetParser(SharedStringsTable sst) throws SAXException, ParserConfigurationException {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> XMLReader parser = XMLHelper.newXMLReader();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ContentHandler handler = new SheetHandler(sst);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> parser.setContentHandler(handler);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return parser;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> /**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * See org.xml.sax.helpers.DefaultHandler javadocs</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_5ad3b82f2e5d4b459ed29f169fd0ef47" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private static class SheetHandler extends DefaultHandler {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private SharedStringsTable sst;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private String lastContents;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private boolean nextIsString;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> private SheetHandler(SharedStringsTable sst) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> this.sst = sst;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void startElement(String uri, String localName, String name,</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Attributes attributes) throws SAXException {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // c =&gt; cell</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_654c1715f72b45a89dfe2a970db175a5" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(name.equals("c")) {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Print the cell reference</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_c5812e2532a34fc98a380a476556c414" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.print(attributes.getValue("r") + " - ");</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Figure out if the value is an index in the SST</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_d2fa5ff6eebb4a19885638869255456b" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String cellType = attributes.getValue("t");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(cellType != null &amp;&amp; cellType.equals("s")) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> nextIsString = true;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } else {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> nextIsString = false;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Clear contents cache</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_694f68fe42894be08c645cf5c728b706" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> lastContents = "";</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void endElement(String uri, String localName, String name)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throws SAXException {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Process the last contents as required.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Do now, as characters() may be called more than once</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_a3aa1cb53ddb4df5b31e217238465cf1" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(nextIsString) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int idx = Integer.parseInt(lastContents);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> lastContents = sst.getItemAt(idx).getString();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> nextIsString = false;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // v =&gt; contents of a cell</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Output after we've seen the string contents</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_852db4b31cda45178d6a356b3ec0f855" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(name.equals("v")) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println(lastContents);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public void characters(char[] ch, int start, int length) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> lastContents += new String(ch, start, length);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main(String[] args) throws Exception {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ExampleEventUserModel example = new ExampleEventUserModel();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> example.processOneSheet(args[0]);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> example.processAllSheets(args[0]);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+     </div>
+     <p>For a fuller example, including support for fetching number formatting information and applying it to numeric cells (eg to format dates or percentages), please see <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/eventusermodel/XLSX2CSV.java">the XLSX2CSV example in svn</a>
+      <div name="tsUpdate" data-id="t_6cd5e3c0c8dd4a469f05e0fd95d54438" data-tpl="0" data-txt-color="green"></div></p>
+     <p>An example is also <a href="https://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/xssf/streaming/HybridStreaming.java">provided</a> showing how to combine the user API and the SAX API by doing a streaming parse of larger worksheets and a traditional user-model parse of the rest of a workbook.
+      <div name="tsUpdate" data-id="t_494e27c08bf1474bb15b11890b30b869" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="sxssf" id="sxssf"></a><a name="SXSSF+%28Streaming+Usermodel+API%29"></a>
+     <h3 class="boxed">SXSSF (Streaming Usermodel API)
+      <div name="tsUpdate" data-id="t_caa732a5aa5a498c98ccdce021abdbbd" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>SXSSF (package: org.apache.poi.xssf.streaming) is an API-compatible streaming extension of XSSF to be used when very large spreadsheets have to be produced, and heap space is limited. SXSSF achieves its low memory footprint by limiting access to the rows that are within a sliding window, while XSSF gives access to all rows in the document. Older rows that are no longer in the window become inaccessible, as they are written to the disk.
+      <div name="tsUpdate" data-id="t_060d3c833ef540ce9ca74828a6dd18b0" data-tpl="0" data-txt-color="green"></div></p>
+     <p>You can specify the window size at workbook construction time via <em>new SXSSFWorkbook(int windowSize)</em> or you can set it per-sheet via <em>SXSSFSheet#setRandomAccessWindowSize(int windowSize)</em>
+      <div name="tsUpdate" data-id="t_835467f5fa9d46ca8a2e9a61753ed835" data-tpl="0" data-txt-color="green"></div></p>
+     <p>When a new row is created via createRow() and the total number of unflushed records would exceed the specified window size, then the row with the lowest index value is flushed and cannot be accessed via getRow() anymore.
+      <div name="tsUpdate" data-id="t_0534cf3cba6c4901aeb909eeabf6f763" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The default window size is <em>100</em> and defined by SXSSFWorkbook.DEFAULT_WINDOW_SIZE.
+      <div name="tsUpdate" data-id="t_fd53f8b02d01422e89633c8ca9956ce5" data-tpl="0" data-txt-color="green"></div></p>
+     <p>A windowSize of -1 indicates unlimited access. In this case all records that have not been flushed by a call to flushRows() are available for random access.
+      <div name="tsUpdate" data-id="t_1cc6066c5f0d44099a08b961b6f9d915" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Note that SXSSF allocates temporary files that you <strong>must</strong> always clean up explicitly, by calling the dispose method.
+      <div name="tsUpdate" data-id="t_f3f611f28180440486a4570108867d25" data-tpl="0" data-txt-color="green"></div></p>
+     <p>SXSSFWorkbook defaults to using inline strings instead of a shared strings table. This is very efficient, since no document content needs to be kept in memory, but is also known to produce documents that are incompatible with some clients. With shared strings enabled all unique strings in the document has to be kept in memory. Depending on your document content this could use a lot more resources than with shared strings disabled.
+      <div name="tsUpdate" data-id="t_584a4733bc7441e3b1de4d1f5a277e42" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Please note that there are still things that still may consume a large amount of memory based on which features you are using, e.g. merged regions, hyperlinks, comments, ... are still only stored in memory and thus may require a lot of memory if used extensively.
+      <div name="tsUpdate" data-id="t_63ee3516854946f98d2e4afe733363cb" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Carefully review your memory budget and compatibility needs before deciding whether to enable shared strings or not.
+      <div name="tsUpdate" data-id="t_d1653074b31a4bf5adcab835f22d09fd" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The example below writes a sheet with a window of 100 rows. When the row count reaches 101, the row with rownum=0 is flushed to disk and removed from memory, when rownum reaches 102 then the row with rownum=1 is flushed, etc.
+      <div name="tsUpdate" data-id="t_170374ca7b414889ae1779af1dd72489" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport junit.framework.Assert;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Cell;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Row;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Sheet;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Workbook;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.util.CellReference;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.xssf.streaming.SXSSFWorkbook;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main(String[] args) throws Throwable {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SXSSFWorkbook wb = new SXSSFWorkbook(100); //<span> keep 100 rows in memory, exceeding rows will be flushed to disk
+         <div name="tsUpdate" data-id="t_ffade02b68c041aab8edafd7306b2bf6" data-tpl="0" data-txt-color="green"></div></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet sh = wb.createSheet();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int rownum = 0; rownum &lt; 1000; rownum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row row = sh.createRow(rownum);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int cellnum = 0; cellnum &lt; 10; cellnum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell cell = row.createCell(cellnum);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String address = new CellReference(cell).formatAsString();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setCellValue(address);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Rows with rownum &lt; 900 are flushed and not accessible</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_4bd57b88e4be45118c9f46d21f544e6e" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int rownum = 0; rownum &lt; 900; rownum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Assert.assertNull(sh.getRow(rownum));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // ther last 100 rows are still in memory</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_658e0839da6346a18f811769ef394311" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int rownum = 900; rownum &lt; 1000; rownum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Assert.assertNotNull(sh.getRow(rownum));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileOutputStream out = new FileOutputStream("/temp/sxssf.xlsx");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // dispose of temporary files backing this workbook on disk</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_adb94516fc954c298eaa498240635440" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.dispose();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>The next example turns off auto-flushing (windowSize=-1) and the code manually controls how portions of data are written to disk
+      <div name="tsUpdate" data-id="t_4ed6f93ac21d4b6388edb85e6e24a09a" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Cell;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Row;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Sheet;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Workbook;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.util.CellReference;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.xssf.streaming.SXSSFWorkbook;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main(String[] args) throws Throwable {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SXSSFWorkbook wb = new SXSSFWorkbook(-1); //<span> turn off auto-flushing and accumulate all rows in memory
+         <div name="tsUpdate" data-id="t_b9687bb45f5d41b2b299e4ee732062a7" data-tpl="0" data-txt-color="green"></div></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet sh = wb.createSheet();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int rownum = 0; rownum &lt; 1000; rownum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row row = sh.createRow(rownum);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for(int cellnum = 0; cellnum &lt; 10; cellnum++){</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell cell = row.createCell(cellnum);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String address = new CellReference(cell).formatAsString();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setCellValue(address);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // manually control how rows are flushed to disk </span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_8ef31b972bea4907b7a703c876002a13" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if(rownum % 100 == 0) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">((SXSSFSheet)sh).flushRows(100); //<span> retain 100 last rows and flush all others
+         <div name="tsUpdate" data-id="t_a78faad6aeed404b8af7dfc197a1cb01" data-tpl="0" data-txt-color="green"></div></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // ((SXSSFSheet)sh).flushRows() is a shortcut for ((SXSSFSheet)sh).flushRows(0),</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // this method flushes all rows</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_685ec0c548f441738cb5f3e7087c4847" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileOutputStream out = new FileOutputStream("/temp/sxssf.xlsx");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.write(out);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> out.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // dispose of temporary files backing this workbook on disk</span>
+      </div>
+      <div name="tsUpdate" class="codeline" data-id="t_20c10660b56e4422b74c87973c71392c" data-tpl="1" data-txt-color="green"></div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.dispose();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p>SXSSF flushes sheet data in temporary files (a temp file per sheet) and the size of these temporary files can grow to a very large value. For example, for a 20 MB csv data the size of the temp xml becomes more than a gigabyte. If the size of the temp files is an issue, you can tell SXSSF to use gzip compression:
+      <div name="tsUpdate" data-id="t_bed7309fa74147ff925aaa3e1837b55f" data-tpl="0" data-txt-color="green"></div></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SXSSFWorkbook wb = new SXSSFWorkbook(); </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">wb.setCompressTempFiles(true); //<span> temp files will be gzipped
+         <div name="tsUpdate" data-id="t_2c90836640884a86b165ede73b450c10" data-tpl="0" data-txt-color="green"></div></span></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <a name="low_level_api" id="low_level_api"></a><a name="Low+Level+APIs"></a>
+     <h3 class="boxed">Low Level APIs
+      <div name="tsUpdate" data-id="t_1775000756a6462b890902193f03cc3e" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The low level API is not much to look at. It consists of lots of "Records" in the org.apache.poi.hssf.record.* package, and set of helper classes in org.apache.poi.hssf.model.*. The record classes are consistent with the low level binary structures inside a BIFF8 file (which is embedded in a POIFS file system). You probably need the book: "Microsoft Excel 97 Developer's Kit" from Microsoft Press in order to understand how these fit together (out of print but easily obtainable from Amazon's used books). In order to gain a good understanding of how to use the low level APIs should view the source in org.apache.poi.hssf.usermodel.* and the classes in org.apache.poi.hssf.model.*. You should read the documentation for the POIFS libraries as well.
+      <div name="tsUpdate" data-id="t_9ab411c6c1864f22990a2fabd43bc927" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Generating+XLS+from+XML"></a>
+     <h3 class="boxed">Generating XLS from XML
+      <div name="tsUpdate" data-id="t_07bdd3009db140cab9831e84fca17e45" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>If you wish to generate an XLS file from some XML, it is possible to write your own XML processing code, then use the User API to write out the document.
+      <div name="tsUpdate" data-id="t_5d35f5df4e5c4679ada7cee6dedc2988" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The other option is to use <a href="http://cocoon.apache.org/">Cocoon</a>. In Cocoon, there is the <a href="http://cocoon.apache.org/2.1/userdocs/xls-serializer.html">HSSF Serializer</a>, which takes in XML (in the gnumeric format), and outputs an XLS file for you.
+      <div name="tsUpdate" data-id="t_fbf46a4e9ea84558ba0611bf5667055d" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="HSSF+Class%2FTest+Application"></a>
+     <h3 class="boxed">HSSF Class/Test Application
+      <div name="tsUpdate" data-id="t_b2018df2a7864edfafa6d342fe49a9dd" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The HSSF application is nothing more than a test for the high level API (and indirectly the low level support). The main body of its code is repeated above. To run it:
+      <div name="tsUpdate" data-id="t_5c9269084bcd42e1b9101db7240b9f0d" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>download the poi-alpha build and untar it (tar xvzf tarball.tar.gz)
+       <div name="tsUpdate" data-id="t_9bb5429382af4610af7d1628216f7e3e" data-tpl="0" data-txt-color="green"></div></li>
+      <li>set up your classpath as follows: <span class="codefrag">export HSSFDIR={wherever you put HSSF's jar files} export LOG4JDIR={wherever you put LOG4J's jar files} export CLASSPATH=$CLASSPATH:$HSSFDIR/hssf.jar:$HSSFDIR/poi-poifs.jar:$HSSFDIR/poi-util.jar:$LOG4JDIR/jog4j.jar</span>
+       <div name="tsUpdate" data-id="t_d75af3aeea0145a999a601a1e657adb5" data-tpl="0" data-txt-color="green"></div></li>
+      <li>type: <span class="codefrag">java org.apache.poi.hssf.dev.HSSF ~/myxls.xls write</span>
+       <div name="tsUpdate" data-id="t_f4e5cb8796434984837448939579aefa" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p></p>
+     <p>This should generate a test sheet in your home directory called <span class="codefrag">"myxls.xls"</span>.
+      <div name="tsUpdate" data-id="t_ce253d66659d478f8ec1b258433790bd" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Type: <span class="codefrag">java org.apache.poi.hssf.dev.HSSF ~/input.xls output.xls</span>
+       <br>
+       <br>
+       This is the read/write/modify test. It reads in the spreadsheet, modifies a cell, and writes it back out. Failing this test is not necessarily a bad thing. If HSSF tries to modify a non-existant sheet then this will most likely fail. No big deal.
+       <div name="tsUpdate" data-id="t_06ade8301d3f482d8cfc4c0223ca5655" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <a name="HSSF+Developer%27s+Tools"></a>
+     <h3 class="boxed">HSSF Developer's Tools
+      <div name="tsUpdate" data-id="t_ca262e609ae645f6855368a4c36cc5cd" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>HSSF has a number of tools useful for developers to debug/develop stuff using HSSF (and more generally XLS files). We've already discussed the app for testing HSSF read/write/modify capabilities; now we'll talk a bit about BiffViewer. Early on in the development of HSSF, it was decided that knowing what was in a record, what was wrong with it, etc. was virtually impossible with the available tools. So we developed BiffViewer. You can find it at org.apache.poi.hssf.dev.BiffViewer. It performs two basic functions and a derivative.
+      <div name="tsUpdate" data-id="t_b23080d000bb42939eefea6a0e0383a0" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The first is "biffview". To do this you run it (assumes you have everything setup in your classpath and that you know what you're doing enough to be thinking about this) with an xls file as a parameter. It will give you a listing of all understood records with their data and a list of not-yet-understood records with no data (because it doesn't know how to interpret them). This listing is useful for several things. First, you can look at the values and SEE what is wrong in quasi-English. Second, you can send the output to a file and compare it.
+      <div name="tsUpdate" data-id="t_c84367c3a6a04e438c89ba2607fee4c3" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The second function is "big freakin dump", just pass a file and a second argument matching "bfd" exactly. This will just make a big hexdump of the file.
+      <div name="tsUpdate" data-id="t_6b453a3124584e9abf8df56859e208a6" data-tpl="0" data-txt-color="green"></div></p>
+     <p>Lastly, there is "mixed" mode which does the same as regular biffview, only it includes hex dumps of certain records intertwined. To use that just pass a file with a second argument matching "on" exactly.
+      <div name="tsUpdate" data-id="t_786a733ce07a451ca9a2726db611e2ab" data-tpl="0" data-txt-color="green"></div></p>
+     <p>In the next release cycle we'll also have something called a FormulaViewer. The class is already there, but its not very useful yet. When it does something, we'll document it.
+      <div name="tsUpdate" data-id="t_973b9a99b59b49fab9f57c76195637df" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="What%27s+Next%3F"></a>
+     <h3 class="boxed">What's Next?
+      <div name="tsUpdate" data-id="t_3e8729012bc544d798dd10abf5b6365d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Further effort on HSSF is going to focus on the following major areas:
+      <div name="tsUpdate" data-id="t_90cfe14d30a04a1c95fbc1217f771c4b" data-tpl="0" data-txt-color="green"></div></p>
+     <ul>
+      <li>Performance: POI currently uses a lot of memory for large sheets.
+       <div name="tsUpdate" data-id="t_e828567df3d3451f9fa0ab315917d5f1" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Charts: This is a hard problem, with very little documentation.
+       <div name="tsUpdate" data-id="t_fa60bc9315c74f7d9d3a146db086e347" data-tpl="0" data-txt-color="green"></div></li>
+     </ul>
+     <p><a href="../../devel/guidelines.html"> So jump in! </a>
+      <div name="tsUpdate" data-id="t_bffd42b5fa1a41a1b1787de96c184e8d" data-tpl="0" data-txt-color="green"></div></p>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Andrew C. Oliver,&nbsp;Glen Stampoultzis,&nbsp;Nick Burch,&nbsp;Sergei Kozello</font>
+     <div name="tsUpdate" data-id="t_aeecd0e2a6f042219ddb9fbb2ab2f4a1" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/how-to.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='27a7c9782781438bbe68bea4364c8952';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>User Defined Functions</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../../js/jquery.min.js"></script>
+  <link href="../../css/xst-ts.css" rel="stylesheet">
+  <script src="../../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_3f60cfb2af2e4c5e86dadfc7df8eb843">User Defined Functions</span><span class="tscolor" lg_zh="t_3f60cfb2af2e4c5e86dadfc7df8eb843"><span lg_kh="1">(</span>用户定义函数<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="How+to+Create+and+Use+User+Defined+Functions"></a>
+    <h2 class="boxed"><span lg_en="t_cab37cbb61be48d4a672dfee052e1c74">How to Create and Use User Defined Functions</span><span class="tscolor" lg_zh="t_cab37cbb61be48d4a672dfee052e1c74"><span lg_kh="1">(</span>如何创建和使用用户定义的函数<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="Description"></a>
+     <h3 class="boxed"><span lg_en="t_13851b7072dd45908e8562e06138cc09">Description</span><span class="tscolor" lg_zh="t_13851b7072dd45908e8562e06138cc09"><span lg_kh="1">(</span>描述<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_4e562bc002fc4e4a94ec4d2e9667363b">This document describes the User Defined Functions within POI. User defined functions allow you to take code that is written in VBA and re-write in Java and use within POI. Consider the following example.</span><span class="tscolor" lg_zh="t_4e562bc002fc4e4a94ec4d2e9667363b"><span lg_kh="1">(</span>本文档描述 POI 中的用户定义函数。用户定义的函数允许您获取用 VBA 编写的代码并用 Java 重写并在 POI 中使用。考虑以下示例。<span lg_kh="1">)</span></span></p>
+     <a name="An+Example"></a>
+     <h3 class="boxed"><span lg_en="t_7d43328137214b0d9ad03359f3e75472">An Example</span><span class="tscolor" lg_zh="t_7d43328137214b0d9ad03359f3e75472"><span lg_kh="1">(</span>一个例子<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_f2f730e0db224abf92ea85f1a83183e9">Suppose you are given a spreadsheet that can calculate the principal and interest payments for a mortgage. The user enters the principal loan amount, the interest rate and the term of the loan. The Excel spreadsheet does the rest.</span><span class="tscolor" lg_zh="t_f2f730e0db224abf92ea85f1a83183e9"><span lg_kh="1">(</span>假设您有一个可以计算抵押贷款的本金和利息支付的电子表格。用户输入本金贷款金额、利率和贷款期限。 Excel 电子表格会完成余下的工作。<span lg_kh="1">)</span></span></p>
+     <p><img alt="mortgage calculation spreadsheet" src="images/simple-xls-with-function.jpg"></p>
+     <p><span lg_en="t_0678610824144a44b24097c0a9a93fc1">When you actually look at the workbook you discover that rather than having the formula in a cell it has been written as VBA function. You review the function and determine that it could be written in Java:</span><span class="tscolor" lg_zh="t_0678610824144a44b24097c0a9a93fc1"><span lg_kh="1">(</span>当您实际查看工作簿时，您会发现它不是将公式放在单元格中，而是将其编写为 VBA 函数。您查看该函数并确定它可以用 Java 编写：<span lg_kh="1">)</span></span></p>
+     <p><img alt="VBA code" src="images/calculatePayment.jpg"></p>
+     <p><span lg_en="t_a7b16dd5d3ec42a78b7153ae5f616866">If we write a small program to try to evaluate this cell, we'll fail. Consider this source code:</span><span class="tscolor" lg_zh="t_a7b16dd5d3ec42a78b7153ae5f616866"><span lg_kh="1">(</span>如果我们编写一个小程序来尝试评估这个单元格，我们将会失败。考虑这个源代码：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.File ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.FileInputStream ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.FileNotFoundException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.IOException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.openxml4j.exceptions.InvalidFormatException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.functions.FreeRefFunction ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.udf.AggregatingUDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.udf.DefaultUDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.udf.UDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.Cell ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.CellValue ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.Row ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.Sheet ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.Workbook ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.WorkbookFactory ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.util.CellReference ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class Evaluator {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main( String[] args ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println( "fileName: " + args[0] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println( "cell: " + args[1] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File workbookFile = new File( args[0] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileInputStream fis = new FileInputStream(workbookFile);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Workbook workbook = WorkbookFactory.create(fis);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellReference cr = new CellReference( args[1] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String sheetName = cr.getSheetName() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet sheet = workbook.getSheet( sheetName ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int rowIdx = cr.getRow() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int colIdx = cr.getCol() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row row = sheet.getRow( rowIdx ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell cell = row.getCell( colIdx ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellValue value = evaluator.evaluate( cell ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("returns value: " + value ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( FileNotFoundException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( InvalidFormatException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( IOException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_e04e74426a2a4b4aa89d95780bacaea0">If you run this code, you're likely to get the following error:</span><span class="tscolor" lg_zh="t_e04e74426a2a4b4aa89d95780bacaea0"><span lg_kh="1">(</span>如果您运行此代码，您可能会收到以下错误：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Exception in thread "main" org.apache.poi.ss.formula.eval.NotImplementedException: Error evaluating cell Sheet1!B4</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.WorkbookEvaluator.addExceptionInfo(WorkbookEvaluator.java:321)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.WorkbookEvaluator.evaluateAny(WorkbookEvaluator.java:288)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.WorkbookEvaluator.evaluate(WorkbookEvaluator.java:221)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.evaluateFormulaCellValue(HSSFFormulaEvaluator.java:320)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.evaluate(HSSFFormulaEvaluator.java:182)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at poi.tests.Evaluator.main(Evaluator.java:61)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Caused by: org.apache.poi.ss.formula.eval.NotImplementedException: calculatePayment</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.UserDefinedFunction.evaluate(UserDefinedFunction.java:59)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.OperationEvaluatorFactory.evaluate(OperationEvaluatorFactory.java:129)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.WorkbookEvaluator.evaluateFormula(WorkbookEvaluator.java:456)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> at org.apache.poi.ss.formula.WorkbookEvaluator.evaluateAny(WorkbookEvaluator.java:279)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ... 4 more</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_42df85f6ae3642f682f7206c6dbba6a9">How would we make it so POI can use this sheet?</span><span class="tscolor" lg_zh="t_42df85f6ae3642f682f7206c6dbba6a9"><span lg_kh="1">(</span>我们将如何制作它以便 POI 可以使用此表？<span lg_kh="1">)</span></span></p>
+     <a name="Defining+Your+Function"></a>
+     <h3 class="boxed"><span lg_en="t_f2329312af7342b2aa45c322187e4ad1">Defining Your Function</span><span class="tscolor" lg_zh="t_f2329312af7342b2aa45c322187e4ad1"><span lg_kh="1">(</span>定义你的功能<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_6a5b10aafeb24220aa660d2830ed7577">To 'convert' this code to Java and make it available to POI you need to implement a FreeRefFunction instance. FreeRefFunction is an interface in the org.apache.poi.ss.formula.functions package. This interface defines one method, evaluate(ValueEval[] args, OperationEvaluationContext ec), which is how you will receive the argument values from POI.</span><span class="tscolor" lg_zh="t_6a5b10aafeb24220aa660d2830ed7577"><span lg_kh="1">(</span>要将此代码“转换”为 Java 并使其可用于 POI，您需要实现一个 FreeRefFunction 实例。 FreeRefFunction 是 org.apache.poi.ss.formula.functions 包中的一个接口。该接口定义了一种方法，evaluate(ValueEval[] args, OperationEvaluationContext ec)，这是您从 POI 接收参数值的方式。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_bde05d62d29349d2b126f6b52f5de33a">The evaluate() method as defined above is where you will convert the ValueEval instances to the proper number types. The following code snippet shows you how to get your values:</span><span class="tscolor" lg_zh="t_bde05d62d29349d2b126f6b52f5de33a"><span lg_kh="1">(</span>上面定义的 evaluate() 方法用于将 ValueEval 实例转换为正确的数字类型。以下代码片段向您展示了如何获取您的值：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class CalculateMortgage implements FreeRefFunction {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">@Override</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public ValueEval evaluate( ValueEval[] args, OperationEvaluationContext ec ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (args.length != 3) { </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return ErrorEval.VALUE_INVALID;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double principal, rate, years, result;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v1 = OperandResolver.getSingleValue( args[0], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v2 = OperandResolver.getSingleValue( args[1], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v3 = OperandResolver.getSingleValue( args[2], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> principal = OperandResolver.coerceValueToDouble( v1 ) ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> rate = OperandResolver.coerceValueToDouble( v2 ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> years = OperandResolver.coerceValueToDouble( v3 ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_ba0c051ab1a74d1ba045c59fc37d4fc7">The first thing we do is check the number of arguments being passed since there is no sense in attempting to go further if you are missing critical information.</span><span class="tscolor" lg_zh="t_ba0c051ab1a74d1ba045c59fc37d4fc7"><span lg_kh="1">(</span>我们要做的第一件事是检查传递的参数的数量，因为如果您丢失了关键信息，那么尝试更进一步是没有意义的。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_206283609ceb4bdeb33f6e32023943a1">Next we declare our variables, in our case we need variables for:</span><span class="tscolor" lg_zh="t_206283609ceb4bdeb33f6e32023943a1"><span lg_kh="1">(</span>接下来我们声明我们的变量，在我们的例子中，我们需要以下变量：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_4b4e78cbff2e4983b9e54ef3c28e327a">principal - the amount of the loan</span><span class="tscolor" lg_zh="t_4b4e78cbff2e4983b9e54ef3c28e327a"><span lg_kh="1">(</span>本金 - 贷款金额<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_7b85506b437644668b746d83dfa6759f">rate - the interest rate as a decimal</span><span class="tscolor" lg_zh="t_7b85506b437644668b746d83dfa6759f"><span lg_kh="1">(</span>rate - 小数形式的利率<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_67b0efb5737042498dc26fde8f14e026">years - the length of the loan in years</span><span class="tscolor" lg_zh="t_67b0efb5737042498dc26fde8f14e026"><span lg_kh="1">(</span>年 - 贷款的年限<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_5f73842ff4ba414291dba4831af58b4c">result - the result of the calculation</span><span class="tscolor" lg_zh="t_5f73842ff4ba414291dba4831af58b4c"><span lg_kh="1">(</span>result - 计算的结果<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_9ce21feb483b401d971785d7bbf8f66d">Next, we use the OperandResolver to convert the ValueEval instances to doubles, though not directly. First we start by getting discreet values. Using the OperandResolver.getSingleValue() method we retrieve each of the values passed in by the cell in the spreadsheet. Next, we use the OperandResolver again to convert the ValueEval instances to doubles, in this case. This class has other methods of coercion for getting Strings, ints and booleans. Now that we've got our primitive values we can move on to calculating the value.</span><span class="tscolor" lg_zh="t_9ce21feb483b401d971785d7bbf8f66d"><span lg_kh="1">(</span>接下来，我们使用 OperandResolver 将 ValueEval 实例转换为双精度值，尽管不是直接的。首先，我们从获取谨慎的值开始。使用 OperandResolver.getSingleValue() 方法，我们检索电子表格中单元格传入的每个值。接下来，在本例中，我们再次使用 OperandResolver 将 ValueEval 实例转换为双精度值。这个类还有其他获取字符串、整数和布尔值的强制方法。现在我们已经获得了原始值，我们可以继续计算该值。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_e43bd07265c34272a5892dcd9b036854">As shown previously, we have the VBA source. We need to add code to our class to calculate the payment. To do this you could simply add it to the method we've already created but I've chosen to add it as its own method. Add the following method:</span><span class="tscolor" lg_zh="t_e43bd07265c34272a5892dcd9b036854"><span lg_kh="1">(</span>如前所示，我们有 VBA 源代码。我们需要在我们的类中添加代码来计算付款。为此，您可以简单地将其添加到我们已经创建的方法中，但我选择将其添加为自己的方法。添加以下方法：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public double calculateMortgagePayment( double p, double r, double y ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double i = r / 12 ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double n = y * 12 ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double principalAndInterest = </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> p * (( i * Math.pow((1 + i),n ) ) / ( Math.pow((1 + i),n) - 1)) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return principalAndInterest ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_70a72a596ca548ecafa020b5b66b75c9">The biggest change necessary is related to the exponents; Java doesn't have a notation for this so we had to add calls to Math.pow(). Now we need to add this call to our previous method:</span><span class="tscolor" lg_zh="t_70a72a596ca548ecafa020b5b66b75c9"><span lg_kh="1">(</span>最大的必要变化与指数有关； Java 对此没有表示法，因此我们必须添加对 Math.pow() 的调用。现在我们需要将此调用添加到我们之前的方法中：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">result = calculateMortgagePayment( principal, rate, years ) ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_8dfe4746fc9f4886bb76bf932b1ff06f">Having done that, the last things we need to do are to check to make sure we didn't get a bad result and, if not, we need to return the value. Add the following code to the class:</span><span class="tscolor" lg_zh="t_8dfe4746fc9f4886bb76bf932b1ff06f"><span lg_kh="1">(</span>完成后，我们需要做的最后一件事是检查以确保我们没有得到错误的结果，如果没有，我们需要返回值。将以下代码添加到类中：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">private void checkValue(double result) throws EvaluationException {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (Double.isNaN(result) || Double.isInfinite(result)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throw new EvaluationException(ErrorEval.NUM_ERROR);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">} </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_264a153220614f29b095c76f9d738578">Then add a line of code to our evaluate method to call this new static method, complete our try/catch and return the value:</span><span class="tscolor" lg_zh="t_264a153220614f29b095c76f9d738578"><span lg_kh="1">(</span>然后在我们的评估方法中添加一行代码来调用这个新的静态方法，完成我们的try/catch并返回值：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">checkValue(result);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">tch (EvaluationException e) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">e.printStackTrace() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">return e.getErrorEval();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">rn new NumberEval( result ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+     </div>
+     <p><span lg_en="t_3ec77ac2d9c94a0aace903eb6a78319f">So the whole class would be as follows:</span><span class="tscolor" lg_zh="t_3ec77ac2d9c94a0aace903eb6a78319f"><span lg_kh="1">(</span>所以整个类如下：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.OperationEvaluationContext ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.eval.ErrorEval ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.eval.EvaluationException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.eval.NumberEval ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.eval.OperandResolver ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.eval.ValueEval ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.formula.functions.FreeRefFunction ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">/**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * A simple function to calculate principal and interest.</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * </span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @author Jon Svede</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> *</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div class="codeline" lg_zh="t_b094c0f1f2cd4520bdca8a38efdc8792">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">/**
+* 计算本金和利息的简单函数。
+*
+* @作者乔恩·斯维德
+*
+*/
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">public class CalculateMortgage implements FreeRefFunction {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> @Override</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public ValueEval evaluate( ValueEval[] args, OperationEvaluationContext ec ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (args.length != 3) { </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return ErrorEval.VALUE_INVALID;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double principal, rate, years, result;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v1 = OperandResolver.getSingleValue( args[0], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v2 = OperandResolver.getSingleValue( args[1], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ValueEval v3 = OperandResolver.getSingleValue( args[2], </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getRowIndex(), </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ec.getColumnIndex() ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> principal = OperandResolver.coerceValueToDouble( v1 ) ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> rate = OperandResolver.coerceValueToDouble( v2 ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> years = OperandResolver.coerceValueToDouble( v3 ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> result = calculateMortgagePayment( principal, rate, years ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> checkValue(result);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch (EvaluationException e) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return e.getErrorEval();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return new NumberEval( result ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public double calculateMortgagePayment( double p, double r, double y ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double i = r / 12 ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double n = y * 12 ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> //M = P [ i(1 + i)n ] / [ (1 + i)n - 1] </span>
+      </div>
+      <div class="codeline" lg_zh="t_f5bc7df2b6d8468e9c24ecc67aca1dbd">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//M = P [ i（1 + i）n ] / [（1 + i）n - 1]
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> double principalAndInterest = </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> p * (( i * Math.pow((1 + i),n ) ) / ( Math.pow((1 + i),n) - 1)) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return principalAndInterest ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> /**</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * Excel does not support infinities and NaNs, rather, it gives a #NUM! error in these cases</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * </span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> * @throws EvaluationException (#NUM!) if &lt;tt&gt;result&lt;/tt&gt; is &lt;tt&gt;NaN&lt;/&gt; or &lt;tt&gt;Infinity&lt;/tt&gt;</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> */</span>
+      </div>
+      <div class="codeline" lg_zh="t_acb9ea3671bf4cf89fee91c0d58f3283">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">/**
+* Excel不支持无穷大和NaN，而是提供#NUM！在这些情况下的错误
+*
+* @throws EvaluationException（#NUM！）如果<tt>结果</tt>为<tt>NaN</>或<tt>Infinity</tt>
+*/
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> static final void checkValue(double result) throws EvaluationException {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (Double.isNaN(result) || Double.isInfinite(result)) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> throw new EvaluationException(ErrorEval.NUM_ERROR);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_94f5e37fb64e45589008689dffa447ad">Great! Now we need to go back to our original program that failed to evaluate our cell and add code that will allow it run our new Java code.</span><span class="tscolor" lg_zh="t_94f5e37fb64e45589008689dffa447ad"><span lg_kh="1">(</span>伟大的！现在我们需要回到未能评估我们的单元的原始程序，并添加允许它运行我们新的 Java 代码的代码。<span lg_kh="1">)</span></span></p>
+     <a name="Registering+Your+Function"></a>
+     <h3 class="boxed"><span lg_en="t_54d9bfae3f914b1da65f00718f6fb2a4">Registering Your Function</span><span class="tscolor" lg_zh="t_54d9bfae3f914b1da65f00718f6fb2a4"><span lg_kh="1">(</span>注册你的函数<span lg_kh="1">)</span></span></h3>
+     <p><span lg_en="t_0695b640be62470fabdcd360c0c05dd1">Now we need to register our function in the Workbook, so that the Formula Evaluator can resolve the name "calculatePayment" and map it to the actual implementation (CalculateMortgage). This is done using the UDFFinder object. The UDFFinder manages FreeRefFunctions which are our analogy for the VBA code. We need to create a UDFFinder. There are a few things we need to know in order to do this:</span><span class="tscolor" lg_zh="t_0695b640be62470fabdcd360c0c05dd1"><span lg_kh="1">(</span>现在我们需要在 Workbook 中注册我们的函数，以便 Formula Evaluator 可以解析名称“calculatePayment”并将其映射到实际执行中（CalculateMortgage）。这是使用 UDFFinder 对象完成的。 UDFFinder 管理 FreeRefFunctions，这是我们对 VBA 代码的类比。我们需要创建一个 UDFFinder。为了做到这一点，我们需要知道一些事情：<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_0b1da8ca14b34d4abded137f85630dc2">The name of the function in the VBA code (in our case it is calculatePayment)</span><span class="tscolor" lg_zh="t_0b1da8ca14b34d4abded137f85630dc2"><span lg_kh="1">(</span>VBA 代码中函数的名称（在我们的例子中是 calculatePayment）<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_d91d089e1da0417e9d6efd7a42874c6e">The Class name of our FreeRefFunction</span><span class="tscolor" lg_zh="t_d91d089e1da0417e9d6efd7a42874c6e"><span lg_kh="1">(</span>我们的 FreeRefFunction 的类名<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_798a770054f84756bb586a0cb9e21e5f">UDFFinder is actually an interface, so we need to use an actual implementation of this interface. Therefore we use the org.apache.poi.ss.formula.udf.DefaultUDFFinder class. If you refer to the Javadocs you'll see that this class expects to get two arrays, one containing the alias and the other containing an instance of the class that will represent that alias. In our case our alias will be calculatePayment and our class instance will be of the CalculateMortgage type. This class needs to be available at compile and runtime. Be sure to keep these arrays well organized because you'll run into problems if these arrays are of different sizes or the alias aren't in the same relative position in their respective arrays. Add the following code:</span><span class="tscolor" lg_zh="t_798a770054f84756bb586a0cb9e21e5f"><span lg_kh="1">(</span>UDFFinder 实际上是一个接口，所以我们需要使用这个接口的实际实现。因此我们使用 org.apache.poi.ss.formula.udf.DefaultUDFFinder 类。如果您参考 Javadocs，您会看到该类期望获得两个数组，一个包含别名，另一个包含将表示该别名的类的实例。在我们的例子中，我们的别名是calculatePayment，我们的类实例是CalculateMortgage 类型。此类需要在编译和运行时可用。请务必保持这些数组井井有条，因为如果这些数组的大小不同或别名在各自数组中的相对位置不同，您会遇到问题。添加以下代码：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">String[] functionNames = { "calculatePayment" } ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">FreeRefFunction[] functionImpls = { new CalculateMortgage() } ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">UDFFinder udfs = new DefaultUDFFinder( functionNames, functionImpls ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">UDFFinder udfToolpack = new AggregatingUDFFinder( udfs ) ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_736ffa68a5f84c2d95f2b84bfce84417">Now we have our UDFFinder instance and we've created the AggregatingUDFFinder instance. The last step is to pass this to our Workbook:</span><span class="tscolor" lg_zh="t_736ffa68a5f84c2d95f2b84bfce84417"><span lg_kh="1">(</span>现在我们有了 UDFFinder 实例，并且创建了 AggregatingUDFFinder 实例。最后一步是将其传递给我们的工作簿：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">workbook.addToolPack(udfToolpack);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_91bc1d484ac3476ab34378bcc3570558">So now the whole class will look like this:</span><span class="tscolor" lg_zh="t_91bc1d484ac3476ab34378bcc3570558"><span lg_kh="1">(</span>所以现在整个类看起来像这样：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport java.io.File ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport java.io.FileInputStream ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport java.io.FileNotFoundException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport java.io.IOException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.openxml4j.exceptions.InvalidFormatException ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.formula.functions.FreeRefFunction ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.formula.udf.AggregatingUDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.formula.udf.DefaultUDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.formula.udf.UDFFinder ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Cell ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.CellValue ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Row ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Sheet ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.Workbook ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.usermodel.WorkbookFactory ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">mport org.apache.poi.ss.util.CellReference ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">ublic class Evaluator {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> public static void main( String[] args ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println( "fileName: " + args[0] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println( "cell: " + args[1] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File workbookFile = new File( args[0] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> try {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FileInputStream fis = new FileInputStream(workbookFile);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Workbook workbook = WorkbookFactory.create(fis);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String[] functionNames = { "calculatePayment" } ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FreeRefFunction[] functionImpls = { new CalculateMortgage() } ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> UDFFinder udfs = new DefaultUDFFinder( functionNames, functionImpls ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> UDFFinder udfToolpack = new AggregatingUDFFinder( udfs ) ; </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> workbook.addToolPack(udfToolpack);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellReference cr = new CellReference( args[1] ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> String sheetName = cr.getSheetName() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet sheet = workbook.getSheet( sheetName ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int rowIdx = cr.getRow() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int colIdx = cr.getCol() ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row row = sheet.getRow( rowIdx ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell cell = row.getCell( colIdx ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellValue value = evaluator.evaluate( cell ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("returns value: " + value ) ;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( FileNotFoundException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( InvalidFormatException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } catch( IOException e ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> e.printStackTrace();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_486f334fc8fc4dbc8ea7db6732d4587b">Now that our evaluator is aware of the UDFFinder which in turn is aware of our FreeRefFunction, we're ready to re-run our example:</span><span class="tscolor" lg_zh="t_486f334fc8fc4dbc8ea7db6732d4587b"><span lg_kh="1">(</span>现在我们的求值器知道了 UDFFinder，而 UDFFinder 又知道了我们的 FreeRefFunction，我们准备重新运行我们的示例：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">Evaluator mortgage-calculation.xls Sheet1!B4</span>
+      </div>
+     </div>
+     <p><span lg_en="t_d3db295ccbcd4130ab8479a7e9df3181">which prints the following output in the console:</span><span class="tscolor" lg_zh="t_d3db295ccbcd4130ab8479a7e9df3181"><span lg_kh="1">(</span>在控制台中打印以下输出：<span lg_kh="1">)</span></span></p>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">fileName: mortgage-calculation.xls</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">cell: Sheet1!B4</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">returns value: org.apache.poi.ss.usermodel.CellValue [790.7936267415464]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_bd9302408d7344d7954955dcdef3e10c">That is it! Now you can create Java code and register it, allowing your POI based appliction to run spreadsheets that previously were inaccessible.</span><span class="tscolor" lg_zh="t_bd9302408d7344d7954955dcdef3e10c"><span lg_kh="1">(</span>这就对了！现在您可以创建 Java 代码并注册，从而允许基于 POI 的应用程序运行以前无法访问的电子表格。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_ac3ea7598d544d9e8c3cedfdacce15de">This example can be found in the <a href="http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/examples/ss/formula">src/examples/src/org/apache/poi/examples/ss/formula</a> folder in the source.</span><span class="tscolor" lg_zh="t_ac3ea7598d544d9e8c3cedfdacce15de"><span lg_kh="1">(</span>此示例可以在源代码的 src/examples/src/org/apache/poi/examples/ss/formula 文件夹中找到。<span lg_kh="1">)</span></span></p>
+    </div>
+    <p align="right"><span lg_en="t_29ae26dc7b294dd88dd353276031857d"><font size="-2">by&nbsp;Jon Svede,&nbsp;Brian Bush</font></span><span class="tscolor" lg_zh="t_29ae26dc7b294dd88dd353276031857d"><span lg_kh="1">(</span>作者：乔恩·斯维德、布赖恩·布什<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/spreadsheet/user-defined-functions.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>

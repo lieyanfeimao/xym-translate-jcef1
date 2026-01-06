@@ -1,0 +1,1381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>Apache POI - HPSF Internals</title>
+  <link type="text/css" href="../../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../../skin/profile.css" rel="stylesheet">
+  <script src="../../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../../images/favicon.ico">
+  <meta charset="UTF-8">
+  <link href="../../layui/css/layui.css" rel="stylesheet">
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../layui/layui.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1>Apache POI - HPSF Internals
+     <div name="tsUpdate" data-id="t_36a5e926b5284100a0fbb475af7f91f6" data-tpl="0" data-txt-color="green"></div></h1>
+    <div id="front-matter"></div>
+    <a name="HPSF+Internals"></a>
+    <h2 class="boxed">HPSF Internals
+     <div name="tsUpdate" data-id="t_7f0360f9a74f400eb2a6ee0c568c9ba1" data-tpl="0" data-txt-color="orange"></div></h2>
+    <div class="section">
+     <a name="Introduction"></a>
+     <h3 class="boxed">Introduction
+      <div name="tsUpdate" data-id="t_cde605520fac41b896e386b8def04023" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>A Microsoft Office document is internally organized like a filesystem with directory and files. Microsoft calls these files <strong>streams</strong>. A document can have properties attached to it, like author, title, number of words etc. These metadata are not stored in the main stream of, say, a Word document, but instead in a dedicated stream with a special format. Usually this stream's name is <span class="codefrag">\005SummaryInformation</span>, where <span class="codefrag">\005</span> represents the character with a decimal value of 5.
+      <div name="tsUpdate" data-id="t_6de17538ff9a44e0b93073dc2bbbdd8f" data-tpl="0" data-txt-color="green"></div></p>
+     <p>A single piece of information in the stream is called a <strong>property</strong>, for example the document title. Each property has an integral <strong>ID</strong> (e.g. 2 for title), a <strong>type</strong> (telling that the title is a string of bytes) and a <strong>value</strong> (what this is should be obvious). A stream containing properties is called a <strong>property set stream</strong>.
+      <div name="tsUpdate" data-id="t_b90b36412b27480ebc55e5e54e3872d9" data-tpl="0" data-txt-color="green"></div></p>
+     <p>This document describes the internal structure of a property set stream, i.e. the <strong>HPSF</strong>. It does not describe how a Microsoft Office document is organized internally and how to retrieve a stream from it. See the <a href="../poifs/index.html">POIFS documentation</a> for that kind of stuff.
+      <div name="tsUpdate" data-id="t_2d43aad3d6af4232a328366fdefa1568" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The HPSF is not only used in the Summary Information stream in the top-level document of a Microsoft Office document. Often there is also a property set stream named <span class="codefrag">\005DocumentSummaryInformation</span> with additional properties. Embedded documents may have their own property set streams. You cannot tell by a stream's name whether it is a property set stream or not. Instead you have to open the stream and look at its bytes.
+      <div name="tsUpdate" data-id="t_02666befe83f40dbbe3b8148048b8669" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Data+Types"></a>
+     <h3 class="boxed">Data Types
+      <div name="tsUpdate" data-id="t_fe31fd585a71485ab8683dab279c10b2" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Before delving into the details of the property set stream format we have to have a short look at data types. Integral values are stored in the so-called <strong>little endian</strong> format. In this format the bytes that make out an integral value are stored in the "wrong" order. For example, the decimal value 4660 is 0x1234 in the hexadecimal notation. If you think this should be represented by a byte 0x12 followed by another byte 0x34, you are right. This is called the <strong>big endian</strong> format. In the little endian format, however, this order is reversed and the low-value byte comes first: 0x3412.
+      <div name="tsUpdate" data-id="t_ce5f47ad0a7140039ae89eff7a046b85" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The following table gives an overview about some important data types:
+      <div name="tsUpdate" data-id="t_95a1fae7589d42838fc85a31c611692e" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Name
+         <div name="tsUpdate" data-id="t_0d3e194b39f14449a3fc3a66171dbb81" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Length
+         <div name="tsUpdate" data-id="t_3f4220ce92bf483e88282b72c0016dbe" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Example (Big Endian)
+         <div name="tsUpdate" data-id="t_c3ab6ae1a18f44adbe53e7394818d79f" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Example (Little Endian)
+         <div name="tsUpdate" data-id="t_df12dc343512420580be255ef92f6e31" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><strong>Bytes</strong>
+         <div name="tsUpdate" data-id="t_9daa13cb08f94b3db2f24effed52900c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">1 byte
+         <div name="tsUpdate" data-id="t_7f95532a5192499fbf349255c9f2a856" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x12</span>
+         <div name="tsUpdate" data-id="t_f725b526a3144f1ca0cd4c9c18df1bda" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x12</span>
+         <div name="tsUpdate" data-id="t_62c3e50d5c5e4cbea03ca73662e0f20c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><strong>Word</strong>
+         <div name="tsUpdate" data-id="t_4e91ab234e344447b0a82c7dc8548e5b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">2 bytes
+         <div name="tsUpdate" data-id="t_d0ce0125fafa4e7d86686797b0503219" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x1234</span>
+         <div name="tsUpdate" data-id="t_c6074774fe1a4e3f996ad076f38af5ac" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x3412</span>
+         <div name="tsUpdate" data-id="t_32bbfb4d7b7948f2a8e8753f02996d0f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><strong>DWord</strong>
+         <div name="tsUpdate" data-id="t_1db36a85f871442f8ce755325b3fa24d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">4 bytes
+         <div name="tsUpdate" data-id="t_867c749ad00d4326a9a090c638c4e74c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x12345678</span>
+         <div name="tsUpdate" data-id="t_6e546b61c30148be92260856077af8ea" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x78563412</span>
+         <div name="tsUpdate" data-id="t_042cf5b06d6f4c6b9c27a8c513d21713" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"><strong>ClassID</strong>
+         <br>
+         A sequence of one DWord, two Words and eight Bytes
+         <div name="tsUpdate" data-id="t_0e65b9f076d8488ea0cbf51d88b33a0a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 bytes
+         <div name="tsUpdate" data-id="t_625e2f1846044a929cfcf34a2eeb4922" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0xE0859FF2F94F6810AB9108002B27B3D9</span> resp. <span class="codefrag">E0859FF2-F94F-6810-AB-91-08-00-2B-27-B3-D9</span>
+         <div name="tsUpdate" data-id="t_6455d760d8bc46809b0d89c0ea304692" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0xF29F85E04FF91068AB9108002B27B3D9</span> resp. <span class="codefrag">F29F85E0-4FF9-1068-AB-91-08-00-2B-27-B3-D9</span>
+         <div name="tsUpdate" data-id="t_e9ac3265b6a24e3485aa16792588951a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1">The ClassID examples are given here in two different notations. The second notation without the "0x" at the beginning and with dashes inside shows the internal grouping into one DWord, two Words and eight Bytes.
+         <div name="tsUpdate" data-id="t_f9324fee2288488b83bc2a0295d0907f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><em>Watch out:</em> Microsoft documentation and tools show class IDs a little bit differently like <span class="codefrag">F29F85E0-4FF9-1068-AB91-08002B27B3D9</span>. However, that representation is (intentionally?) misleading with respect to endianess.
+         <div name="tsUpdate" data-id="t_a09685e71c7c447eae889430f68c8c98" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="HPSF+Overview"></a>
+     <h3 class="boxed">HPSF Overview
+      <div name="tsUpdate" data-id="t_d5dd3d6a811d4639b24e707b46b30a63" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>A property set stream consists of three main parts:
+      <div name="tsUpdate" data-id="t_ba5f3331affb435f8b609c326393dfba" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>The <strong>header</strong> and
+       <div name="tsUpdate" data-id="t_5a27778f6a274100a958b19be2229fe1" data-tpl="0" data-txt-color="green"></div></li>
+      <li>the <strong>section(s)</strong> containing the properties.
+       <div name="tsUpdate" data-id="t_9894c039a0db4295969a298b05dfd627" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+     <a name="The+Header"></a>
+     <h3 class="boxed">The Header
+      <div name="tsUpdate" data-id="t_fa755148063d4ff6a9a97d6de9fc61f6" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>The first bytes in a property set stream is the <strong>header</strong>. It has a fixed length and looks like this:
+      <div name="tsUpdate" data-id="t_c71f417efe234bb69144bdc0a9dcf540" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Offset
+         <div name="tsUpdate" data-id="t_af68dab4de5a4a8c98c501e96cb696b6" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Type
+         <div name="tsUpdate" data-id="t_594133926b1b4991a95a70db63cf5c2b" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Contents
+         <div name="tsUpdate" data-id="t_7e3cb2f8a8be45b68729572045c4de6a" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Remarks
+         <div name="tsUpdate" data-id="t_f7c0e55c752943e4956ed24bbf9d90e9" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0
+         <div name="tsUpdate" data-id="t_33810ef267354f12bfe315abc1abf21b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Word
+         <div name="tsUpdate" data-id="t_85251b629c524df18223ad4d28402fcb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0xFFFE</span>
+         <div name="tsUpdate" data-id="t_3f666e414d1a4e3aa797b869188aad1e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">If the first four bytes of a stream do not contain these values, the stream is not a property set stream.
+         <div name="tsUpdate" data-id="t_09b5d581e0424c16bc319f010e291927" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">2
+         <div name="tsUpdate" data-id="t_20d61144feea4dc5be867f8f7d3bd1e5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Word
+         <div name="tsUpdate" data-id="t_8679f19b00854582b9f5010ba373a10d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x0000</span>
+         <div name="tsUpdate" data-id="t_1a3f6ba42258432db79456c70483a4d5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">4
+         <div name="tsUpdate" data-id="t_d6805b2cbeec4c61b6946fa1accf9114" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_9a5399ec323e472dada2cf2264b47e6b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Denotes the operating system and the OS version under which this stream was created. The operating system ID is in the DWord's higher word (after little endian decoding): <span class="codefrag">0x0000</span> for Win16, <span class="codefrag">0x0001</span> for Macintosh and <span class="codefrag">0x0002</span> for Win32 - that's all. The reader is most likely aware of the fact that there are some more operating systems. However, Microsoft does not seem to know.
+         <div name="tsUpdate" data-id="t_223e75bf38fb45969658e22857128bb5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">8
+         <div name="tsUpdate" data-id="t_3435669bf78940e1adcb81785e9019a9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">ClassID
+         <div name="tsUpdate" data-id="t_49ec122bff2d471ab655c4dab9eb35b0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x00000000000000000000000000000000</span>
+         <div name="tsUpdate" data-id="t_1daeb6a6f4d6464eb5bca56f15c6af35" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Most property set streams have this value but this is not required.
+         <div name="tsUpdate" data-id="t_9a6d358c438d402e948889cbd711cabd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">24
+         <div name="tsUpdate" data-id="t_dfa272fdeb214e69b7fa6aed802ee8dd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_ad5f50dfc38a4c088b92b82cd846fa03" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0x01000000</span> or greater
+         <div name="tsUpdate" data-id="t_112bbc2f8fd840aab414f7c797cc04fc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Section count. This field's value should be equal to 1 or greater. Microsoft claims that this is a "reserved" field, but it seems to tell how many sections (see below) are following in the stream. This would really make sense because otherwise you could not know where and how far you should read section data.
+         <div name="tsUpdate" data-id="t_a1388dc2668742858df8e47ae09e0243" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Section+List"></a>
+     <h3 class="boxed">Section List
+      <div name="tsUpdate" data-id="t_a451abebf05c46fda7514151455382f7" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>Following the header is the section list. This is an array of pairs each consisting of a section format ID and an offset. This array has as many pairs of ClassID and and DWord fields as the section count field in the header says. The Summary Information stream contains a single section, the Document Summary Information stream contains two.
+      <div name="tsUpdate" data-id="t_bcaf4d6214fb4e14990d9257db11bc38" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Type
+         <div name="tsUpdate" data-id="t_fba7f50224894dc1883dc3c09bd9c631" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Contents
+         <div name="tsUpdate" data-id="t_62cf3b75a45d444ca6bd96bd5e6fac38" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Remarks
+         <div name="tsUpdate" data-id="t_34dc139b832a4086acfecb036aefefb5" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">ClassID
+         <div name="tsUpdate" data-id="t_a1be488652174446b25196263c11579f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Section format ID
+         <div name="tsUpdate" data-id="t_a361934ac8234450b28faffbef202546" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1"><span class="codefrag">0xF29F85E04FF91068AB9108002B27B3D9</span> for the single section in the Summary Information stream.
+         <br>
+         <br>
+         <span class="codefrag">0xD5CDD5022E9C101B939708002B2CF9AE</span> for the first section in the Document Summary Information stream.
+         <div name="tsUpdate" data-id="t_2ba8de625ba44e7dbfd1aa618fff0943" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_67dba12616f04be98a710d2938935cd0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Offset
+         <div name="tsUpdate" data-id="t_5ed13d7ad6b44c5a8bf51d8ca1c94cd0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The number of bytes between the beginning of the stream and the beginning of the section within the stream.
+         <div name="tsUpdate" data-id="t_d8be1dafe07e4f63a6e7ed2b1c06926b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">ClassID
+         <div name="tsUpdate" data-id="t_a4d64101e8a8482c929b1e2f88d315fd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Section format ID
+         <div name="tsUpdate" data-id="t_dcb78b00af9f4dd1a8eb97b0b3c0f5f7" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_13872a790fad43569c391c94b9a3997c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_86b73dd6569e421da57b5b65f72cdf0c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Offset
+         <div name="tsUpdate" data-id="t_840b2f7a17814f19a27eb508f8ee65fe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_c9452f6e6c0644fbbf2a9f0c41b48330" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_fe40a42a80e246e5ba02618313f3e003" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_587d39c2c8bd4daa80d34df8da652bbc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_a6e7f6ea45f642d59440da5bac760149" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Section"></a>
+     <h3 class="boxed">Section
+      <div name="tsUpdate" data-id="t_037669881678416096eb40a0bf11b01d" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>A section is divided into three parts: the section header (with the section length and the number of properties in the section), the properties list (with type and offset of each property), and the properties themselves. Here are the details:
+      <div name="tsUpdate" data-id="t_940fbcbe9b8c496eb9658d0641a0851b" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">&nbsp;</th>
+        <th colspan="1" rowspan="1">Type
+         <div name="tsUpdate" data-id="t_5f8490c5083d465f8d99f1820409e738" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Contents
+         <div name="tsUpdate" data-id="t_63f747dea2dd42e1b62e2564c4d8e1e0" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Remarks
+         <div name="tsUpdate" data-id="t_5a1b3ffb762446ac8f86c6ac188221ef" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">Section header
+         <div name="tsUpdate" data-id="t_0a36dd192c3647ce91671099d08428db" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_ce3ecdd7483e412889bc5cb8da9fcc04" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Length
+         <div name="tsUpdate" data-id="t_ea1f60a535164e2a8575d3cd61c7ffd2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The length of the section in bytes.
+         <div name="tsUpdate" data-id="t_1bf0066156934d3abc1cbe65c539a660" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_a3f4420d6e814f0795e6368a7855e1b9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Property count
+         <div name="tsUpdate" data-id="t_5e869df418d94d3f9f1728ee56ef8390" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The number of properties in the section.
+         <div name="tsUpdate" data-id="t_4b926d3515d14a6eab513fc59f03f9fe" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">Properties list
+         <div name="tsUpdate" data-id="t_e9886c93866c4dfe9a0fc4b6e2cea7fe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_cab2553811664e99afa7dc1eec46d72a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Property ID
+         <div name="tsUpdate" data-id="t_c5636329d4b0488a8890710861cf1eb3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The property ID tells what the property means. For example, an ID of <span class="codefrag">0x0002</span> in the Summary Information stands for the document's title. See the <a href="#property_ids">Property IDs</a> chapter below for more details.
+         <div name="tsUpdate" data-id="t_d2246f320f7f44af8543bb60373a2a76" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_7e94c02667a74fd4a948d31a00b94ed1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Offset
+         <div name="tsUpdate" data-id="t_df71ee339d4149888a3b99e175dddb49" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The number of bytes between the beginning of the section and the property.
+         <div name="tsUpdate" data-id="t_ba05208a577b424f8b96b567e4612853" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_da7940b4ba834c2cbfd63dde77038616" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_d6eae8464fb74e898db0b4de293550c1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_2d921e75993f46cd8665861b2f868748" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">Properties
+         <div name="tsUpdate" data-id="t_2932e8e0583f48ccba07599c5a44fccd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">DWord
+         <div name="tsUpdate" data-id="t_6e1d0a83ce774f9aa9904c7d7c4c47b8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Property type ("variant")
+         <div name="tsUpdate" data-id="t_e49be24480594b2f8853fac7f898abbb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">This is the property's data type, e.g. an integer value, a byte string or a Unicode string. See the <a href="#property_types"><em>Property Types</em></a> chapter for details!
+         <div name="tsUpdate" data-id="t_e6f75c91733b4cd2aae069151b25cf1f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1"><em>Field length depends on the property type ("variant")</em>
+         <div name="tsUpdate" data-id="t_52e3ac389d52436c91448f0868402270" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Property value
+         <div name="tsUpdate" data-id="t_538cf252bb8d47899949b3f7b037b0c3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">This field's length depends on the property's type. These are the bytes that make out the DWord, the byte string or some other data of fixed or variable length.
+         <br>
+         <br>
+         The property value's length is always stored in an area which is a multiple of 4 in length. If the property is shorter, e.g. a byte string of 13 bytes, the remaining bytes are padded with <span class="codefrag">0x00</span> bytes.
+         <div name="tsUpdate" data-id="t_bec7dcc6c8084b6897380b992fee8d4f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1"></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_591e90fc281549199b2b45778aca8edb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_27e5c2a3d4ee4cbb88d84c6c79a3dbbe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">...
+         <div name="tsUpdate" data-id="t_a3b8bc0c5598448c84ada2784fd9fd24" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Property+IDs"></a>
+     <h3 class="boxed">Property IDs
+      <div name="tsUpdate" data-id="t_4697b99d3a234a249d8949fb42d2a10c" data-tpl="0" data-txt-color="orange"></div></h3>
+     <a name="property_ids" id="property_ids"></a>
+     <p>As seen above, a section holds a property list: an array with property IDs and offsets. The property ID gives each property a meaning. For example, in the Summary Information stream the property ID 2 says that this property is the document's title.
+      <div name="tsUpdate" data-id="t_1cd1af4808634745866de80d6116b54b" data-tpl="0" data-txt-color="green"></div></p>
+     <p>If you want to know a property ID's meaning, it is not sufficient to know the ID itself. You must also know the <strong>section format ID</strong>. For example, in the Document Summary Information stream the property ID 2 means not the document's title but its category. Due to Microsoft's infinite wisdom the section format ID is not part of the section. Thus if you have only a section without the stream it is in, you cannot make any sense of the properties because you do not know what they mean.
+      <div name="tsUpdate" data-id="t_80de394448cc4f078d86aaad81b7e129" data-tpl="0" data-txt-color="green"></div></p>
+     <p>So each section format ID has its own name space of property IDs. Microsoft defined some "well-known" property IDs for the Summary Information and the Document Summary Information streams. You can extend them by your own additional IDs. This will be described below.
+      <div name="tsUpdate" data-id="t_efe5e07699c24eed9e04627878b47b43" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="Property+IDs+in+The+Summary+Information+Stream"></a>
+     <h4>Property IDs in The Summary Information Stream
+      <div name="tsUpdate" data-id="t_2deadb094cce426386e1fb261f4b60da" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The Summary Information stream has a single section with a section format ID of <span class="codefrag">0xF29F85E04FF91068AB9108002B27B3D9</span>. The following table defines the meaning of its property IDs. Each row associates a property ID with a <em>name</em> and an <em>ID string</em>. (The property <em>type</em> is just for informational purposes given here. As we have seen above, the type is always given along with the value.)
+      <div name="tsUpdate" data-id="t_9fa346b2fc1a4be6ac24df528ecec47a" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The property <em>name</em> is a readable string which could be displayed to the user. However, this string is useful only for users who understand English. The property name does not help with other languages.
+      <div name="tsUpdate" data-id="t_3b8253e4d9f84f48838b5e393e134371" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The property <em>ID string</em> is about the same but looks more technically and is nothing a user should bother with. You could the ID string and map it to an appropriate display string in a particular language. Of course you could do that with the property ID as well and with less overhead, but people (including software developers) tend to be better in remembering symbolic constants than remembering numbers.
+      <div name="tsUpdate" data-id="t_df228c332eab44f0b4dd1f3ed2a33664" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Property ID
+         <div name="tsUpdate" data-id="t_eab93d71a9844548ab91fe999863ce6f" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Property Name
+         <div name="tsUpdate" data-id="t_e519d73c6c5b4702852bd64f059a0029" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Property ID String
+         <div name="tsUpdate" data-id="t_501d4ab0b41345d2a31ad20cf018f705" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Property Type
+         <div name="tsUpdate" data-id="t_608895b4b71d4d5197f829b8b76c77fc" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">2
+         <div name="tsUpdate" data-id="t_5ee6c5989f2f47578de125e178d38360" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Title
+         <div name="tsUpdate" data-id="t_6ffb942bf0924a4f87302498d607870f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_TITLE
+         <div name="tsUpdate" data-id="t_3ee34a279aef45dbb87fc529a4a5126d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_e213aea2313e4d8ca80ed686f33b2545" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">3
+         <div name="tsUpdate" data-id="t_a9728fcb728a4017ab7d76c6ae2d86d4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Subject
+         <div name="tsUpdate" data-id="t_e70c26b32d434a6999f713c64693b91c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_SUBJECT
+         <div name="tsUpdate" data-id="t_767dd9289b544d7c8acefe2a2f486b3b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_2780287cd356474abaa77e47c6146f7e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">4
+         <div name="tsUpdate" data-id="t_1bd2fbe63d254df18993eacd5ec20f1e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Author
+         <div name="tsUpdate" data-id="t_e262a0f62968455396e764b80210568a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_AUTHOR
+         <div name="tsUpdate" data-id="t_3854f3c891f548bcbcf76df11130a792" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_12802bde2fb044cd952335c53483f7b7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">5
+         <div name="tsUpdate" data-id="t_20a3d56d32b145a0ab86cc38adb06411" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Keywords
+         <div name="tsUpdate" data-id="t_ea9cc188612c4b23b5623f130e6ff221" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_KEYWORDS
+         <div name="tsUpdate" data-id="t_790d2a782b154bc6866b72869b95f583" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_f2cf928aff1c49fe90c8b7bde7d7dc86" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">6
+         <div name="tsUpdate" data-id="t_3f5e0409ddd44495b58ecc5edef40e21" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Comments
+         <div name="tsUpdate" data-id="t_a78b8b1d37bd46c8a07d160c1097231a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_COMMENTS
+         <div name="tsUpdate" data-id="t_79982b9f336543f1a0083e408858a897" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_f9a7b88995d84eee8fe53ac400b82e48" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">7
+         <div name="tsUpdate" data-id="t_a58fae54cb1d41eba9eba2b1fd404cfe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Template
+         <div name="tsUpdate" data-id="t_6450b547bb18409f9f2f13556461ffc8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_TEMPLATE
+         <div name="tsUpdate" data-id="t_f76d4a81091f4671822a8652eec9cd1e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_2f75ef627edd4faeaabc2cfe13d7338c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">8
+         <div name="tsUpdate" data-id="t_e4456d19703646bc9ebdc75c74e2052b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Last Saved By
+         <div name="tsUpdate" data-id="t_3f40ab1c1276406bb4b129f46902e18e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_LASTAUTHOR
+         <div name="tsUpdate" data-id="t_529dd851b868412a872d839cccc5144e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_068eb92f754149488776ec5ae4ab9684" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">9
+         <div name="tsUpdate" data-id="t_7b7c0348b88d4490b0ee1678d52195da" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Revision Number
+         <div name="tsUpdate" data-id="t_4948f7adc4064f19ae3fbf5843da84c4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_REVNUMBER
+         <div name="tsUpdate" data-id="t_5336d38093a5445eb2ce9c422f9bdffa" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_53f323703efb480ea5a658f6d53b4d22" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">10
+         <div name="tsUpdate" data-id="t_794a1a410a434e09a69ff8a20b394b8d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Total Editing Time
+         <div name="tsUpdate" data-id="t_eb6f4ca9f7c444f1bc5d17ad05e7a8b1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_EDITTIME
+         <div name="tsUpdate" data-id="t_8217308d4d6a407abb07c1331b7f25bd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_ce1251f3624c4de88fa95d82c074e43a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">11
+         <div name="tsUpdate" data-id="t_3b4d849bb79d48869496e234762446c3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Last Printed
+         <div name="tsUpdate" data-id="t_1eba96dcd9444d788bc8657d23129314" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_LASTPRINTED
+         <div name="tsUpdate" data-id="t_d5ecdd521d9e4687867586c61f9111e1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_864367b6ed4347549e2e2c42580ff3fb" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">12
+         <div name="tsUpdate" data-id="t_43ed2440910a4520a171d409bd81d346" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Create Time/Date
+         <div name="tsUpdate" data-id="t_0133169175e74c1783ed289a31a9fa04" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_CREATE_DTM
+         <div name="tsUpdate" data-id="t_eff9c1fa6fd141d4937932d856c925c9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_189cbf703eda46189d707e12c10a994b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">13
+         <div name="tsUpdate" data-id="t_ebb17b9dbb1248c0a9d627a5f3e29425" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Last Saved Time/Date
+         <div name="tsUpdate" data-id="t_79a38b61ee0343878b801daea9e5268c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_LASTSAVE_DTM
+         <div name="tsUpdate" data-id="t_f862940d5ba24cd7ad69c969b10f2ef4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_c80b75ef714d410ca4832feb99d23d47" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">14
+         <div name="tsUpdate" data-id="t_36b602d79cc94e2d9e7a094fa4946e62" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Number of Pages
+         <div name="tsUpdate" data-id="t_d08ff138d56d4fa5a78ecfac2184ba57" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_PAGECOUNT
+         <div name="tsUpdate" data-id="t_b7a549a23a964339bf692887f46d454a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_14f57d5e19ac4a989c101ad97c66e5da" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">15
+         <div name="tsUpdate" data-id="t_ba68c977163247fa83802852e13f1325" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Number of Words
+         <div name="tsUpdate" data-id="t_fbc5c38a7ce44f608a9c00823eb96610" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_WORDCOUNT
+         <div name="tsUpdate" data-id="t_3ebf94e38d3c463eb6e5401775d52a89" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_9b3ee43ac0d74feba21667383f2321a7" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">16
+         <div name="tsUpdate" data-id="t_3d092ca66ae34a4bb9ac5fa4437c3270" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Number of Characters
+         <div name="tsUpdate" data-id="t_35ad64fa5211453aadb121267e53bc1a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_CHARCOUNT
+         <div name="tsUpdate" data-id="t_52c9c24790a44fe0b71bdbe7a22b7074" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_6cb25a99d56a43839cda811681ac6ac3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">17
+         <div name="tsUpdate" data-id="t_0ac06b6061164a898976a988dfd39e27" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Thumbnail
+         <div name="tsUpdate" data-id="t_1dd8cb78a20046daa92643cb30c12ca5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_THUMBNAIL
+         <div name="tsUpdate" data-id="t_e54ba27069b44d998ffc8fbe66b8d9e5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_CF
+         <div name="tsUpdate" data-id="t_ee93a0fcfe3740db978af9b3c13c9794" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">18
+         <div name="tsUpdate" data-id="t_50a3f5597f37486abe5a813a26b522ec" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Name of Creating Application
+         <div name="tsUpdate" data-id="t_ab5abe683e474639ae7b9f6d4c1d062a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_APPNAME
+         <div name="tsUpdate" data-id="t_ac1d6a1fb1904421b70b60df462d29c9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_0d7c8322531746b49a82728cb6092e59" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">19
+         <div name="tsUpdate" data-id="t_613f60c654254dfda5d50b03c6296251" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Security
+         <div name="tsUpdate" data-id="t_75c0071270f240d290f86afc68dbd673" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_SECURITY
+         <div name="tsUpdate" data-id="t_4f0f560abc2344cb8a8a497b857feb7b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_ebbff800dc8c4f7bb88741ffa347290b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Property+IDs+in+The+Document+Summary+Information+Stream"></a>
+     <h4>Property IDs in The Document Summary Information Stream
+      <div name="tsUpdate" data-id="t_224b75c3ccef4b9ab5195cb3824406db" data-tpl="0" data-txt-color="green"></div></h4>
+     <p>The Document Summary Information stream has two sections with a section format ID of <span class="codefrag">0xD5CDD5022E9C101B939708002B2CF9AE</span> for the first one. The following table defines the meaning of the property IDs in the first section. See the preceding section for interpreting the table.
+      <div name="tsUpdate" data-id="t_d5cf40e6860c4c0e8785fe9157aec112" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Property ID
+         <div name="tsUpdate" data-id="t_140ba88374684f3eba716d3de27f8fff" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Property name
+         <div name="tsUpdate" data-id="t_e77d520bfd1d4d2c8451d66010ce3bcf" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Property ID string
+         <div name="tsUpdate" data-id="t_30f8465c52a3485c9cc5f2986e91f6bd" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">VT type
+         <div name="tsUpdate" data-id="t_bd11d29241d0467586000f91e1b57c88" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0
+         <div name="tsUpdate" data-id="t_6ca4b6910b784d7dba56b66412effa49" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Dictionary
+         <div name="tsUpdate" data-id="t_f0a29893c8094818a4c6ac234d22b9da" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_DICTIONARY
+         <div name="tsUpdate" data-id="t_20cafe9122cd466fb2c795b0854fc0cf" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[Special format]
+         <div name="tsUpdate" data-id="t_0f7c3ffdce37447a9fb0e8e1e01c39d3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">1
+         <div name="tsUpdate" data-id="t_1e82edc01ae14492830f778872142444" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Code page
+         <div name="tsUpdate" data-id="t_af1bed03a89748a6b504363093353cd8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_CODEPAGE
+         <div name="tsUpdate" data-id="t_666cd0021fd6402f9507d49134a8c463" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I2
+         <div name="tsUpdate" data-id="t_020b39a8a8664889a4a99723e02dfe86" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">2
+         <div name="tsUpdate" data-id="t_20b588bb41b84020b0d754617b2d135a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Category
+         <div name="tsUpdate" data-id="t_4e470b58c0ef47e4aa465e281886f5ed" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_CATEGORY
+         <div name="tsUpdate" data-id="t_5cef631227b34f06a96e59fabc168c63" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_f566973fd464421cbdb04d388823da61" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">3
+         <div name="tsUpdate" data-id="t_601289fa998e4ef79e9e0faf65de5624" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PresentationTarget
+         <div name="tsUpdate" data-id="t_099ed455ea634acaafe062eb8ceb689a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_PRESFORMAT
+         <div name="tsUpdate" data-id="t_9ffb7b190ee644f8883bd8048300791a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_5470381505364ffb82fdf2256c548f1d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">4
+         <div name="tsUpdate" data-id="t_6a5d7455d6e14daaa3522295bc22bf67" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Bytes
+         <div name="tsUpdate" data-id="t_86ce76268e984b6d9cb2a60b653bb8f2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_BYTECOUNT
+         <div name="tsUpdate" data-id="t_49751fd738ad4467a489a9db1b7098a6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_c3bba889c2cf4a4fa36fa6b40ff423ee" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">5
+         <div name="tsUpdate" data-id="t_6ea9402308bd4b08ba546388c46262ef" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Lines
+         <div name="tsUpdate" data-id="t_bbb776d258aa4c1480fe09085ac7e297" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_LINECOUNT
+         <div name="tsUpdate" data-id="t_64a052a6921b459ab967c4d6c9bd8276" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_28b9183c9b3f42df88d5b8dc50c192f0" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">6
+         <div name="tsUpdate" data-id="t_eca473883d6e439eb3f728ae64fec1a6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Paragraphs
+         <div name="tsUpdate" data-id="t_3b040ea3f9d14e3390e519de35a6ad30" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_PARCOUNT
+         <div name="tsUpdate" data-id="t_5f3c10c5fa21437c8996740462a4547a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_4b0fb03ae53e4d76bfe465857b38a148" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">7
+         <div name="tsUpdate" data-id="t_1904510a9fa14d16b176f99601b43c04" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Slides
+         <div name="tsUpdate" data-id="t_af6902628f3d4f7baa5e30b3eca1aa07" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_SLIDECOUNT
+         <div name="tsUpdate" data-id="t_891fa5ebfdf74f9ab488482177f661b3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_6e22605a4cd546b0ba2dc3333671992a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">8
+         <div name="tsUpdate" data-id="t_2b3e410cda244484a61178a076cee4c8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Notes
+         <div name="tsUpdate" data-id="t_258e6ba929ef494f9c317b36044cd7ed" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_NOTECOUNT
+         <div name="tsUpdate" data-id="t_77b393844ce54ccb975784529ba7f706" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_4aa4d8466ece411fbcd5e5207ebfbf0d" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">9
+         <div name="tsUpdate" data-id="t_3b0226fd0d214d5ab7a7949790ba4163" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">HiddenSlides
+         <div name="tsUpdate" data-id="t_526c1d905dee4b4888f58f56f36230d3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_HIDDENCOUNT
+         <div name="tsUpdate" data-id="t_74aa65f1c7044502940f074164fae114" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_bf308f2564014e448253a40db4a62f8f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">10
+         <div name="tsUpdate" data-id="t_847d7473f82b4062b638a13caba648da" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">MMClips
+         <div name="tsUpdate" data-id="t_2a3f3b334ea14b3f96c969b2ffea78e8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_MMCLIPCOUNT
+         <div name="tsUpdate" data-id="t_9e15cbee513b45e9b05f23806d7b3c56" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_06e8fdfd99dc47da856eafdd10369044" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">11
+         <div name="tsUpdate" data-id="t_0936827e90c54d7f9a561165bd203338" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">ScaleCrop
+         <div name="tsUpdate" data-id="t_ebe5a25d4a984fb1bdb2a2fc58119bd8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_SCALE
+         <div name="tsUpdate" data-id="t_9e1b6380454840b59410c7b34d748c27" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BOOL
+         <div name="tsUpdate" data-id="t_bfdcbecf5ed241ce93adc339b9d0558c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">12
+         <div name="tsUpdate" data-id="t_fc7b52797c784511af1afa032bb1cc0c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">HeadingPairs
+         <div name="tsUpdate" data-id="t_8c5f5677802c437b89e77e19d0646600" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_HEADINGPAIR
+         <div name="tsUpdate" data-id="t_9f484d33a6174d5bbf3d4ae228b77bff" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_VARIANT | VT_VECTOR
+         <div name="tsUpdate" data-id="t_db29ac9556cc418ea4eb1533d9bcf096" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">13
+         <div name="tsUpdate" data-id="t_d2aa88f2f39f4241baad3aa04f7a816f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">TitlesofParts
+         <div name="tsUpdate" data-id="t_d516493f37d948009c0022507f385a2b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_DOCPARTS
+         <div name="tsUpdate" data-id="t_1b21cd497195488e835572e60a8327c3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR | VT_VECTOR
+         <div name="tsUpdate" data-id="t_b6df7dfc8ef94e098a6ef399a34d7b82" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">14
+         <div name="tsUpdate" data-id="t_181ceda57e73479d89a7d07b61c7061d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Manager
+         <div name="tsUpdate" data-id="t_927ba72c0a1f4c929db5f76061a8e5fe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_MANAGER
+         <div name="tsUpdate" data-id="t_aa8fe459de194ae5b5944cd4f2fe225a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_a7e2176d6b4c423f842ac08d770d21d2" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">15
+         <div name="tsUpdate" data-id="t_69d4a6a087bb44ddab0ef0b1819e9bcd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Company
+         <div name="tsUpdate" data-id="t_615748e3f7354a4d85991bdda721c8df" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_COMPANY
+         <div name="tsUpdate" data-id="t_ea4e4dc59b014858958e9f5d432d76bb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_e7bef86878124b35966157621313791f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">16
+         <div name="tsUpdate" data-id="t_1aa21e1aef774c979b676dc3745d521d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">LinksUpTo Date
+         <div name="tsUpdate" data-id="t_cac515a69de04b678dee7b6d3e09e3a3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">PID_LINKSDIRTY
+         <div name="tsUpdate" data-id="t_248014b143074541ab5963c223dac3f4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BOOL
+         <div name="tsUpdate" data-id="t_f754c55052f7437985c7902397434996" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="Property+Types"></a>
+     <h3 class="boxed">Property Types
+      <div name="tsUpdate" data-id="t_23967ec2ae394ea08f04433284de9e62" data-tpl="0" data-txt-color="orange"></div></h3>
+     <a name="property_types" id="property_types"></a>
+     <p>A property consists of a DWord <em>type field</em> followed by the property value. The property type is an integer value and tells how the data byte following it are to be interpreted. In the Microsoft world it is also known as the <em>variant</em>.
+      <div name="tsUpdate" data-id="t_4ce621b7f0b8453f970e73f084a26c39" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The <em>Usage</em> column says where a variant type may occur. Not all of them are allowed in a property set but just those marked with a [P]. <strong>[V]</strong> - may appear in a VARIANT, <strong>[T]</strong> - may appear in a TYPEDESC, <strong>[P]</strong> - may appear in an OLE property set, <strong>[S]</strong> - may appear in a Safe Array.
+      <div name="tsUpdate" data-id="t_1d32aece1e2945f7ab6a1bcded2b5612" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Variant ID
+         <div name="tsUpdate" data-id="t_d9eb289eec7644d891f723add0eacf8a" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Variant Type
+         <div name="tsUpdate" data-id="t_29134a1448f64566aa09a25dfe87bc0b" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Usage
+         <div name="tsUpdate" data-id="t_0258ff945e3546dfafcbe35b8370a567" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_61a797af56234a0ca84fa28b7c4820ed" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0
+         <div name="tsUpdate" data-id="t_4e334cf212e844dcbfa74a33058ff7ef" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_EMPTY
+         <div name="tsUpdate" data-id="t_02b0d297a6d1494a9783422e895acc78" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [P]
+         <div name="tsUpdate" data-id="t_a95d598d0a584defbe16993fd297b823" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">nothing
+         <div name="tsUpdate" data-id="t_a0cbcdafb5dd4a80a4d24904f41987bb" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">1
+         <div name="tsUpdate" data-id="t_12da38ae15f8498197bf513c92c56f7f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_NULL
+         <div name="tsUpdate" data-id="t_b76dc04b805c4aceae297014a0bb9d66" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [P]
+         <div name="tsUpdate" data-id="t_656536dfd5c04b1ab9b0af42bfc44afe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">SQL style Null
+         <div name="tsUpdate" data-id="t_16657b4b308948b0bcbf02a7f37ce642" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">2
+         <div name="tsUpdate" data-id="t_e9f09a3bc41747f0bd4cf39cad3571e0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I2
+         <div name="tsUpdate" data-id="t_9e40b1ee58a44270a5d513adbf8bcb7b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_d7ed5d225b794b28b0b345c6ced88653" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">2 byte signed int
+         <div name="tsUpdate" data-id="t_3cdb2e58b38446629b36dc328a48768a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">3
+         <div name="tsUpdate" data-id="t_04cacac5f8614a0bb90564c4c9cb149e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I4
+         <div name="tsUpdate" data-id="t_f34550a730154dde97b5b071a6ac3246" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_a5ca1098325845ffbe2b9933174b7631" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">4 byte signed int
+         <div name="tsUpdate" data-id="t_280b49861e5f4548acb18b04a810c2ce" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">4
+         <div name="tsUpdate" data-id="t_7cf39d8c2969444c840ea3170f9ce937" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_R4
+         <div name="tsUpdate" data-id="t_aabf26862e89499a9ff79f0e50988776" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_908f8b2c6d614127a49702fa2bb50cc6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">4 byte real
+         <div name="tsUpdate" data-id="t_253612c83e384fad9032ad58bef3900a" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">5
+         <div name="tsUpdate" data-id="t_9633256dd57e4b56bcbb9ba68a34aa89" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_R8
+         <div name="tsUpdate" data-id="t_6f6f47d848c84ae288f2b2e827b4ed67" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_6f4f2650c3ca42eda712aaf9938486b9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">8 byte real
+         <div name="tsUpdate" data-id="t_40b52908a49848a496b9849dd74df4a9" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">6
+         <div name="tsUpdate" data-id="t_c12f722213914accb567b469be5a957a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_CY
+         <div name="tsUpdate" data-id="t_81a8247cf44e4a6a9b0c51915fcf8d85" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_1010ba95c5144137a8158e95c3a70804" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">currency
+         <div name="tsUpdate" data-id="t_a3c90131176e4f26ab80c4279d80556b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">7
+         <div name="tsUpdate" data-id="t_8bcf40146c384500b93450fefb8a1b7a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_DATE
+         <div name="tsUpdate" data-id="t_8b4bebcc8766468b82e70ff0023669dd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_d9721c7bf31f44ee9af5a7b7267b20cc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">date
+         <div name="tsUpdate" data-id="t_9b97334825934e46934dc58150958761" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">8
+         <div name="tsUpdate" data-id="t_267fd492f7014e539ab5f7b48599c581" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BSTR
+         <div name="tsUpdate" data-id="t_ccbf7506604240449f6bc68a7ce9d216" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_953f6e6635a34e81a44d87e37b193fc7" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">OLE Automation string
+         <div name="tsUpdate" data-id="t_e579baa5afbc4f0a838132195e6ff754" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">9
+         <div name="tsUpdate" data-id="t_45727806656c446897885061e2747f63" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_DISPATCH
+         <div name="tsUpdate" data-id="t_9eefa292012a4e9c8e90345babd70238" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_5f8119df46db408eb68ceec9a810c271" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">IDispatch *
+         <div name="tsUpdate" data-id="t_67d80d1ec17c4a2dbdba5aa4b67357bb" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">10
+         <div name="tsUpdate" data-id="t_c11882b64fa64a50b6160c4ef013d28f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_ERROR
+         <div name="tsUpdate" data-id="t_bc44d2ff6f49420eb44df17107d11fa4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [S]
+         <div name="tsUpdate" data-id="t_dc2ca17306a4495ea41cb4af2a5ee7ba" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">SCODE
+         <div name="tsUpdate" data-id="t_8f170dffde9d43c4b1fa57889affb11f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">11
+         <div name="tsUpdate" data-id="t_3f0e139133e7482dbff4880ac9cdb0c8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BOOL
+         <div name="tsUpdate" data-id="t_3c0f1101ae634f27afac41e4f84175b4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_85c0f7c9c4db4f1ab59934180e025135" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">True=-1, False=0
+         <div name="tsUpdate" data-id="t_64bc9de9db42493cb27ee5fa30c31922" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">12
+         <div name="tsUpdate" data-id="t_2402c5f450de4a37929ddae00bd1c295" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_VARIANT
+         <div name="tsUpdate" data-id="t_e96ea6b93dbf42288c80bc0410d66be2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_78f96384e04e42939ecc24e49ac032c8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VARIANT *
+         <div name="tsUpdate" data-id="t_91c93723030f4cbd8040908382742307" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">13
+         <div name="tsUpdate" data-id="t_3bc92ef5f343428789e3d1c7a1c84218" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UNKNOWN
+         <div name="tsUpdate" data-id="t_2d65887219cc4d8ebf5134f96d1aee8c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [S]
+         <div name="tsUpdate" data-id="t_4ddfbd0dd68745a49d6849755c25783d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">IUnknown *
+         <div name="tsUpdate" data-id="t_b78d6240e4bf45e49e1dd295e476dd8f" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">14
+         <div name="tsUpdate" data-id="t_921b917b0d6f488a938d324a40f9c02f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_DECIMAL
+         <div name="tsUpdate" data-id="t_4afae66e1aee41d8adf217a81c086011" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [S]
+         <div name="tsUpdate" data-id="t_ddfab0c3b2d54f93a6e5c758e28f9961" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">16 byte fixed point
+         <div name="tsUpdate" data-id="t_ba12030fb5cb4fe8bf834398e5291625" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">16
+         <div name="tsUpdate" data-id="t_a45caedb060140939dee3c46c2e6ee3b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I1
+         <div name="tsUpdate" data-id="t_b40ea5859b5642f7b1190314bf6df01f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_29e347cd80364c5aa71feb330c2829ce" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">signed char
+         <div name="tsUpdate" data-id="t_6c68f7a7d79349bcbb1f4a2f4d28c2d5" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">17
+         <div name="tsUpdate" data-id="t_4964390166fb4ccab3cd77ee4449dcc9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UI1
+         <div name="tsUpdate" data-id="t_f549a699055a4776a380099f2292196d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V] [T] [P] [S]
+         <div name="tsUpdate" data-id="t_b0c0ef596ea540b698f3acb93debf3b8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">unsigned char
+         <div name="tsUpdate" data-id="t_4ab7b4aa9b814fb0ad3d68e34e774802" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">18
+         <div name="tsUpdate" data-id="t_680b1e5a6a5e47128a01f81e082ebfbe" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UI2
+         <div name="tsUpdate" data-id="t_e076b552a7b54e0d987cc2b944c2a576" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_a0e7555754944b5096cfd021b01dadfc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">unsigned short
+         <div name="tsUpdate" data-id="t_63cccf03e5d74464bf914050101cddc9" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">19
+         <div name="tsUpdate" data-id="t_3162a66d0bc5416a828fbff40f6ba81b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UI4
+         <div name="tsUpdate" data-id="t_de005dd38aa649f696d0c9556f87c29e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_7590a9942e6449b6ab01552a8915382f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">unsigned short
+         <div name="tsUpdate" data-id="t_add404834b364ea9b2980d4f8f9cef14" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">20
+         <div name="tsUpdate" data-id="t_854b20e120974d8bb650b79392ce6289" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_I8
+         <div name="tsUpdate" data-id="t_36a2d94bb78f4d7eab96b9639a8c3e2c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_8585c5a89742466e960d663d901bbf5a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">signed 64-bit int
+         <div name="tsUpdate" data-id="t_7babce1674f54431b28838cef5b3d81c" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">21
+         <div name="tsUpdate" data-id="t_002d22d8f7114d70ad436fa0511f7496" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UI8
+         <div name="tsUpdate" data-id="t_3eb35e94df574889a1201417a634c2ee" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_bfab94ddf466454496eea0b90ec889a1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">unsigned 64-bit int
+         <div name="tsUpdate" data-id="t_bf9035bba64540abaf141ec183fe21c2" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">22
+         <div name="tsUpdate" data-id="t_02a376d6e6af4d7abf10b078f622acbd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_INT
+         <div name="tsUpdate" data-id="t_a1dd0fce0abb44019216cc91e5398e91" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_31477ea3277f47e187e4ef67c019bdfb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">signed machine int
+         <div name="tsUpdate" data-id="t_6c3edb7c4c38478faa10b8331c445ffd" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">23
+         <div name="tsUpdate" data-id="t_7e03a1b601bb466c95c2ada09d4c2d85" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_UINT
+         <div name="tsUpdate" data-id="t_f8d1c224851a468eb1e71ff8286bc9fc" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_9dc53b2707ee4a9eb40186fb1d2576b3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">unsigned machine int
+         <div name="tsUpdate" data-id="t_5aeee1d11a194fbc9d78f2c1eaa511a3" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">24
+         <div name="tsUpdate" data-id="t_f7398bc8a2754b51abd07f5b86df992e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_VOID
+         <div name="tsUpdate" data-id="t_b0a865b209b04832a095a32c4639be6c" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_dcbcb4738b7f4fee84f16dcf2423c26a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">C style void
+         <div name="tsUpdate" data-id="t_694e3fd5a666459a84fbace007f9812b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">25
+         <div name="tsUpdate" data-id="t_e1c7266c4652458d9dd25b62216a4727" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_HRESULT
+         <div name="tsUpdate" data-id="t_9a68cce848864493bfba0f09c85c760f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_354083a5296a48268378aa923782cd2f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Standard return type
+         <div name="tsUpdate" data-id="t_165d9df2d70e4929a6a962d299aad1ba" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">26
+         <div name="tsUpdate" data-id="t_7cd3c0fb15994a90b17c02a0b8729125" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_PTR
+         <div name="tsUpdate" data-id="t_46c8bd9063d04b799323d188c0144644" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_c9d102fc4f2148239a16579d2ee6af59" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">pointer type
+         <div name="tsUpdate" data-id="t_4b23259b6a5c4120be288f5afd216caa" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">27
+         <div name="tsUpdate" data-id="t_0606ce6c19e7424c9050970ab9954502" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_SAFEARRAY
+         <div name="tsUpdate" data-id="t_bc917cfe84684eacac8e5a2ad879ab53" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_c901e9dca80b4a6ba249da4f2244a621" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">(use VT_ARRAY in VARIANT)
+         <div name="tsUpdate" data-id="t_92767adc9e034a25bf05b7fb520fa548" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">28
+         <div name="tsUpdate" data-id="t_199295a2fad74829a227a1621145294d" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_CARRAY
+         <div name="tsUpdate" data-id="t_529c21eb7ccf4daa9c68305e3138d622" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_50f0a52d337e49f2ba34d7d34904c2a6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">C style array
+         <div name="tsUpdate" data-id="t_8a97ad7336ae48df8721ed3ce702b745" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">29
+         <div name="tsUpdate" data-id="t_4950029e29b64c0bb0e2197e66357e50" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_USERDEFINED
+         <div name="tsUpdate" data-id="t_81742bbbed82489f86d87ceaf34d3d34" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T]
+         <div name="tsUpdate" data-id="t_9d58881a65e74ea9b8de616a7137db5e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">user defined type
+         <div name="tsUpdate" data-id="t_d9fc14b71f21450585d3f4965ca7b228" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">30
+         <div name="tsUpdate" data-id="t_56d26aad1cab498885d2234457d62535" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPSTR
+         <div name="tsUpdate" data-id="t_ab27b223e5794aacafeb6a9ffa4a8c9a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_c06d134f00d04dfc950c07d81de51e83" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">null terminated string
+         <div name="tsUpdate" data-id="t_b53e11a3eb1b411b97d07fb8dd13b887" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">31
+         <div name="tsUpdate" data-id="t_20d84af3ba86423fb9b1293645b04043" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_LPWSTR
+         <div name="tsUpdate" data-id="t_db508b8f5e624acb84dc9cdbd10177cb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[T] [P]
+         <div name="tsUpdate" data-id="t_6296cdc011ec44118788ee32fd6bfff5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">wide null terminated string
+         <div name="tsUpdate" data-id="t_fb67302afedb4ec2b0bc96da5db2b991" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">64
+         <div name="tsUpdate" data-id="t_3eb20c81b9354ef88cc658b633c50b7e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_FILETIME
+         <div name="tsUpdate" data-id="t_22fa0c777c9e457aa42ad6d5a76366db" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_49cc7678c19b423cb0189c175ea21792" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">FILETIME
+         <div name="tsUpdate" data-id="t_ff7418757f8140ab8785b38f835fb98b" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">65
+         <div name="tsUpdate" data-id="t_becc1f3dd70f42fcaae28cc76d03a3f1" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BLOB
+         <div name="tsUpdate" data-id="t_3a1ceb8723d648678f85545025e4ecd2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_d92fd09c2d1249f0a9268cec6760fe14" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Length prefixed bytes
+         <div name="tsUpdate" data-id="t_47fdd7ad8035436eb8053f8546805f65" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">66
+         <div name="tsUpdate" data-id="t_7cd543e29a2143c5836d37c1e6fd00dd" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_STREAM
+         <div name="tsUpdate" data-id="t_ee8aaa3f7f7f4de2bcaf24893eb2a14e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_97c4a48d161c4b19ab06edb4ce485884" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Name of the stream follows
+         <div name="tsUpdate" data-id="t_775c409436c64bab9c964376b77081a0" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">67
+         <div name="tsUpdate" data-id="t_fc0472dfddd64c29864e1f2f5ca04a53" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_STORAGE
+         <div name="tsUpdate" data-id="t_6c66d0474c304286aa0afe8d24167eac" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_fcb37eeff4924467a98322979c257c69" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Name of the storage follows
+         <div name="tsUpdate" data-id="t_ea22c23453c04cd298ded0ce328595a8" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">68
+         <div name="tsUpdate" data-id="t_211d46b7f0d34568a884316eb49df98f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_STREAMED_OBJECT
+         <div name="tsUpdate" data-id="t_4c8506cba7204d3b9246ca95377c46d0" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_a8991ee1f9984c67a110bb5e42ae17c4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Stream contains an object
+         <div name="tsUpdate" data-id="t_bdbad5e8e443449ab2efd7d1373271f8" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">69
+         <div name="tsUpdate" data-id="t_ec8ce033773142ceb839da34da9062c3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_STORED_OBJECT
+         <div name="tsUpdate" data-id="t_a3ba45c5dd884973afe37833328a38d9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_bfda852ae1b84630948ef0fdb45c2250" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Storage contains an object
+         <div name="tsUpdate" data-id="t_bee78f5e3e504cd8ab7ad8693a647784" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">70
+         <div name="tsUpdate" data-id="t_b9458fb775b84c25b7edd588ae4c63d3" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BLOB_OBJECT
+         <div name="tsUpdate" data-id="t_8f5c05efd0084a6084a4b63e17d4bced" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_f201cd933a9c46718d59978b458ed886" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Blob contains an object
+         <div name="tsUpdate" data-id="t_a3a297f0abac48698e1a5dde8774495e" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">71
+         <div name="tsUpdate" data-id="t_be63d8db9b0e443c8a73c7b3bc327221" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_CF
+         <div name="tsUpdate" data-id="t_d8169c6c00ff4c80b54dbffd08926028" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_360c8a7068364421b8eed43014a27a87" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">Clipboard format
+         <div name="tsUpdate" data-id="t_c711a605245a4670aac2e79c15ba5e23" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">72
+         <div name="tsUpdate" data-id="t_5ba4a355dfa94ab6a00626265c14737b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_CLSID
+         <div name="tsUpdate" data-id="t_78a7b298b7c4470c9c60b25142726eb7" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_e2043ccd295042ccbe686bc412d0a8fb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">A Class ID
+         <div name="tsUpdate" data-id="t_21a538e4a2b1468591c060d373888609" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0x1000
+         <div name="tsUpdate" data-id="t_f9429c20be0d4d1fb548df0c7e6a199f" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_VECTOR
+         <div name="tsUpdate" data-id="t_16785a2bcb424d8c85301d2790c24a5b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[P]
+         <div name="tsUpdate" data-id="t_e4e21b12a77b4a77a9f23fd82ad9994e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">simple counted array
+         <div name="tsUpdate" data-id="t_2ce4be3c9b094efe886595e3043d35c5" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0x2000
+         <div name="tsUpdate" data-id="t_af52ebd20ca843888b83470cf2360d72" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_ARRAY
+         <div name="tsUpdate" data-id="t_5b8110e509604cc89579efd9e9985512" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V]
+         <div name="tsUpdate" data-id="t_7adc28c2b1bf40ba9b825e664e9c7ed5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">SAFEARRAY*
+         <div name="tsUpdate" data-id="t_d7f4584075534f319844857598f16e72" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0x4000
+         <div name="tsUpdate" data-id="t_32a4b5d99f244bcdafcc0c6e7ac006bb" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_BYREF
+         <div name="tsUpdate" data-id="t_7351d58c1231449aae62e6171145b637" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">[V]
+         <div name="tsUpdate" data-id="t_0a1037f5ec1b4e7cafb2251c1033b767" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">void* for local use
+         <div name="tsUpdate" data-id="t_91aca83b04564b94b8aa68f30f1be612" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0x8000
+         <div name="tsUpdate" data-id="t_7729919851374ffbb2d8138a50b7807b" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_RESERVED
+         <div name="tsUpdate" data-id="t_672a2c363c814eb482474e764b790133" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0xFFFF
+         <div name="tsUpdate" data-id="t_42bfe3d5532a427f869eacbef1040ad5" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_ILLEGAL
+         <div name="tsUpdate" data-id="t_dc8de01039d04046a63d727d9b9d03e2" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0xFFF
+         <div name="tsUpdate" data-id="t_c917b660b3994cb7936015d84410967a" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_ILLEGALMASKED
+         <div name="tsUpdate" data-id="t_70a5443aba8644a0bb184ebb363c215e" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">0xFFF
+         <div name="tsUpdate" data-id="t_b9606fe1c4214284830731fb581248da" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">VT_TYPEMASK
+         <div name="tsUpdate" data-id="t_6c6326ec53d44e55bc892c22e6730a33" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+        <td colspan="1" rowspan="1">
+         <br>
+        </td>
+       </tr>
+      </tbody>
+     </table>
+     <a name="The+Dictionary"></a>
+     <h3 class="boxed">The Dictionary
+      <div name="tsUpdate" data-id="t_c1a9afc28e2e484b839fafe28c48d7d2" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>What a dictionary is good for is explained in the <a href="how-to.html">HPSF HOW-TO</a>. This chapter explains how it is organized internally.
+      <div name="tsUpdate" data-id="t_07e01131859d4d66973738f4ced8a724" data-tpl="0" data-txt-color="green"></div></p>
+     <p>The dictionary has a simple header consisting of a single UInt value. It tells how many entries the dictionary comprises:
+      <div name="tsUpdate" data-id="t_6fdce5fbb8c84197b429a66a6b9a57a3" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Name
+         <div name="tsUpdate" data-id="t_e2aa337aa7db46c8908b31f073368cac" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Data type
+         <div name="tsUpdate" data-id="t_e822834216534128a25d569c3fedb7a7" data-tpl="0" data-txt-color="green"></div></th>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_198e39df7a0d4c3fa3024db3677ccb32" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">nrEntries
+         <div name="tsUpdate" data-id="t_6e2150b6ebb749cba8f7e709621541ac" data-tpl="0" data-txt-color="green"></div></td>
+        <th colspan="1" rowspan="1">UInt
+         <div name="tsUpdate" data-id="t_1dff0f20a3d6452180bf3441c8efc0f3" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Number of dictionary entries
+         <div name="tsUpdate" data-id="t_eabf7ed02d2b42878e9cba7b9621cf28" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>The dictionary entries follow the header. Each one looks like this:
+      <div name="tsUpdate" data-id="t_36eb1e6a1f9346c0b515cd29a3095698" data-tpl="0" data-txt-color="green"></div></p>
+     <table class="ForrestTable" cellspacing="1" cellpadding="4">
+      <tbody>
+       <tr>
+        <th colspan="1" rowspan="1">Name
+         <div name="tsUpdate" data-id="t_96d1c7a5d1e74291a9e1742899e2ad06" data-tpl="0" data-txt-color="green"></div></th>
+        <td colspan="1" rowspan="1">Data type
+         <div name="tsUpdate" data-id="t_69e726eeb88d40e0911697da68b3d4d6" data-tpl="0" data-txt-color="green"></div></td>
+        <th colspan="1" rowspan="1">Description
+         <div name="tsUpdate" data-id="t_74e8462cab6d40a6865ae5a8fd781da9" data-tpl="0" data-txt-color="green"></div></th>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">key
+         <div name="tsUpdate" data-id="t_c40d75fcb5bf42218a82e68a32aa2dc9" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">UInt
+         <div name="tsUpdate" data-id="t_7b262a78133c42329ad1ef9ce6f7b709" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The unique number of this property, i.e. the PID
+         <div name="tsUpdate" data-id="t_6698f3a03f114b2b909392dad11f4e97" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">length
+         <div name="tsUpdate" data-id="t_4791f5153cf8479b82ae5da75a0535c6" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">UInt
+         <div name="tsUpdate" data-id="t_d03a173fcadb4366bff3095a51835ba4" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The length of the property name associated with the key
+         <div name="tsUpdate" data-id="t_be0217ba6f23496fabb79c4c073ad608" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+       <tr>
+        <td colspan="1" rowspan="1">value
+         <div name="tsUpdate" data-id="t_88d368d2dfc64aceba0175c3b10f6ed8" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">String
+         <div name="tsUpdate" data-id="t_9a2cc4f7fa2848e18c9a872551e9fdee" data-tpl="0" data-txt-color="green"></div></td>
+        <td colspan="1" rowspan="1">The property's name, terminated with a 0x00 character
+         <div name="tsUpdate" data-id="t_a459207d0a0f442fa34df794d57d2fd9" data-tpl="0" data-txt-color="green"></div></td>
+       </tr>
+      </tbody>
+     </table>
+     <p>The entries are not aligned, i.e. each one follows its predecessor without any gap or fill characters.
+      <div name="tsUpdate" data-id="t_f1479036456b413fbc24e70e69a539b9" data-tpl="0" data-txt-color="green"></div></p>
+     <a name="References"></a>
+     <h3 class="boxed">References
+      <div name="tsUpdate" data-id="t_69a19cb1f544464fb6bf3593b52e684e" data-tpl="0" data-txt-color="orange"></div></h3>
+     <p>In order to assemble the HPSF description I used information publically available on the Internet only. The references given below have been very helpful. If you have any amendments or corrections, please let us know! Thank you!
+      <div name="tsUpdate" data-id="t_b3080c14b8b24eaf8b73d016f359ca1f" data-tpl="0" data-txt-color="green"></div></p>
+     <ol>
+      <li>In <a href="http://www.kyler.com/pubs/ddj9894.html"><em>Understanding OLE documents</em></a>, Ken Kyler gives an introduction to OLE2 documents and especially to property sets. He names the property names, types, and IDs of the Summary Information and Document Summary Information stream.
+       <div name="tsUpdate" data-id="t_6b795ce32bc74b02ba0a8909b28394cb" data-tpl="0" data-txt-color="green"></div></li>
+      <li>The <a href="http://www.dwam.net/docs/oleref/"><em>ActiveX Programmer's Reference</em></a> at <a href="http://www.dwam.net/docs/oleref/">http://www.dwam.net/docs/oleref/</a> seems a little outdated, but that's what I have found.
+       <div name="tsUpdate" data-id="t_a0b108a582e54c9790ef4a009e94bb8a" data-tpl="0" data-txt-color="green"></div></li>
+      <li>An overview of the <span class="codefrag">VT_</span> types is in <a href="http://www.marin.clara.net/COM/variant_type_definitions.htm"><em>Variant Type Definitions</em></a>.
+       <div name="tsUpdate" data-id="t_95a56b91fc1949d79347a19dacf7a2a1" data-tpl="0" data-txt-color="green"></div></li>
+      <li>What is a <span class="codefrag">FILETIME</span>? The answer can be found under <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/filetime_str.asp"></a>, <a href="http://www.vbapi.com/ref/f/filetime.html">http://www.vbapi.com/ref/f/filetime.html</a> or <a href="http://www.cs.rpi.edu/courses/fall01/os/FILETIME.html">http://www.cs.rpi.edu/courses/fall01/os/FILETIME.html</a>. In short: <em>The FILETIME structure holds a date and time associated with a file. The structure identifies a 64-bit integer specifying the number of 100-nanosecond intervals which have passed since January 1, 1601. This 64-bit value is split into the two dwords stored in the structure.</em>
+       <div name="tsUpdate" data-id="t_c9ebbd8153d449bc96afc1a28db5ddb6" data-tpl="0" data-txt-color="green"></div></li>
+      <li>Microsoft provides some public information in the <a href="http://msdn.microsoft.com/library/default.asp">MSDN Library</a>. Use the search function to try to find what you are looking for, e.g. "codepage" or "document summary information" etc.
+       <div name="tsUpdate" data-id="t_a688199bba7447ac9d25b842957e55dd" data-tpl="0" data-txt-color="green"></div></li>
+     </ol>
+    </div>
+    <p align="right"><font size="-2">by&nbsp;Rainer Klute</font>
+     <div name="tsUpdate" data-id="t_db35420f582348f1a725b924af67de7c" data-tpl="0" data-txt-color="green"></div></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/hpsf/internals.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+  <script type="text/javascript">var projectId='5';var versionId='1';var fileId='3b71426180d142fea2c2d68edc8e796f';</script>
+  <script src="../../js/xst-update.js"></script>
+ </body>
+</html>

@@ -1,0 +1,1051 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Apache Forrest" name="Generator">
+  <meta name="Forrest-version" content="0.9">
+  <meta name="Forrest-skin-name" content="pelt">
+  <title>JVM languages</title>
+  <link type="text/css" href="../skin/basic.css" rel="stylesheet">
+  <link media="screen" type="text/css" href="../skin/screen.css" rel="stylesheet">
+  <link media="print" type="text/css" href="../skin/print.css" rel="stylesheet">
+  <link type="text/css" href="../skin/profile.css" rel="stylesheet">
+  <script src="../skin/getBlank.js" language="javascript" type="text/javascript"></script>
+  <script src="../skin/getMenu.js" language="javascript" type="text/javascript"></script>
+  <script src="../skin/fontsize.js" language="javascript" type="text/javascript"></script>
+  <link rel="shortcut icon" href="../images/favicon.ico">
+  <meta charset="UTF-8">
+  <script src="../js/jquery.min.js"></script>
+  <link href="../css/xst-ts.css" rel="stylesheet">
+  <script src="../js/xst-lg.js"></script>
+ </head>
+ <body>
+  <script type="text/javascript">ndeSetTextSize();</script>
+  <div id="main">
+   <!--+
+    |breadtrail
+    +-->
+   <!--+
+    |start Menu, mainarea
+    +-->
+   <!--+
+    |start Menu
+    +-->
+   <!--+
+    |end Menu
+    +-->
+   <!--+
+    |start content
+    +-->
+   <div id="content">
+    <h1><span lg_en="t_f1dec7153bbe43e78b8e3010d60b7a57">JVM languages</span><span class="tscolor" lg_zh="t_f1dec7153bbe43e78b8e3010d60b7a57"><span lg_kh="1">(</span>JVM 语言<span lg_kh="1">)</span></span></h1>
+    <div id="front-matter"></div>
+    <a name="Intro"></a>
+    <h2 class="boxed"><span lg_en="t_168055e119a74680b775c063d233ca62">Intro</span><span class="tscolor" lg_zh="t_168055e119a74680b775c063d233ca62"><span lg_kh="1">(</span>介绍<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <p><span lg_en="t_f06ec0dec44e41ca93a66541ceae8bd0">Apache POI can be used with any <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages">JVM language</a> that can import Java jar files such as Jython, Groovy, Scala, Kotlin, and JRuby.</span><span class="tscolor" lg_zh="t_f06ec0dec44e41ca93a66541ceae8bd0"><span lg_kh="1">(</span>Apache POI 可以与任何可以导入 Java jar 文件的 <a href="https://en.wikipedia.org/wiki/List_of_JVM_languages" target="_blank" style="color:blue">JVM 语言</a>一起使用，例如 Jython、Groovy、Scala、Kotlin 和 JRuby。<span lg_kh="1">)</span></span></p>
+     <ul>
+      <li><span lg_en="t_35f49f9b4a324c8290af0c7593910f3c"><a href="#Jython+example">Jython</a></span><span class="tscolor" lg_zh="t_35f49f9b4a324c8290af0c7593910f3c"><span lg_kh="1">(</span><a href="#Jython+example" style="color:blue;">Jython</a><span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_12e7c0d3f2564166926b1e22edf0ed65"><a href="#Scala+example">Scala</a></span><span class="tscolor" lg_zh="t_12e7c0d3f2564166926b1e22edf0ed65"><span lg_kh="1">(</span><a href="#Scala+example" style="color:blue;">Scala</a><span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_22b39631583542b8837c82c332b92a16"><a href="#Groovy+example">Groovy</a></span><span class="tscolor" lg_zh="t_22b39631583542b8837c82c332b92a16"><span lg_kh="1">(</span><a href="#Groovy+example" style="color:blue;">Groovy</a><span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_d4e1796a42e041e7abfc259fa8be7419"><a href="#Clojure+example">Clojure</a></span><span class="tscolor" lg_zh="t_d4e1796a42e041e7abfc259fa8be7419"><span lg_kh="1">(</span><a href="#Clojure+example" style="color:blue;">Clojure</a><span lg_kh="1">)</span></span></li>
+     </ul>
+    </div>
+    <a name="Tested+Environments"></a>
+    <h2 class="boxed"><span lg_en="t_8660a2b54d074ba3b4bfaa28e5742f81">Tested Environments</span><span class="tscolor" lg_zh="t_8660a2b54d074ba3b4bfaa28e5742f81"><span lg_kh="1">(</span>测试环境<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <ul>
+      <li><span lg_en="t_2b5bcd6414014c7cacd2369f7545d80b"><a href="http://www.jython.org/">Jython</a> 2.5+ (older versions probably work, but are untested)</span><span class="tscolor" lg_zh="t_2b5bcd6414014c7cacd2369f7545d80b"><span lg_kh="1">(</span><a href="http://www.jython.org/" style="color:blue;" target="_blank">Jython</a> 2.5+（旧版本可能有效，但未经测试）<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_b1379ba872fa4f06a5cc94c507f32a2d"><a href="http://www.scala-lang.org/">Scala</a> 2.x</span><span class="tscolor" lg_zh="t_b1379ba872fa4f06a5cc94c507f32a2d"><span lg_kh="1">(</span><a href="http://www.scala-lang.org/" style="color:blue;" target="_blank">Scala</a> 2.x<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_4c936de2960c4730bd8ac7044d5d780e"><a href="http://groovy-lang.org/">Groovy</a> 2.4 (anything from 1.6 onwards ought to work, but only the latest 2.4 releases have been tested by us)</span><span class="tscolor" lg_zh="t_4c936de2960c4730bd8ac7044d5d780e"><span lg_kh="1">(</span><a href="http://groovy-lang.org/" style="color:blue;" target="_blank">Groovy</a> 2.4（从 1.6 开始应该可以工作，但我们只测试了最新的 2.4 版本）<span lg_kh="1">)</span></span></li>
+      <li><span lg_en="t_bcb3f7e2973a479faf101c8c84181930"><a href="http://clojure.org/">Clojure</a> 1.5.1+</span><span class="tscolor" lg_zh="t_bcb3f7e2973a479faf101c8c84181930"><span lg_kh="1">(</span><a href="http://clojure.org/" style="color:blue;" target="_blank">Clojure</a> 1.5.1+<span lg_kh="1">)</span></span></li>
+     </ul>
+     <p><span lg_en="t_cedd3d25f0c0451b928125f6d81ac5fa">If you use POI in a different language (Kotlin, JRuby, ...) and would like to share a <em>Hello POI!</em> example, please <a href="https://helpwanted.apache.org/task.html?856abd21">share</a> it.</span><span class="tscolor" lg_zh="t_cedd3d25f0c0451b928125f6d81ac5fa"><span lg_kh="1">(</span>如果您在不同的语言（Kotlin、JRuby、...）中使用 POI，并且想分享一个 Hello POI！请<a href="https://helpwanted.apache.org/task.html?856abd21" style="color:blue;" target="_blank">分享</a>。<span lg_kh="1">)</span></span></p>
+     <p><span lg_en="t_c6797704efb441189291d1a0b2c28059">Please <a href="../help/index.html">let us know</a> if you use POI in an environment not listed here</span><span class="tscolor" lg_zh="t_c6797704efb441189291d1a0b2c28059"><span lg_kh="1">(</span>如果您在此处未列出的环境中使用 POI，请告知<a href="https://poi.apache.org/help/index.html" target="_blank" style="color:blue;">项目小组</a><span lg_kh="1">)</span></span></p>
+    </div>
+    <!-- FIXME: Need to make each language section expandable/collapseable so that users can compare their language to Java on one screen. See http://jsfiddle.net/eJX8z/ for an example implementation. -->
+    <a name="Java+code"></a>
+    <h2 class="boxed"><span lg_en="t_0d2f52cc78b9466e9ddbea6533d69c3b">Java code</span><span class="tscolor" lg_zh="t_0d2f52cc78b9466e9ddbea6533d69c3b"><span lg_kh="1">(</span>JAVA代码<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="POILanguageExample.java"></a>
+     <h3 class="boxed"><span lg_en="t_e98222d473de4acf81518fbb2177eb76">POILanguageExample.java</span><span class="tscolor" lg_zh="t_e98222d473de4acf81518fbb2177eb76"><span lg_kh="1">(</span>POILanguageExample.java<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // include poi-{version}-{yyyymmdd}.jar, poi-ooxml-{version}-{yyyymmdd}.jar,</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // and poi-ooxml-lite-{version}-{yyyymmdd}.jar on Java classpath</span>
+      </div>
+      <div class="codeline" lg_zh="t_7a82d2612f824959b84840ae9c81a2f4">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//包含poi-{版本}-{yyyyymmdd}.jar，poi-oooxml-{版本}-{yyyyymmdd}.jar，
+//和Java类路径上的poi-oooxml-Lite-{版本}-{yyyyymmdd}.jar
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Import the POI classes</span>
+      </div>
+      <div class="codeline" lg_zh="t_7132e62846a14da8be1d53ce02fcceab">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//导入兴趣点类
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import java.io.File;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import java.io.FileOutputStream;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import java.io.OutputStream;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.Cell;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.Row;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.Sheet;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.Workbook;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.WorkbookFactory;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.DataFormatter;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Read the contents of the workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_60521c4edcf1440abe637438e5984b56">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//阅读工作簿的内容
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File f = new File("SampleSS.xlsx");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Workbook wb = WorkbookFactory.create(f);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> DataFormatter formatter = new DataFormatter();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int i = 1;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int numberOfSheets = wb.getNumberOfSheets();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for ( Sheet sheet : wb ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("Sheet " + i + " of " + numberOfSheets + ": " + sheet.getSheetName());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for ( Row row : sheet ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("\tRow " + row.getRowNum());</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for ( Cell cell : row ) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> System.out.println("\t\t"+ cell.getAddress().formatAsString() + ": " + formatter.formatCellValue(cell));</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Modify the workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_52015ca8630b4d0e82fd0e222a9fe22f">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//修改工作簿
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet sh = wb.createSheet("new sheet");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row row = sh.createRow(7);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell cell = row.createCell(42);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setActiveCell(true);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setCellValue("The answer to life, the universe, and everything");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Save and close the workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_9a5f8497957141a5948f1294c0d0ff01">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//保存并关闭工作簿
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> OutputStream fos = new FileOutputStream("SampleSS-updated.xlsx");</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.write(fos);</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> fos.close();</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <!-- Java code -->
+    <a name="Jython+example"></a>
+    <h2 class="boxed"><span lg_en="t_2384cb8a373d45af90076c578ce3e2e6">Jython example</span><span class="tscolor" lg_zh="t_2384cb8a373d45af90076c578ce3e2e6"><span lg_kh="1">(</span>Jython 示例<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> # Add </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">poi jars</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> onto the python classpath or add them at run time</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import sys</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for jar in ('poi', 'poi-ooxml', 'poi-ooxml-lite'):</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sys.path.append('/path/to/%s-5.0.0-SNAPSHOT.jar')</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> from java.io import File, FileOutputStream</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> from contextlib import closing</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> # Import the POI classes</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> from org.apache.poi.ss.usermodel import </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">WorkbookFactory</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">, </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DataFormatter</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> # Read the contents of the workbook</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb = WorkbookFactory.create(File('</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SampleSS.xlsx</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">'))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> formatter = DataFormatter()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for i, sheet in enumerate(wb, start=1):</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> print('Sheet %d of %d: %s'.format(i, wb.numberOfSheets, sheet.sheetName))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for row in sheet:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> print('\tRow %i' % row.rowNum)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for cell in row:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> print('\t\t%s: %s' % (cell.address, formatter.formatCellValue(cell)))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> # Modify the workbook</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sh = wb.createSheet('new sheet')</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> row = sh.createRow(7)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell = sh.createCell(42)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.activeCell = True</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.cellValue = 'The answer to life, the universe, and everything'</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> # Save and close the workbook</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> with closing(FileOutputStream('SampleSS-updated.xlsx')) as fos:</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.write(fos)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> wb.close()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <p><span lg_en="t_12758479620d46998fb54c0139acbb7b">There are several websites that have examples of using Apache POI in Jython projects: <a href="https://wiki.python.org/jython/PoiExample">python.org</a>, <a href="http://www.jython.org/jythonbook/en/1.0/appendixB.html#working-with-spreadsheets">jython.org</a>, and many others.</span><span class="tscolor" lg_zh="t_12758479620d46998fb54c0139acbb7b"><span lg_kh="1">(</span>有几个网站提供了在 Jython 项目中使用 Apache POI 的示例：python.org、jython.org 等等。<span lg_kh="1">)</span></span></p>
+    </div>
+    <a name="Scala+example"></a>
+    <h2 class="boxed"><span lg_en="t_37088b5ee67e4386a6d1b34a470263e3">Scala example</span><span class="tscolor" lg_zh="t_37088b5ee67e4386a6d1b34a470263e3"><span lg_kh="1">(</span>Scala示例<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="build.sbt"></a>
+     <h3 class="boxed"><span lg_en="t_6900eeb8e3e54a51a1974040271ddb22">build.sbt</span><span class="tscolor" lg_zh="t_6900eeb8e3e54a51a1974040271ddb22"><span lg_kh="1">(</span>build.sbt<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Add the POI core and OOXML support dependencies into your build.sbt</span>
+      </div>
+      <div class="codeline" lg_zh="t_eeafb40d1dc94136a4f200c57cdde347">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//将PRI核心和OOML支持依赖项添加到您的Build.sbt中
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> libraryDependencies ++= Seq(</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "org.apache.poi" % "poi" % "5.0.0-SNAPSHOT",</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "org.apache.poi" % "poi-ooxml" % "5.0.0-SNAPSHOT",</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> "org.apache.poi" % "poi-ooxml-lite" "5.0.0-SNAPSHOT"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> )</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="XSSFMain.scala"></a>
+     <h3 class="boxed"><span lg_en="t_48058ca984874b3394b204b420211e61">XSSFMain.scala</span><span class="tscolor" lg_zh="t_48058ca984874b3394b204b420211e61"><span lg_kh="1">(</span>XSSFMain.scala<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Import the required classes</span>
+      </div>
+      <div class="codeline" lg_zh="t_b1b8c9d9340d488284a5b37a0dfca1fa">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//导入所需的类
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import org.apache.poi.ss.usermodel.{</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">WorkbookFactory</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">, </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DataFormatter</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import java.io.{File, FileOutputStream}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> object XSSFMain extends App {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Automatically convert Java collections to Scala equivalents</span>
+      </div>
+      <div class="codeline" lg_zh="t_1e2b08c68b5645448a2da111208c1e40">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//自动将Java集合转换为Scala等效内容
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> import scala.collection.JavaConversions._</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Read the contents of the workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_ef8d256b7d80426fadce30caf573488b">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//阅读工作簿的内容
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val workbook = WorkbookFactory.create(new File("</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">SampleSS.xlsx</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">"))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val formatter = new DataFormatter()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> for {</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Iterate and print the sheets</span>
+      </div>
+      <div class="codeline" lg_zh="t_6d2c89ca520e45c094dc15be9f081764">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//迭代并打印表单
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (sheet, i) &lt;- workbook.zipWithIndex</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> _ = println(s"Sheet $i of ${workbook.getNumberOfSheets}: ${sheet.getSheetName}")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Iterate and print the rows</span>
+      </div>
+      <div class="codeline" lg_zh="t_5ba3d6a8101842c58ba94a6a130e1808">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//迭代并打印行
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> row &lt;- sheet</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> _ = println(s"\tRow ${row.getRowNum}")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Iterate and print the cells</span>
+      </div>
+      <div class="codeline" lg_zh="t_66876eb31e724c048550767823f63bf7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//迭代并打印单元格
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell &lt;- row</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> } {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println(s"\t\t${cell.getCellAddress}: ${formatter.formatCellValue(cell)}")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Add a sheet to the workbook</span>
+      </div>
+      <div class="codeline" lg_zh="t_c9621ca6da0f4f758d6844c7c5b50a9a">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//将工作表添加到工作簿
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val sheet = workbook.createSheet("new sheet")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val row = sheet.createRow(7)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val cell = row.createCell(42)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setAsActiveCell()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> cell.setCellValue("The answer to life, the universe, and everything")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Save the updated workbook as a new file</span>
+      </div>
+      <div class="codeline" lg_zh="t_3a369965bd5749c7b42d75db85f583fb">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//将更新后的工作簿保存为新文件
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> val fos = new FileOutputStream("SampleSS-updated.xlsx")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> workbook.write(fos)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> workbook.close()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <a name="Groovy+example"></a>
+    <h2 class="boxed"><span lg_en="t_1d46a4a5851b4a9787f0f0a0d6581254">Groovy example</span><span class="tscolor" lg_zh="t_1d46a4a5851b4a9787f0f0a0d6581254"><span lg_kh="1">(</span>Groovy 示例<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="build.gradle"></a>
+     <h3 class="boxed"><span lg_en="t_e81eb23e0d0b4f5f95b4475d1baf2424">build.gradle</span><span class="tscolor" lg_zh="t_e81eb23e0d0b4f5f95b4475d1baf2424"><span lg_kh="1">(</span>构建.gradle<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// Add the POI core and OOXML support dependencies into your gradle build,</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody">// along with all of Groovy so it can run as a standalone script</span>
+      </div>
+      <div class="codeline" lg_zh="t_624a5c80ad79498990052a97d5f9971c">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//将PRI核心和OOML支持依赖项添加到您的Gradle构建中，
+//以及Groovy的所有内容，因此它可以作为独立脚本运行
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">repositories {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> mavenCentral()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">dependencies {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> runtime 'org.codehaus.groovy:groovy-all:2.4.7'</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> runtime 'org.apache.poi:poi:3.14'</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> runtime 'org.apache.poi:poi-ooxml:3.14'</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+     <a name="SpreadSheetDemo.groovy"></a>
+     <h3 class="boxed"><span lg_en="t_9f535a315bf44f0e970574b54e4405e5">SpreadSheetDemo.groovy</span><span class="tscolor" lg_zh="t_9f535a315bf44f0e970574b54e4405e5"><span lg_kh="1">(</span>SpreadSheetDemo.groovy<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.usermodel.*</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import org.apache.poi.ss.util.*</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">import java.io.File</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">if (args.length == 0) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println "Use:"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println " SpreadSheetDemo &lt;excel-file&gt; [output-file]"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return 1</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">File f = new File(args[0])</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">DataFormatter formatter = new DataFormatter()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">WorkbookFactory.create(f,null,true).withCloseable { workbook -&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println "Has ${workbook.getNumberOfSheets()} sheets"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Dump the contents of the spreadsheet</span>
+      </div>
+      <div class="codeline" lg_zh="t_7e308b7ba9944cdd82c63943ac5c7c23">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//卸载电子表格的内容
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (0..&lt;workbook.getNumberOfSheets()).each { sheetNum -&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println "Sheet ${sheetNum} is called ${workbook.getSheetName(sheetNum)}"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> def sheet = workbook.getSheetAt(sheetNum)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> sheet.each { row -&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> def nonEmptyCells = row.grep { c -&gt; c.getCellType() != Cell.CELL_TYPE_BLANK }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println " Row ${row.getRowNum()} has ${nonEmptyCells.size()} non-empty cells:"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> nonEmptyCells.each { c -&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> def cRef = [c] as CellReference</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println " * ${cRef.formatAsString()} = ${formatter.formatCellValue(c)}"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Add two new sheets and populate</span>
+      </div>
+      <div class="codeline" lg_zh="t_1230b335c5cc42e2a26dc8c1196a6de7">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//添加两个新表并填充
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellStyle headerStyle = makeHeaderStyle(workbook)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet ns1 = workbook.createSheet("Generated 1")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> exportHeader(ns1, headerStyle, null, ["ID","Title","Num"] as String[])</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ns1.createRow(1).createCell(0).setCellValue("TODO - Populate with data")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Sheet ns2 = workbook.createSheet("Generated 2")</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> exportHeader(ns2, headerStyle, "This is a demo sheet",</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ["ID","Title","Date","Author","Num"] as String[])</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ns2.createRow(2).createCell(0).setCellValue(1)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ns2.createRow(3).createCell(0).setCellValue(4)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> ns2.createRow(4).createCell(0).setCellValue(1)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Save</span>
+      </div>
+      <div class="codeline" lg_zh="t_ff189e064d75429782142ef6d713d9e4">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//保存
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> File output = File.createTempFile("output-", (f.getName() =~ /(\.\w+$)/)[0][0])</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> output.withOutputStream { os -&gt; workbook.write(os) }</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> println "Saved as ${output}"</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">CellStyle makeHeaderStyle(Workbook wb) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int HEADER_HEIGHT = 18</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> CellStyle style = wb.createCellStyle()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> style.setFillForegroundColor(IndexedColors.AQUA.getIndex())</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> style.setFillPattern(FillPatternType.SOLID_FOREGROUND)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Font font = wb.createFont()</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> font.setFontHeightInPoints((short)HEADER_HEIGHT)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> font.setBold(true)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> style.setFont(font)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> return style</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">void exportHeader(Sheet s, CellStyle headerStyle, String info, String[] headers) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Row r</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int rn = 0</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> int HEADER_HEIGHT = 18</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Do they want an info row at the top?</span>
+      </div>
+      <div class="codeline" lg_zh="t_534b3103d953412ba08f1e3a0016bc56">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//他们想要顶部有一个信息行吗？
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> if (info != null &amp;&amp; !info.isEmpty()) {</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r = s.createRow(rn)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.setHeightInPoints(HEADER_HEIGHT+1)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> rn++</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell c = r.createCell(0)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellValue(info)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellStyle(headerStyle)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> s.addMergedRegion(new CellRangeAddress(0,0,0,headers.length-1))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Create the header row, of the right size</span>
+      </div>
+      <div class="codeline" lg_zh="t_6538db1d064f4b84837213bb126f1d25">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//创建大小正确的标题行
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r = s.createRow(rn)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> r.setHeightInPoints(HEADER_HEIGHT+1)</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Add the column headings</span>
+      </div>
+      <div class="codeline" lg_zh="t_fbf047593499432ebdf9bb2ec416b6bf">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//添加列标题
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> headers.eachWithIndex { col, idx -&gt;</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> Cell c = r.createCell(idx)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellValue(col)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> c.setCellStyle(headerStyle)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> s.autoSizeColumn(idx)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> }</span>
+      </div>
+      <div class="codeline" lg_en="1">
+       <span class="lineno"></span><span class="codebody"> // Make all the columns filterable</span>
+      </div>
+      <div class="codeline" lg_zh="t_8ba7a2e4d4034a2e9f25585326b608ce">
+       <span class="lineno"></span> <span class="codebody" style="color:green;">//使所有列都可过滤
+</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> s.setAutoFilter(new CellRangeAddress(rn, rn, 0, headers.length-1))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">}</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <a name="Clojure+example"></a>
+    <h2 class="boxed"><span lg_en="t_e2362737a7594e12a23b25e5cb40f513">Clojure example</span><span class="tscolor" lg_zh="t_e2362737a7594e12a23b25e5cb40f513"><span lg_kh="1">(</span>Clojure 示例<span lg_kh="1">)</span></span></h2>
+    <div class="section">
+     <a name="SpreadSheetDemo.clj"></a>
+     <h3 class="boxed"><span lg_en="t_b3f3cdb6469d4bbab7557489753972db">SpreadSheetDemo.clj</span><span class="tscolor" lg_zh="t_b3f3cdb6469d4bbab7557489753972db"><span lg_kh="1">(</span>SpreadSheetDemo.clj<span lg_kh="1">)</span></span></h3>
+     <div class="code">
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">(ns poi.core</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (:gen-class)</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (:use [clojure.java.io :only [input-stream]])</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (:import [org.apache.poi.ss.usermodel WorkbookFactory DataFormatter]))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">(defn sheets [wb] (map #(.getSheetAt wb %1) (range 0 (.getNumberOfSheets wb))))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">(defn print-all [wb]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (let [df (DataFormatter.)]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (doseq [sheet (sheets wb)]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (doseq [row (seq sheet)]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (doseq [cell (seq row)]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (println (.formatAsString (.getAddress cell)) ": " (.formatCellValue df cell)))))))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"></span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody">(defn -main [&amp; args]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (when-let [name (first args)]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (let [wb (WorkbookFactory/create (input-stream name))]</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> (print-all wb))))</span>
+      </div>
+      <div class="codeline">
+       <span class="lineno"></span><span class="codebody"> </span>
+      </div>
+     </div>
+    </div>
+    <p align="right"><span lg_en="t_29e40610c9fd42f49516946663bf2529"><font size="-2">by&nbsp;Javen O'Neal</font></span><span class="tscolor" lg_zh="t_29e40610c9fd42f49516946663bf2529"><span lg_kh="1">(</span>贾文·奥尼尔<span lg_kh="1">)</span></span></p>
+   </div>
+   <!--+
+    |end content
+    +-->
+   <div class="clearboth">&nbsp;</div>
+  </div>
+  <div id="footer">
+   <!--+
+    |start bottomstrip
+    +-->
+   <div class="lastmodified">
+    <script type="text/javascript"><!--
+document.write("Last Published: " + document.lastModified);
+//  --></script>
+   </div>
+   <div class="copyright">
+    Copyright © 2001-2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>
+   </div>
+   <div id="feedback">
+    Send feedback about the website to: <a id="feedbackto" href="mailto:dev@poi.apache.org?subject=Feedback%C2%A0components/poi-jvm-languages.html">dev@poi.apache.org</a>
+   </div>
+   <!--+
+    |end bottomstrip
+    +-->
+  </div>
+ </body>
+</html>
