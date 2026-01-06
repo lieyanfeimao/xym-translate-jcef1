@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>主页</title>
+	<link rel="stylesheet" type="text/css" href="libs/layui2/css/layui.css">
+
+  <link rel="stylesheet" type="text/css" href="libs/easyui/themes/bootstrap/easyui.css">
+  <link rel="stylesheet" type="text/css" href="libs/easyui/themes/icon.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="css/index/index.css">
+</head>
+<body>
+<div id="initView" class="initview">
+	<div style="position:relative;top:40%;"><img src="image/loading.gif" width="50" height="50"/></div>
+</div>
+<div class="mainView">
+	
+	<table id="mainBox" style="width:100%;">
+		<tr>
+			<td width="30%">
+				<div id="projectListView" class="easyui-panel" title="项目列表  <span style='color:red;'>[点击‘右侧按钮’添加,在项目上使用‘右键菜单’编辑]</span>" style="width:100%;padding:10px;background-color:#fafafa;"
+					data-options="tools:[{
+									iconCls:'icon-add',
+									handler:function(){
+										addProject();
+									}
+								},{
+									iconCls:'icon-help',
+									handler:function(){
+										window.open('help.html');
+									}
+								},{
+									iconCls:'icon-more',
+									handler:function(){
+										openConfigView();
+									}
+								}]">
+					
+					
+						<ul id="projectTree" class="easyui-tree">
+						</ul>
+					
+					
+				</div>
+			</td>
+			<td width="70%">
+				<div id="versionListView" class="easyui-panel" title="版本列表(<span name='projectTreeFullName'></span>)&nbsp;<a href='https://baidu.com' target='_blank'>helpdoc</a>" style="width:100%;padding:10px;background-color:#fafafa;">
+					<table id="versionTable"></table>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<!-- 右键菜单 -->
+	<div id="childMenu" class="easyui-menu" style="width: 100px;">
+		<div onclick="addProject()" iconcls="icon-add">添加项目</div>
+		<div onclick="editProject()" iconcls="icon-edit">编辑项目</div>
+		<div onclick="deleteProject()" iconcls="icon-delete">删除项目</div>
+	</div>
+
+	<!-- 表格菜单 -->
+	<div id="versionTool">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addVersion()">添加</a>
+	</div>
+
+	<!-- 新建项目 -->
+	<div id="editProjectView" style="display:none;padding:10px;">
+		<input type="hidden" name="id" />
+		<table>
+			<tr>
+				<td class="tdpre"><span class="red-txt">*</span>项目名:</td>
+				<td><input class="easyui-validatebox" data-options="required:true" type="text" name="text"/></td>
+			</tr>
+			<tr>
+				<td class="tdpre">父节点:<br><span class="red-txt">(点击两次<br>取消选中)</span></td>
+				<td>
+					<div class="easyui-panel" style="width:100%;max-height: 200px;">
+						<ul id="parentTree" class="easyui-tree">
+						</ul>
+					</div>
+
+				</td>
+			</tr>
+			<tr>
+				<td class="tdpre">序号(排序用):</td>
+				<td><input type="text" name="order"/></td>
+			</tr>
+		</table>
+	</div>
+	
+	
+	<!-- 新建任务 -->
+	<div id="editVersionView" style="display:none;padding:10px;">
+		<input type="hidden" name="id" />
+		<table>
+			<tr>
+				<td class="tdpre">项目名:</td>
+				<td><b name='projectTreeFullName'></b></td>
+			</tr>
+			<tr>
+				<td class="tdpre"><span class="red-txt">*</span>版本名:</td>
+				<td><input class="easyui-validatebox" data-options="required:true" type="text" name="name"/></td>
+			</tr>
+
+			<tr>
+				<td class="tdpre">翻译程序:</td>
+				<td>
+					<select id="programName" name="programName" style="width:170px;"></select>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="tdpre">序号(排序用):</td>
+				<td><input type="text" name="order"/></td>
+			</tr>
+			<tr>
+				<td class="tdpre">备注:</td>
+				<td><input type="text" name="remark"/></td>
+			</tr>
+		</table>
+	</div>
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="libs/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="libs/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="libs/easyui/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src="libs/layui2/layui.js"></script>
+
+<script type="text/javascript" src="js/common/common.js"></script>
+<script type="text/javascript" src="js/index/index.js"></script>
+
+<script type="text/javascript" src="js/common/commonApi.js"></script>
+<script type="text/javascript" src="js/index/projectApi.js"></script>
+<script type="text/javascript" src="js/index/versionApi.js"></script>
+
+<script>
+	//项目树选中的项目ID
+	var projectTreeSelectId=-1;
+	//项目树完整路径
+	var projectTreeFullName="";
+
+	var parentTreeSelectId=-1;
+
+	//版本 - 表格
+	var versionTable;
+	//版本编辑 - 视图
+	var editVersionView;
+
+
+
+	$(document).ready(function(){
+		log("testLog");
+
+		layui.use(['layer'], function(){
+
+		});
+
+		let h=$(window).height()-20;
+		$("#mainBox").height(h);
+		h-=60;
+		$("#projectListView").height(h);
+		$("#versionListView").height(h);
+
+		versionTable=$("#versionTable");
+		editVersionView=$("#editVersionView");
+
+		versionTable.datagrid({
+			columns:[
+				[
+					{field:'name',title:'版本号',width:100,editor:'text'},
+					{field:'program',title:'翻译程序',width:250,editor:'text'
+						,formatter:function(value,rowData,rowIndex){
+							return rowData.programName+"("+rowData.programDesc+")";
+						}
+					},
+					{field:'order',title:'排序序号',width:80,editor:'text'},
+					{field:'remark',title:'备注',width:250,editor:'text'},
+					{field:'op',title:'操作',align:'center',frozen: true
+						,formatter:function(value,rowData,rowIndex){
+							return '<a href="#" class="abtn" onclick="javascript:editVersion(\''+rowData.id+'\')">编辑</a>'+
+									'&nbsp;&nbsp;<a href="#" class="abtn" onclick="javascript:startTranslate(\''+rowData.id+'\',\''+rowData.name+'\',\''+rowData.uuid+'\')">翻译</a>'+
+									'&nbsp;&nbsp;<a href="#" class="abtn" onclick="javascript:updateTranslate(\''+rowData.id+'\',\''+rowData.name+'\',\''+rowData.uuid+'\')">修正</a>'+
+									'&nbsp;&nbsp;<a href="#" class="abtn" onclick="javascript:createLatestPage(\''+rowData.id+'\',\''+rowData.name+'\',\''+rowData.uuid+'\')">离线文件</a>'+
+									'&nbsp;&nbsp;<a href="#" class="abtn" onclick="javascript:exportDictStore(\''+rowData.id+'\',\''+rowData.name+'\',\''+rowData.uuid+'\')">导出词库</a>'+
+									// '&nbsp;&nbsp;<a href="#" class="abtn" onclick="javascript:viewLatestPage(\''+rowData.id+'\',\''+rowData.name+'\')">阅览离线文件</a>'+
+									'&nbsp;&nbsp;<a href="#" class="abtn btn-red" onclick="javascript:deleteVersion(\''+rowData.id+'\')">删除</a>';
+						}
+					}
+				]
+			]
+			,toolbar:'#versionTool'
+			// ,title:'版本配置'
+			,width:'100%'
+			,height:h
+			,resizeHandle:'right'
+			,data:[
+			]
+			,onDblClickRow: function(rowIndex, rowData) {
+				editVersion(rowData.id);
+			}
+		});
+
+		$('#projectTree').tree({
+			onClick:function(node){
+				if(projectTreeSelectId==node.id){
+					projectTreeSelectId=-1;
+					projectTreeFullName="";
+
+
+					$('#projectTree').find('.tree-node-selected').removeClass('tree-node-selected');
+
+					versionTable.datagrid({
+						data:[]
+					});
+				}else{
+					projectTreeSelectId=node.id;
+
+					projectTreeFullName=node.text;
+					let parent=$('#projectTree').tree('getParent', node.target);
+					while (parent!=null){
+						projectTreeFullName=parent.text+"-"+projectTreeFullName;
+						parent=$('#projectTree').tree('getParent', parent.target);
+					}
+
+					initVersionTableData();
+
+				}
+
+				$("[name='projectTreeFullName']").html(projectTreeFullName);
+			},
+			onContextMenu: function (e, node) {
+				e.preventDefault();
+
+				$('#projectTree').tree("select",node.target);
+				projectTreeSelectId=node.id;
+
+				projectTreeFullName=node.text;
+				let parent=$('#projectTree').tree('getParent', node.target);
+				while (parent!=null){
+					projectTreeFullName=parent.text+"-"+projectTreeFullName;
+					parent=$('#projectTree').tree('getParent', parent.target);
+				}
+				$("[name='projectTreeFullName']").html(projectTreeFullName);
+
+				$('#childMenu').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+			},
+			onDblClick: function(node){
+				projectTreeSelectId=node.id;
+				editProject();
+
+				projectTreeFullName=node.text;
+				let parent=$('#projectTree').tree('getParent', node.target);
+				while (parent!=null){
+					projectTreeFullName=parent.text+"-"+projectTreeFullName;
+					parent=$('#projectTree').tree('getParent', parent.target);
+				}
+				$("[name='projectTreeFullName']").html(projectTreeFullName);
+			}
+		});
+
+		$('#parentTree').tree({
+			onClick:function(node){
+				if(parentTreeSelectId==node.id){
+					parentTreeSelectId=-1;
+					$('#parentTree').find('.tree-node-selected').removeClass('tree-node-selected');
+				}else{
+					parentTreeSelectId=node.id;
+				}
+			}
+		});
+
+		refreshProjectTree();
+
+		$("#programName").combobox({
+			valueField:'value',
+			textField:'text',
+			panelHeight:'auto',
+			onLoadSuccess:function() {
+				let data = $("#programName").combobox("getData");
+				if (data.length > 0) {
+					$("#programName").combobox("select",data[0].value);
+				}
+			}
+		});
+
+	});
+
+
+	var layIndex;
+	function openConfigView(){
+		layIndex=layer.open({
+			type: 2,
+			title:'系统配置',
+			skin: 'layui-layer-rim', //加上边框
+			area: ['50%', '50%'], //宽高
+			content:'config.html'
+		});
+	}
+
+</script>

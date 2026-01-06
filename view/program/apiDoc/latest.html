@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>生成离线文件</title>
+
+	<link rel="stylesheet" type="text/css" href="../../libs/zTree_v3/css/zTreeStyle/zTreeStyle.css">
+	<link rel="stylesheet" type="text/css" href="../../libs/layui2/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../css/common/common.css">
+
+	<style>
+		.layui-card-header {
+			font-size: 12px;
+			font-weight: bold;
+		}
+		.layui-card-body {
+			height: 300px;
+			max-height: 300px;
+			overflow-y: auto;
+		}
+		.txt-desc {
+			padding-top:5px;
+			padding-bottom:10px;
+		}
+	</style>
+</head>
+<body>
+	<div style="margin: 10px;font-size: 12px;">
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+				<b>项目版本：<span id="versionName"></span></b>
+			</div>
+
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-header">
+						文件树列表
+					</div>
+					<div class="layui-card-body" id="flist">
+						<ul id="fileTree" class="ztree">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-row layui-form layui-col-space5">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+				<button class="layui-btn layui-btn-sm" onclick="createLatest();">生成离线文件</button>
+				<button class="layui-btn layui-btn-sm" onclick="exportLatest();">导出离线压缩包</button>
+				<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="createSearch();">创建搜索框</button>
+
+				<button class="layui-btn layui-btn-sm layui-btn-primary" onclick="openFolder();">打开文件所在目录</button>
+				<button class="layui-btn layui-btn-sm layui-btn-primary" onclick="goPreview();">预览</button>
+			</div>
+		</div>
+		<hr>
+		<div class="layui-row layui-col-space5" style="font-size: 12px;padding: 5px;">
+			<b>- 生成离线文件 -</b>
+			<div class="txt-desc">
+				1.在文件列表中选择需要生成的文件，点击“生成离线文件”按钮。<br>
+				2.执行此功能前，建议您先进行翻译和修正。<br>
+				3.生成的离线文件您可以复制到其他目录或发送给他人<br>
+				4.如需修改或删除离线文件中的链接和中英文切换样式，请修改版本工作目录下的 <b name="versionFolder" style="color:cornflowerblue;cursor: pointer" onclick="openFileFolder()" title="点击打开目录">latest/js/xst-lg.js(点击打开)</b> 文件，将相关代码删除或更换。
+			</div>
+
+			<b>- 导出离线压缩包 -</b>
+			<div class="txt-desc">
+				将离线文件打包到指定位置。手动打包也是一样的。
+			</div>
+
+			<b>- 创建搜索框 -</b>
+			<div  class="txt-desc">
+				此功能会自动在左侧的类文件列表上方添加一个搜索框，用于模糊搜索。 <br>
+				<span style="color: red">注意：此功能只用执行一次，每执行一次都会添加一个搜索框，如果不小心执行多次，请用old目录下的文件全量替换掉latest目录下的文件后重新执行此操作。</span>
+			</div>
+
+			<b>- 打开文件所在目录 -</b>
+			<div class="txt-desc">
+				打开 “版本工作目录” 的 离线文件 目录。您可以直接打包这个目录的文件("导出离线压缩包"功能也只是将这个目录打包)。
+			</div>
+
+
+			<b>- 预览 -</b>
+			<div class="txt-desc">
+				预览离线文件
+			</div>
+
+		</div>
+		<hr>
+	</div>
+
+
+
+
+</body>
+</html>
+
+<script src="../../js/common/jquery.min.js"></script>
+
+<script type="text/javascript" src="../../libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../../libs/layui2/layui.js"></script>
+
+<script src="../../js/common/common.js"></script>
+
+<script src="../../js/common/commonApi.js"></script>
+
+<script src="../common/js/baseHtmlApi.js"></script>
+
+<script src="js/apiDocApi.js"></script>
+
+<script>
+	var projectId=getParam("projectId");
+	var versionId=getParam("versionId");
+	var projectName=decodeURIComponent(getParam("projectName"));
+	var versionName=decodeURIComponent(getParam("versionName"));
+	//这个id是创建浏览器的时候自动生成的uuid
+	var browserId=getParam("browserId");
+
+	//树对象 - 文件列表
+	var zTreeFile;
+	//zTree设置 - 文件列表
+	var zTreeFileSetting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},callback: {
+		}
+	};
+
+	$(document).ready(function(){
+		$("#versionName").html(projectName+"-"+versionName);
+
+		baseHtmlApi.queryLatestFiles(projectId,versionId)
+				.then(function(r){
+					if(r.ok){
+						if(zTreeFile) zTreeFile.destroy();
+						// console.log(r.data);
+
+						r.data.sort(function(a, b) {
+							return a.order - b.order;
+						});
+						zTreeFile=$.fn.zTree.init($("#fileTree"),zTreeFileSetting, r.data );
+
+						// $('#fileTree').tree({
+						// 	data:r.data,
+						// 	checkbox:true
+						// });
+					}else{
+						tipsMsg(r.msg);
+					}
+				});
+	});
+
+	/**
+	 * 打开预览页面
+	 */
+	function goPreview(){
+		baseHtmlApi.viewLatestPage(projectId,versionId)
+				.then(function (r){
+					if(r.ok){
+						window.open(r.data+"?projectId="+projectId+"&versionId="+versionId+"&projectName="+encodeURIComponent($("#projectName").html())+"&versionName="+encodeURIComponent(versionName));
+					}else{
+						tipsMsg(r.msg);
+					}
+				});
+	}
+
+	/**
+	 * 创建离线文件
+	 */
+	function createLatest(){
+		// let nodes = $('#fileTree').tree('getChecked');
+
+		let nodes=zTreeFile.getCheckedNodes(true);
+		let files=new Array();
+		for(let i=0;i<nodes.length;i++){
+
+			let att=nodes[i].attributes;
+			if(att.fid!=""){
+				files[files.length]=att.fid;
+			}
+		}
+		showLoading();
+		baseHtmlApi.createFiles(projectId,versionId,files)
+				.then(function(r){
+					tipsMsg(r.msg);
+				});
+	}
+
+	/**
+	 * 打开js文件所在目录
+	 */
+	function openFileFolder(){
+		commonApi.queryVersionFolder(projectId,versionId)
+				.then(function (r){
+					if(r.ok){
+						commonApi.openExplorer(r.data+"latest\\js\\");
+					}else{
+						tipsMsg(r.msg);
+					}
+				});
+	}
+
+	/**
+	 * 打开版本所在目录
+	 */
+	function openFolder(){
+		commonApi.queryVersionFolder(projectId,versionId)
+				.then(function (r){
+					if(r.ok){
+						commonApi.openExplorer(r.data+"latest\\");
+					}else{
+						tipsMsg(r.msg,1);
+					}
+				});
+	}
+
+
+
+
+	//创建搜索框
+	function createSearch(){
+		showLoading();
+		apiDocApi.createSearch(projectId,versionId)
+			.then(function(r){
+				tipsMsg(r.msg);
+			});
+	}
+
+	/**
+	 * 导出离线压缩包
+	 */
+	async function exportLatest(){
+		//弹出另存为对话框
+		let data=await commonApi.fileDialog(2,"导出离线包-"+projectName+"-"+versionName,projectName+"-"+versionName+".zip");
+		if(data.length>0){
+			showLoading();
+			data=await baseHtmlApi.createLatestPkg(data[0],projectId,versionId);
+			tipsMsg(data.msg);
+		}
+	}
+
+
+</script>

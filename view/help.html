@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>帮助文档</title>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="xym-translate-jcef" />
+	<meta name="description" content="基于JCEF的开源翻译项目。可对接多个翻译平台API，多种类型文档。主要用于网页类技术文档翻译，您可以便捷的进行机器翻译，翻译修正以及生成最终的离线文件。" />
+
+	<link rel="stylesheet" href="css/common/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/common/docs.min.css">
+	<link rel="stylesheet" type="text/css" href="css/common/shCoreDefault.css">
+	
+	<script src="js/common/jquery.min.js"></script>
+	<script src="js/common/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/common/docs.min.js"></script>
+	<script type="text/javascript" src="js/common/shCore.js"></script>
+	
+	<style>
+	.txt1 {
+		font-size:12px;
+		font-weight:bold;
+	}
+	</style>
+	<script>
+		$(function(){
+			SyntaxHighlighter.all();//执行代码高亮
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 col-lg-3">
+				<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+					<ul class="nav bs-docs-sidenav">
+					  
+						<li>
+						  <a href="#main-1">xym-translate-jcef使用说明</a>
+						  <ul class="nav">
+							  <li>
+								  <a href="#main-p0">启动与打包</a>
+								  <ul class="nav" style="padding-left:10px;">
+									  <li><a href="#main-p02">eclipse</a></li>
+									  <li><a href="#main-p01">idea</a></li>
+									  <li><a href="#main-p03">打包</a></li>
+								  </ul>
+							  </li>
+							  <li>
+								<a href="#main-p1">开始</a>
+								<ul class="nav" style="padding-left:10px;">
+									<li><a href="#main-pc1">创建翻译项目</a></li>
+									<li><a href="#main-pc2">创建翻译任务</a></li>
+									<li><a href="#main-pc3">配置翻译任务</a></li>
+								 </ul>
+							</li>
+							<li><a href="#main-p2">翻译修正</a></li>
+							<li><a href="#main-p3">生成离线文件</a></li>
+						  </ul>
+						</li>
+						<li>
+						  <a href="#main-2">二次开发</a>
+						  <ul class="nav">
+							<li><a href="#main-2p2">代码相关说明</a></li>
+						  </ul>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-md-9 col-lg-9">
+				<div class="bs-docs-section">
+					<div id="main-1">
+						<h2>xym-translate-jcef使用说明</h2>
+						<p>基于JCEF的开源翻译项目。可对接多个翻译平台API，多种类型文档。主要用于网页类技术文档翻译，您可以使用本程序进行机器自动翻译，翻译修正以及生成最终的离线文件。</p>
+						<p>在首次接触JCEF时，因文档资料甚少，不得已自行对API文档进行了翻译，后面使用JxBrowser等技术也碰到了这种情况。于是单独做了个用于翻译的程序。</p>
+						<p>本项目在windows64位系统上进行开发，未对其他系统做兼容，请知悉。</p>
+					</div>
+
+					<div id="main-p0">
+						<h3>启动与打包</h3>
+						<p>
+							项目环境：jdk1.8，maven3.8.5
+						</p>
+						<p>
+							项目使用了maven进行jar包导入和安装打包。如果您从未使用过maven，建议您先去了解相关的知识。通常情况下，IDE会自动帮您配置。
+						</p>
+						<p>
+							maven在install过程中出现问题，通常是因为jar包下载失败。有可能是因为您连接不上远程仓库，也可能是您连接的远程仓库里没有相应的jar包。
+						</p>
+						<p>
+							如果您想使用某个库的最新版本，而又不知道它的版本号，推荐您到 <a href="https://central.sonatype.com/" target="_blank">https://central.sonatype.com/</a> 查询获取
+						</p>
+
+						<div id="main-p01">
+							<h4><b>idea</b></h4>
+
+						</div>
+
+						<div id="main-p02">
+							<h4><b>eclipse</b></h4>
+
+						</div>
+
+						<div id="main-p03">
+							<h4><b>打包</b></h4>
+
+						</div>
+					</div>
+					
+					
+					<div id="main-p1">
+						<h3>开始</h3>
+						<p>
+							<b>操作流程：</b>
+						</p>
+						<p>
+							1.准备好需要翻译的文档文件
+						</p>
+						<p>
+							2.在提供免费API的翻译平台(如<a href="https://fanyi-api.baidu.com/" target="_blank">百度翻译</a>)申请相关密钥。
+						</p>
+						<p>
+							3.一般翻译平台会提供免费的调用额度，有的是总额度，有的是每月额度，我们尽量往高的额度申请。比如说百度翻译，我们申请高级版，目前是每个月100万免费字符。用哪个平台都一样，机器翻译的水平是有限的，最后还是得人工修正。
+						</p>
+						<p>
+							4.将申请到的密钥填写到 com.xuanyimao.xstjcef.core.translateplatform 包下对应的类中。
+						</p>
+						<p>
+							5.在 com.xuanyimao.xstjcef.StartupApp 中运行并启动程序
+						</p>
+						<p>
+							6.翻译的流程为：创建翻译项目 → 创建翻译任务 → 配置翻译任务 → 启动翻译 → 翻译修正 → 生成离线文件
+						</p>
+						<p style="color:red;">
+							7.如果使用翻译平台的免费额度，请注意不要使用超量。一般到90%左右即停止，更换平台或更换密钥。
+						</p>
+						<p style="color:red;">
+							8.翻译平台一般对QPS(每秒访问量)有限制，在网络顺畅的环境下，翻译一条语句的时间不用1秒。若QPS不够，可减少翻译配置中的“同时翻译文件数”或在com.xuanyimao.xstjcef.core.translateprogram的对应翻译程序中添加线程休眠代码。
+						</p>
+						<p style="color:red;">
+							9.程序首先会在程序缓存中精确匹配要翻译的句子是否存在，如果存在，则直接取缓存的数据，如果不存在，则调用翻译程序API获取。缓存的来源可以是外部的词库文件和已翻译的任务以及翻译过程中产生的数据。
+						</p>
+						
+						<p>
+							<b>项目目录介绍：</b>
+						</p>
+						<p>
+							jcefbin：JCEF的二进制文件
+						</p>
+						<p>
+							lib：第三方JAR包
+						</p>
+						<p>
+							src：JAVA代码
+						</p>
+						<p>
+							tsdata：翻译相关的文件都保存在此目录
+						</p>
+						<p>
+							tsfile：翻译用到的额外的代码文件，比如在进行修正时，需要引入layui以及一些JS代码，生成离线文件时，需要引入一些脚本
+						</p>
+						<p>
+							ui：网页文件，用于界面显示
+						</p>
+						
+						
+						<div id="main-pc1">
+							<h4><b>创建翻译项目</b></h4>
+							<p>在程序首页点击“创建新的翻译项目”按钮，创建翻译项目。</p>
+							<p>翻译项目的项目名填写需要翻译的技术的名字，如“JCEF”。每个技术都会随着时间诞生越来越多的版本，我们用翻译项目来对应这些技术的名字，用翻译任务来对应版本号。</p>
+							<p>项目名理论上不能修改，您可以通过修改代码解除限制，或者修改 tsdata 目录下的config文件（请勿修改id字段的值）。</p>
+						</div>
+						
+						<div id="main-pc2">
+							<h4><b>创建翻译任务</b></h4>
+							<p>在新建的项目下点击“创建任务”按钮。</p>
+							<p>任务名建议使用需要翻译的技术的版本号，以便于管理。</p>
+							<p>任务名理论上不能修改，您可以通过修改代码解除限制，或者修改 tsdata 目录下的config 文件（请勿修改id字段的值）。</p>
+						</div>
+						
+						<div id="main-pc3">
+							<h4><b>配置翻译任务</b></h4>
+							<p>在新建的任务下点击“配置并启动翻译任务”按钮，进入配置界面。</p>
+							<p>配置完成后，点击“开始翻译”按钮，进行翻译。</p>
+							
+							<p>
+								<img src="image/2.jpg" class="img-responsive"/>
+							</p>
+							
+							<p><b>配置项介绍</b></p>
+							<p><span class="txt1">工作目录：</span>程序自动生成的工作空间，此任务相关的文件都会保存在此目录下。工作目录下有 old(待翻译的原始文件),update(用于修正的文件),model(用于生成离线文件的模板文件),lastest(最终生成的离线文件),datas(翻译产生的数据,用作数据缓存和生成离线文件) 五个目录，以及一个config文件</p>
+							
+							<p>
+							<span class="txt1">待翻译文件的目录：</span>此项包含两个按钮，<strong>“扫描文件并初始化项目任务”</strong>和<strong>“我已手动初始化项目任务”</strong>。<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;首先，选择需要进行翻译的文件所在目录(选择目录下的任一一个文件即可)，然后点击<strong>“扫描文件并初始化项目配置”</strong>按钮，程序首先会将您选择的目录进行压缩，然后解压到工作目录下的old,update,lastest目录下。随后，程序会将tsfile下的文件解压到update,model,lastest目录下。最后，程序扫描old下的所有文件，并在<strong>“文件树列表中”</strong>展示。<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;<strong>“我已手动初始化项目任务”</strong>用于任务初始化配置后使用，程序会直接扫描工作目录下的old文件夹下所有文件并在<strong>“文件树列表中”</strong>展示。
+							</p>
+							
+							<p><span class="txt1">词库文件：</span>一个用于做翻译缓存的数据文件。程序首先会在程序缓存中精确匹配要翻译的句子是否存在，如果存在，则直接取缓存的数据。词库文件的格式为 {"原文":"译文","原文":"译文",……}</p>
+							
+							<p><span class="txt1">选择现有版本做词库：</span>此配置项主要用于版本更新时的翻译。例如，您已经翻译并修正了JCEF1.0版本的API文档，在翻译JCEF1.1版本的文档时，选择JCEF1.0，则程序会将JCEF1.0的翻译数据加载到缓存。这样可以大大减少翻译程序API的调用，同时也可以避免重复修正。</p>
+							
+							<p><span class="txt1">文件名匹配正则：</span>用于过滤不需要翻译的文件。例如，API文档中还有像package-frame.html这样不需要翻译的页面，有些还有class-use目录，里面是重复的页面，为了效率，我们需要过滤掉这些页面。</p>
+
+							<p><span class="txt1">文件树列表和需要翻译的文件：</span>文件树列表展示的是所有文件，需要的翻译的文件则是通过 文件名匹配正则 过滤后的文件。</p>
+							<p><span class="txt1">翻译修正打开的首页：</span>在程序首页的表格中点击“翻译修正”打开的页面。</p>
+							<p><span class="txt1">预览打开的首页：</span>在程序首页点击“预览”按钮打开的页面。</p>
+							<p><span class="txt1">翻译平台：</span>使用哪个平台进行翻译。</p>
+							<p><span class="txt1">翻译程序：</span>使用哪个程序进行翻译，您可以自行开发新的翻译程序。</p>
+							<p><span class="txt1">原文件编码：</span>读取文件的编码，默认UTF-8。</p>
+							<p><span class="txt1">处理后的文件编码：</span>保存使用的文件编码，默认UTF-8。</p>
+							<p><span class="txt1">同时翻译的文件个数：</span>多少个文件同时进行翻译，默认为1，不建议设置太大。</p>
+						</div>
+					</div>
+					<div id="main-p2">
+						<h3>翻译修正</h3>
+						<p>
+							进行初次机器翻译后，我们需要对翻译结果进行检查和修正。在软件首页点击“翻译修正”按钮，进入翻译修正页面。
+						</p>
+						<p>
+							翻译修正页面有两个按钮：“修正”和“替换其他位置相同译文”。
+						</p>
+						<p>
+							<span class="txt1">修正：</span>点击后可以对译文进行修改并保存。
+						</p>
+						<p>
+							<span class="txt1">替换其他位置相同译文：</span>此功能用于快捷将修正后的译文替换其他位置的译文。例如，JCEF中的Handler会有一个对应的Adapter，两个里面的方法注释基本一样，利用此功能可以快速进行替换。
+						</p>
+						
+					</div>
+					<div id="main-p3">
+						<h3>生成离线文件</h3>
+						<p>
+							此功能用于生成离线文件，也就是最终的成品。
+						</p>
+					</div>
+					<div id="main-2">
+						<h2>二次开发</h2>
+						<p>未完待续</p>
+						
+					</div>
+					<div id="main-2p2">
+						<h3>二次开发</h3>
+						<p>未完待续</p>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		
+	</div>
+	<footer style="background-color:#ccc;padding-top:10px;">
+		<div class="container">
+			<p>本文档由玄翼猫编写，个人网站：<a href="http://www.xuanyimao.com" target="_blank">http://www.xuanyimao.com</a></p>
+		</div>
+	</footer>
+</body>
+<!-- author:玄翼猫 -->
+</html>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+		bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }else{
+		bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>

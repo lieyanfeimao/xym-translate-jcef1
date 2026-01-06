@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>系统配置</title>
+	<link rel="stylesheet" type="text/css" href="libs/layui2/css/layui.css">
+	<style>
+		.edit-form {
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+
+	<form class="layui-form edit-form" lay-filter="configForm">
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">secretId</label>
+			<div class="layui-input-block">
+				<input type="text" name="txSecretId" placeholder="secretId" autocomplete="off" class="layui-input" value="" />
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">secretKey</label>
+			<div class="layui-input-block">
+				<input type="password" name="txSecretKey" placeholder="secretKey" autocomplete="off" class="layui-input" value="" />
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">appId</label>
+			<div class="layui-input-block">
+				<input type="text" name="bdAppId" placeholder="appId" autocomplete="off" class="layui-input" value="" />
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">secretKey</label>
+			<div class="layui-input-block">
+				<input type="password" name="bdSecretKey" placeholder="secretKey" autocomplete="off" class="layui-input" value="" />
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="edit">保存</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</body>
+</html>
+<script type="text/javascript" src="js/common/jquery.min.js"></script>
+<script type="text/javascript" src="js/common/common.js"></script>
+
+<script type="text/javascript" src="libs/layui2/layui.js"></script>
+
+<script type="text/javascript" src="js/common/commonApi.js"></script>
+<script type="text/javascript" src="js/common/configApi.js"></script>
+
+<script>
+	var layIndex;
+	$(function(){
+		layui.use(['form','layer'], function(){
+			var layform=layui.form;
+
+			configApi.queryConfig()
+					.then(function (r){
+						if(r.ok){
+							layform.val('configForm',r.data);
+						}else{
+							layer.msg(r.msg);
+						}
+					});
+
+			//按钮事件
+			layform.on('submit(edit)', function(data){
+				layIndex= layer.load(1,{
+					shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+				let params=layform.val('configForm');
+				configApi.saveConfig(params)
+						.then(function (r) {
+							layer.close(layIndex);
+							layer.msg(r.msg);
+						});
+				return false;
+			});
+		});
+	});
+</script>

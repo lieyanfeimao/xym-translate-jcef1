@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<title>文档翻译</title>
+
+	<link rel="stylesheet" type="text/css" href="../../libs/zTree_v3/css/zTreeStyle/zTreeStyle.css">
+	<link rel="stylesheet" type="text/css" href="../../libs/layui2/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../css/common/common.css">
+	<style>
+		.row-title{
+			text-align: right;
+			font-weight: bold;
+		}
+		.layui-input {
+			height: 24px;
+			border-color: #e3e3e3;
+		}
+		.layui-card-header {
+			font-size: 12px;
+			font-weight: bold;
+		}
+		.layui-card-body {
+			height: 300px;
+			max-height: 300px;
+			overflow-y: auto;
+		}
+		.queue-info {
+			padding-top:10px;
+			color:green;
+			font-size:12px;
+		}
+
+		.log-info {
+			padding-top:10px;
+			color:green;
+			font-size:12px;
+		}
+
+		.error-log {
+			padding-top:10px;
+			color:red;
+			font-size:12px;
+		}
+
+		.select-file {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			padding: 2px;
+		}
+
+	</style>
+</head>
+<body>
+	<div style="margin: 10px;font-size: 12px;">
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs1 layui-col-sm1 layui-col-md1 row-title">
+				项目版本：
+			</div>
+			<div class="layui-col-xs11 layui-col-sm11 layui-col-md11">
+				<b><span id="versionName"></span></b>
+			</div>
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs1 layui-col-sm1 layui-col-md1 row-title">
+				工作目录：
+			</div>
+			<div class="layui-col-xs11 layui-col-sm11 layui-col-md11">
+				<span name="versionFolder" style="color:green;"></span>&nbsp;&nbsp;
+				<button class="layui-btn layui-btn-primary layui-btn-xs" title="打开工作目录" onclick="openVersionFolder();"><i class="layui-icon layui-icon-folder"></i></button>
+				<button class="layui-btn layui-btn-xs" onclick="openInitProgramDialog();">重新初始化</button>
+			</div>
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs1 layui-col-sm1 layui-col-md1 row-title">
+				词库文件：
+			</div>
+			<div class="layui-col-xs11 layui-col-sm11 layui-col-md11">
+				<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+					<input class="layui-input" type="text" name="dictPath" id="dictPath"/>
+				</div>
+				<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+					<button class="layui-btn layui-btn-primary layui-btn-xs" style="margin-left:5px;" title="选择词库文件" onclick="chooseDict();"><i class="layui-icon layui-icon-folder"></i></button>
+					&nbsp;(如果翻译的语句在词库中存在,则使用词库的数据。多个词库文件用分号隔开)
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs1 layui-col-sm1 layui-col-md1 row-title">
+				选择现有版本做词库：
+			</div>
+			<div class="layui-col-xs11 layui-col-sm11 layui-col-md11">
+				<button class="layui-btn layui-btn-xs" onclick="chooseVersion();">选择</button>
+				<div id="versionList" style="color:green;padding-top:5px;">
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs1 layui-col-sm1 layui-col-md1 row-title">
+				文件名匹配正则：
+			</div>
+			<div class="layui-col-xs11 layui-col-sm11 layui-col-md11">
+				<input class="layui-input" type="text" name="rgx" id="rgx" onchange="updateCheckFile()"/>
+				<div>
+					若只需要html文件可填写<span style="color:red;">\.*?html</span>&nbsp;|&nbsp;&nbsp;
+					API文档通用: <span style="color:red;">^((?!class-use|module-summary|package-.*?|allclasses-.*?|index|index-all|overview-.*?|help-doc|constant-.*?).)*\.html$ </span>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-row layui-col-space5">
+			<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-header">
+						文件树列表
+					</div>
+					<div class="layui-card-body" id="flist">
+						<ul id="fileTree" class="ztree">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-header">
+						需要翻译的文件
+					</div>
+					<div class="layui-card-body" id="selFileList">
+
+					</div>
+				</div>
+			</div>
+
+			<div id="fileInfo" class="layui-col-xs12 layui-col-sm12 layui-col-md12" style="text-align: right;">
+				当前选择了0个文件
+			</div>
+		</div>
+
+		<div class="layui-row layui-form layui-col-space5">
+			<div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+				<div class="layui-col-xs3 layui-col-sm3 layui-col-md3 row-title">
+					翻译平台：
+				</div>
+				<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+					<select id="platformName" name="platformName" lay-search lay-filter="platformName">
+
+					</select>
+				</div>
+			</div>
+			<div class="layui-col-xs2 layui-col-sm2 layui-col-md2">
+				<div class="layui-col-xs3 layui-col-sm3 layui-col-md3 row-title">
+					原文：
+				</div>
+				<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+					<select id="srcLanguage" name="srcLanguage" lay-search>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-col-xs2 layui-col-sm2 layui-col-md2">
+				<div class="layui-col-xs3 layui-col-sm3 layui-col-md3 row-title">
+					译文：
+				</div>
+				<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+					<select id="destLanguage" name="destLanguage" lay-search>
+
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-row layui-form layui-col-space5">
+			<div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+				<div class="layui-col-xs3 layui-col-sm3 layui-col-md3 row-title">
+					文件编码：
+				</div>
+				<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+					<input type="text" id="fileEncode" name="fileEncode" class="layui-input" value="UTF-8" />
+				</div>
+			</div>
+			<div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+				<div class="layui-col-xs5 layui-col-sm5 layui-col-md5 row-title">
+					同时翻译的文件个数：
+				</div>
+				<div class="layui-col-xs7 layui-col-sm7 layui-col-md7">
+					<input type="text" id="translateCount" name="translateCount" class="layui-input" value="1" />
+				</div>
+			</div>
+
+		</div>
+
+		<div class="layui-row layui-form layui-col-space5">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+				<button class="layui-btn layui-btn-sm" onclick="startTranslate();" id="startButton">开始翻译</button>
+				<button class="layui-btn layui-btn-sm layui-btn-danger" onclick="stopTranslate();" id="stopButton" style="display:none;">停止翻译</button>
+				<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="saveConfig();">保存配置</button>
+
+				<button class="layui-btn layui-btn-sm layui-btn-primary" onclick="window.open('../../help.html')">使用帮助</button>
+			</div>
+
+		</div>
+		<div class="layui-row layui-form layui-col-space5">
+			<div class="queue-info" id="queueInfo"></div>
+			<div class="log-info" id="logInfo"></div>
+			<div class="error-log" id="errorLog"></div>
+		</div>
+	</div>
+
+	<!-- 版本列表 -->
+	<div id="tplVersionList" style="display: none;">
+
+		<div style="padding:10px;">
+			<div class="layui-row layui-col-space5">
+				<div class="layui-col-xs12 layui-col-sm12 layui-col-md12" style="height:400px;max-height: 400px;">
+					<ul id="versionTree" class="ztree" >
+					</ul>
+				</div>
+			</div>
+
+			<div class="layui-row layui-form layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" onclick="updateCheckVersionList();closeDialog();">确定</button>
+					<a class="layui-btn layui-btn-primary" onclick="closeDialog()">关闭</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- 初始化程序视图 -->
+	<div id="tplInitProgram" style="display: none;">
+		<div style="padding:10px;">
+			<div class="layui-row layui-col-space5">
+				<div class="layui-col-xs3 layui-col-sm3 layui-col-md3 row-title">
+					待翻译文件的目录：
+				</div>
+				<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+					<div class="layui-col-xs8 layui-col-sm8 layui-col-md8">
+						<input class="layui-input" type="text" name="folderPath" id="folderPath"/>
+					</div>
+					<div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+						<button class="layui-btn layui-btn-primary layui-btn-xs" style="margin-left:5px;" title="选择目录" onclick="chooseFileFolder();"><i class="layui-icon layui-icon-folder"></i></button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row layui-col-space5" style="font-size: 12px;padding: 5px;">
+				<p>1、点击文本框后面的 <i class="layui-icon layui-icon-folder"></i> 按钮,选择待翻译文件所在的根目录（您也可以手动填写）。 </p>
+				<p>2、点击“初始化”按钮，程序会在 <u><b name="versionFolder" style="color:cornflowerblue;cursor: pointer" onclick="openVersionFolder()"></b></u> 创建4个目录：old(原始文件),update(修正文件),latest(离线文件),model(模板文件,用于生成最终的离线文件)，并将您选择的目录下的文件复制到old(原始文件),update(修正文件),latest(离线文件)这三个目录</p>
+				<p>3、初始化完成后，您可以从“工作目录”后面的 <i class="layui-icon layui-icon-folder"></i>按钮 打开工作目录查看目录结构</p>
+				<p>4、如果您需要重新做一遍初始化操作，您可以点击“工作目录”后面的“重新初始化”按钮。</p>
+			</div>
+
+			<div class="layui-row layui-form layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" onclick="initProgram();">初始化</button>
+					<a class="layui-btn layui-btn-primary" onclick="closeDialog()">关闭</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>
+<script src="../../js/common/jquery.min.js"></script>
+
+<script type="text/javascript" src="../../libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="../../libs/layui2/layui.js"></script>
+
+<script src="js/baseHtmlTranslate.js"></script>
+
+<script src="../../js/common/common.js"></script>
+<script src="../../js/common/commonApi.js"></script>
+<script src="js/baseHtmlApi.js"></script>
+
+<script>
+
+	var projectId=getParam("projectId");
+	var versionId=getParam("versionId");
+	var projectName=decodeURIComponent(getParam("projectName"));
+	var versionName=decodeURIComponent(getParam("versionName"));
+	//这个id是创建浏览器的时候自动生成的uuid
+	var browserId=getParam("browserId");
+
+	var initProgramView=$("#initProgramView");
+	//当前项目版本所在 工作目录
+	var versionFolder="";
+
+	//系统默认的名称分隔符,文件路径分隔符
+	var fs="\\";
+	//选择的做为词库的版本
+	var checkVersionIds;
+
+	var layform;
+	//树对象 - 文件列表
+	var zTreeFile;
+	//树对象 - 版本列表
+	var zTreeVersion;
+	//zTree设置 - 文件列表
+	var zTreeFileSetting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},callback: {
+			onCheck: function (event,treeId, treeNode) {
+				updateCheckFile();
+			}
+		}
+	};
+	//zTree设置 - 版本选择
+	var zTreeVersionSetting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},callback: {
+			onCheck: function (event,treeId, treeNode) {
+				updateCheckVersionList();
+			}
+		}
+	};
+	
+	//console.log(browserId);
+	
+	$(document).ready(function(){
+		$("#versionName").html(projectName+" - "+versionName);
+		layui.use(function(){
+			layform=layui.form;
+
+			layform.on('select(platformName)', function(data){
+				initLanguage(data.value);
+			});
+			initView();
+		});
+
+
+		// $("#platformName").combobox({
+		// 	valueField:'value',
+		// 	textField:'text',
+		// 	panelHeight:'auto',
+		// 	onLoadSuccess:function() {
+		// 		let data = $("#platformName").combobox("getData");
+		// 		if (data.length > 0) {
+		// 			$("#platformName").combobox("select",data[0].value);
+		// 		}
+		// 	},
+		// 	onChange:function (){
+		// 		let platformName = $("#platformName").combobox("getValue");
+		// 		initLanguage(platformName);
+		// 	}
+		// });
+		// //原文语种
+		// $("#srcLanguage").combobox({
+		// 	valueField:'value',
+		// 	textField:'text',
+		// 	panelHeight:'auto',
+		// 	onLoadSuccess:function() {
+		// 		let data = $("#srcLanguage").combobox("getData");
+		// 		//默认设置为‘英文’
+		// 		if (data.length > 0) {
+		// 			$("#srcLanguage").combobox("select",data[0].value);
+		// 		}else if(data.length>1) {
+		// 			$("#srcLanguage").combobox("select",data[1].value);
+		// 		}
+		// 	}
+		// });
+		// //译文语种
+		// $("#destLanguage").combobox({
+		// 	valueField:'value',
+		// 	textField:'text',
+		// 	panelHeight:'auto',
+		// 	onLoadSuccess:function() {
+		// 		let data = $("#destLanguage").combobox("getData");
+		// 		if (data.length > 0) {
+		// 			$("#destLanguage").combobox("select",data[0].value);
+		// 		}
+		// 	}
+		// });
+
+		// $('#fileTree').tree({
+		// 	checkbox:true,
+		// 	onCheck:function(node, checked){
+		// 		updateCheckFile();
+		// 	}
+		// });
+		//
+		// $('#versionTree').tree({
+		// 	checkbox:true,
+		// 	onCheck:function(node, checked){
+		// 		updateCheckVersionList();
+		// 	}
+		// });
+		
+	});
+
+</script>

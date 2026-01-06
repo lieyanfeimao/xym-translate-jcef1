@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>首页</title>
+
+	<link rel="stylesheet" type="text/css" href="libs/zTree_v3/css/zTreeStyle/zTreeStyle.css">
+
+	<link rel="stylesheet" type="text/css" href="libs/layui2/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="css/common/common.css">
+	<style>
+
+	</style>
+</head>
+<body id="mainBox">
+	<div class="layui-row layui-col-space5" style="margin: 5px;">
+		<div class="layui-col-xs3 layui-col-sm3 layui-col-md3">
+			<div class="layui-card" id="projectListBox">
+				<div class="layui-card-header">
+					<div class="layui-row">
+						<div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+							<b>项目列表</b>
+						</div>
+						<div class="layui-col-xs8 layui-col-sm8 layui-col-md8" style="text-align: right;">
+							<button class="layui-btn layui-btn-normal layui-btn-xs" onclick="addProject()"><i class="layui-icon layui-icon-add-1"></i>添加</button>
+							<button class="layui-btn layui-btn-xs project-btn-margin" onclick="window.open('help.html')"><i class="layui-icon layui-icon-help"></i>帮助</button>
+							<button class="layui-btn layui-bg-purple layui-btn-xs project-btn-margin" onclick="openConfigView()"><i class="layui-icon layui-icon-set-sm"></i>设置</button>
+
+<!--							<button class="layui-btn layui-btn-xs class-test-dropdown" lay-options="{-->
+<!--								  data: [{title: 'item 1', id: 1}, {title: 'item 2', id: 2}]-->
+<!--								}">操作<i class="layui-icon layui-icon-triangle-d"></i></button>-->
+						</div>
+					</div>
+				</div>
+				<div class="layui-card-body" id="projectListBody">
+					<ul id="projectTree" class="ztree">
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+			<div class="layui-card" id="versionListBox">
+				<div class="layui-card-header">
+					<div class="layui-row">
+						<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+							<b>版本列表( <span name='projectTreeFullName'></span> )</b>
+						</div>
+						<div class="layui-col-xs6 layui-col-sm6 layui-col-md6" style="text-align: right;">
+<!--							<button class="layui-btn layui-btn-xs btn-dropdown" lay-options="{-->
+<!--								  data: [{title: '添加项目', id: 1}, {title: '使用帮助', id: 2}]-->
+<!--								}">操作<i class="layui-icon layui-icon-triangle-d"></i></button>-->
+
+						</div>
+					</div>
+				</div>
+				<div class="layui-card-body" id="versionListBody">
+					<table id="versionTable" lay-filter="table"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 添加/编辑 项目 -->
+	<script type="text/html" id="tplEditProject">
+		<form class="layui-form" lay-filter="projectForm">
+			<input type="hidden" name="id" />
+			<div class="layui-form-item">
+				<label class="layui-form-label"><span style="color: red;">*</span>项目名</label>
+				<div class="layui-input-block">
+					<input type="text" name="text" lay-verify="required" lay-verType="tips" placeholder="项目名" autocomplete="off" class="layui-input" value="" />
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">父节点<br><span style="color: red;">(点击两次取消选中)</span></label>
+				<div class="layui-input-block">
+					<div style="max-height: 250px;overflow-y: auto;width: 100%;">
+						<ul id="parentTree" class="ztree" >
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">排序序号</label>
+				<div class="layui-input-block">
+					<input type="text" name="order" lay-verify="number" placeholder="排序序号" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="editProject">保存</button>
+					<a class="layui-btn layui-btn-primary" onclick="closeDialog()">关闭</a>
+				</div>
+			</div>
+		</form>
+	</script>
+
+	<!-- 添加/编辑 版本 -->
+	<script type="text/html" id="tplEditVersion">
+		<form class="layui-form" lay-filter="versionForm">
+			<input type="hidden" name="id" />
+			<div class="layui-form-item">
+				<label class="layui-form-label">项目名</label>
+				<div class="layui-input-block" style="padding-top:5px; ">
+					<b name='projectTreeFullName'></b>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label"><span style="color: red;">*</span>版本名</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" lay-verify="required" lay-verType="tips" placeholder="版本名" autocomplete="off" class="layui-input" value="" />
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label"><span style="color: red;">*</span>翻译程序</label>
+				<div class="layui-input-block">
+					<select id="programName" name="programName" lay-search></select>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">排序序号</label>
+				<div class="layui-input-block">
+					<input type="text" name="order" lay-verify="number" placeholder="排序序号" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<input type="text" name="remark" placeholder="备注" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="editVersion">保存</button>
+					<a class="layui-btn layui-btn-primary" onclick="closeDialog()">关闭</a>
+				</div>
+			</div>
+		</form>
+	</script>
+
+	<!-- 表格 -->
+	<!-- 顶部按钮 -->
+	<script type="text/html" id="tplTools">
+		<div class="layui-btn-container">
+			<button class="layui-btn layui-btn-xs" onclick="addVersion()">添加版本</button>
+		</div>
+	</script>
+	<!-- 序号 -->
+	<script type="text/html" id="tplIndex">
+		{{ d.LAY_NUM }}
+	</script>
+	<!-- 程序名 -->
+	<script type="text/html" id="tplProgram">
+		{{ d.programName }}({{ d.programDesc }})
+	</script>
+
+	<!-- 操作栏 -->
+	<script type="text/html" id="tplOpera">
+		<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a>
+		<a class="layui-btn layui-btn-xs" lay-event="more">翻译操作<i class="layui-icon layui-icon-down"></i></a>
+		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	</script>
+</body>
+</html>
+<script type="text/javascript" src="js/common/jquery.min.js"></script>
+
+<script type="text/javascript" src="libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+
+<script type="text/javascript" src="libs/layui2/layui.js"></script>
+
+<script type="text/javascript" src="js/common/common.js"></script>
+<script type="text/javascript" src="js/index/index.js"></script>
+
+<script type="text/javascript" src="js/common/commonApi.js"></script>
+<script type="text/javascript" src="js/index/projectApi.js"></script>
+<script type="text/javascript" src="js/index/versionApi.js"></script>
+
+<script>
+	var layform;
+	var laydropdown;
+
+	var zTree;
+	//添加和编辑页面的父节点
+	var zTreeParent;
+
+	//项目树选中的项目ID
+	var projectTreeSelectId=-1;
+	//项目树完整路径
+	var projectTreeFullName="";
+
+	var parentTreeSelectId=-1;
+
+	//表格实例
+	var versionTable;
+	//表格列
+	var cols=[
+		[
+			{field:"id", width:70, title:"序号",templet:'#tplIndex'},
+			{field:"name", width:200, title:"版本号"},
+			{field:"program", width:250, title:"程序名",templet:'#tplProgram'},
+			{field:"order", width:120, title:"排序序号",sort:true},
+			{field:"remark", width:200, title:"备注"},
+			{toolbar:"#tplOpera", width:220, fixed:"right", align:"center", title:"操作"}
+		]
+	];
+
+	//zTree设置
+	var zTreeSetting = {
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},callback: {
+			onClick: function (event,treeId, treeNode) {
+				$(".folder-btn").remove();
+
+				if(projectTreeSelectId==treeNode.id){
+					projectTreeSelectId=-1;
+					projectTreeFullName="";
+
+					zTree.cancelSelectedNode(treeNode);
+					versionTable.reloadData({
+						data:[]
+					});
+				}else{
+					projectTreeSelectId=treeNode.id;
+
+					projectTreeFullName=treeNode.name;
+					let parent=treeNode.getParentNode();
+					while (parent!=null){
+						projectTreeFullName=parent.name+"-"+projectTreeFullName;
+						parent=parent.getParentNode();
+					}
+
+					let $tView = $("#"+treeNode.tId+"_span");
+					let $btns='<span class="folder-btn">';
+
+					$btns+='<a href="javascript:void(0);" onclick="addProject();" title="添加子项目"><i class="layui-icon" style="color:deepskyblue;">&#xe654;</i></a>';
+					$btns+='<a href="javascript:void(0);" onclick="editProject();" title="编辑项目"><i class="layui-icon" style="color:green;">&#xe642;</i></a>';
+					$btns+='<a href="javascript:void(0);" onclick="deleteProject();" title="删除项目"><i class="layui-icon" style="color:#FF0000;">&#xe640;</i></a>';
+
+					$btns+='</span>';
+					$tView.after($btns);
+					initVersionTableData();
+				}
+				$("[name='projectTreeFullName']").html(projectTreeFullName);
+			}
+		}
+	};
+
+	$(function(){
+		let h=$(window).height()-20;
+		$("#mainBox").height(h);
+		$("#projectListBox").height(h);
+		$("#projectListBody").css("overflow-y","auto");
+		$("#projectListBody").css("max-height",h-70);
+
+		$("#versionListBox").height(h);
+		$("#versionListBody").css("overflow-y","auto");
+		$("#versionListBody").css("max-height",h-60);
+		let tableHeight=h-90;
+
+		layui.use(function(){
+			layform=layui.form;
+			laydropdown = layui.dropdown;
+
+			var table=layui.table;
+			versionTable=table.render({
+				id:'id',
+				elem: '#versionTable'
+				,height: tableHeight
+				,page: true //开启分页
+				,limit:20
+				,size:'sm'
+				,cols: cols
+				,data:[]
+				,toolbar: '#tplTools'
+			});
+			$(".layui-table-tool-self").hide();
+
+			table.on('tool(table)', function(obj){//tool event
+				let data = obj.data; //获得当前行数据
+				let layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+				let tr = obj.tr; //获得当前行 tr 的DOM对象
+				let that=this;
+
+				if(layEvent === 'edit'){
+					editVersion(data.id);
+				}else if(layEvent === 'del'){
+					deleteVersion(data.id);
+				}else if(layEvent === 'more'){
+					laydropdown.render({
+						elem:that,
+						show:true,
+						align:'right',
+						style:'',
+						data:[
+							{id:'translate',title:"翻译"},
+							{id:'update',title:"修正"},
+							{id:'latest',title:"生成离线文件"},
+							{id:'viewLatest',title:"离线文件预览"},
+							{id:'dict',title:"导出词库"}
+						],
+						click:function (d,othis){
+							if(d.id === 'translate'){
+								startTranslate(data.id,data.name,data.uuid);
+							}else if(d.id === 'update'){
+								updateTranslate(data.id,data.name,data.uuid);
+							}else if(d.id === 'latest'){
+								createLatestPage(data.id,data.name,data.uuid);
+							}else if(d.id === 'dict'){
+								exportDictStore(data.id,data.name,data.uuid);
+							}else if(d.id === 'viewLatest') {
+								viewLatestPage(data.id, data.name, data.uuid);
+							}
+						}
+					});
+				}
+			});
+
+			table.on('rowDouble(table)',function (obj){
+				editVersion(obj.data.id);
+			});
+		});
+
+		refreshProjectTree();
+
+	});
+</script>
